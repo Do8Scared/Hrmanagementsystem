@@ -40,7 +40,7 @@ export default function App() {
     }
   }, [user]);
 
-  function handleLogin(role: 'admin' | 'employee') {
+  function handleLogin() {
     // login is handled inside LoginScreen which now calls login from useAuth
   }
 

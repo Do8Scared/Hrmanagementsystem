@@ -17,7 +17,7 @@ interface AuthContextType {
   user: AuthUser | null;
   loading: boolean;
   sessionExpired: boolean;
-  login: (email: string, role: AppRole) => Promise<void>;
+  login: (email: string) => Promise<void>;
   logout: () => void;
   simulateExpiry: () => void;
 }
@@ -41,7 +41,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(false);
   }, []);
 
-  const login = async (email: string, role: AppRole) => {
+  const login = async (email: string) => {
     const { data, error } = await supabase
       .from('employees')
       .select('*')
@@ -50,13 +50,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     if (error || !data) throw new Error('User not found');
 
+    let assignedRole: AppRole = 'employee';
+    if (data.department === 'Human Resources' || data.position?.toLowerCase().includes('manager') || data.position?.toLowerCase().includes('head')) {
+      assignedRole = 'admin';
+    }
+
     const authUser: AuthUser = {
       id: data.id,
       email: data.email,
       name: data.name,
       department: data.department,
       position: data.position,
-      role: role,
+      role: assignedRole,
       initials: data.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase(),
     };
 

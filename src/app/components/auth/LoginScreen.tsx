@@ -5,7 +5,7 @@ import { useAuth } from '../../../lib/useAuth';
 type AuthView = 'login' | 'forgot-password' | 'session-expired';
 
 interface LoginScreenProps {
-  onLogin: (role: 'admin' | 'employee') => void;
+  onLogin: () => void;
   initialView?: AuthView;
   sessionEmail?: string;
 }
@@ -13,7 +13,6 @@ interface LoginScreenProps {
 export function LoginScreen({ onLogin, initialView = 'login', sessionEmail }: LoginScreenProps) {
   const { login } = useAuth();
   const [view, setView] = useState<AuthView>(initialView);
-  const [role, setRole] = useState<'admin' | 'employee'>('admin');
   const [email, setEmail] = useState(initialView === 'session-expired' ? (sessionEmail ?? 'juan.delacruz@hrms.ph') : '');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -33,9 +32,8 @@ export function LoginScreen({ onLogin, initialView = 'login', sessionEmail }: Lo
     setLoading(true);
 
     try {
-      // We pass the currently selected tab 'role' or we could let the backend decide.
-      // Since the mock UI has tabs for "Admin" and "Employee", we pass it to login.
-      await login(email, role);
+      await login(email);
+      onLogin();
     } catch (err: any) {
       if (err.message === 'User not found') {
         setError('Invalid credentials or user not found.');
@@ -116,25 +114,6 @@ export function LoginScreen({ onLogin, initialView = 'login', sessionEmail }: Lo
                 </p>
               </div>
 
-              {/* Role Selector */}
-              <div className="flex rounded-xl bg-[#F7F8FA] p-1 mb-6 gap-1">
-                {(['admin', 'employee'] as const).map(r => (
-                  <button
-                    key={r}
-                    type="button"
-                    onClick={() => setRole(r)}
-                    className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
-                      role === r
-                        ? 'text-white shadow-sm'
-                        : 'text-[#6B7280] hover:text-[#1E2A4A]'
-                    }`}
-                    style={role === r ? { background: '#1E2A4A' } : {}}
-                  >
-                    {r === 'admin' ? 'Admin / HR' : 'Employee'}
-                  </button>
-                ))}
-              </div>
-
               {/* Form */}
               <form onSubmit={handleLogin} className="space-y-4">
                 {/* Email */}
@@ -146,7 +125,7 @@ export function LoginScreen({ onLogin, initialView = 'login', sessionEmail }: Lo
                       type="email"
                       value={email}
                       onChange={e => setEmail(e.target.value)}
-                      placeholder={role === 'admin' ? 'admin@hrms.ph' : 'employee@hrms.ph'}
+                      placeholder="Enter your email"
                       className={inputCls + (view === 'session-expired' ? ' text-[#9CA3AF] bg-[#F0F0F0]' : '')}
                       readOnly={view === 'session-expired'}
                       autoComplete="email"
