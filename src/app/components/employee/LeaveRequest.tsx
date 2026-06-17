@@ -27,6 +27,8 @@ export function LeaveRequest() {
   const [myRequests, setMyRequests] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [empId, setEmpId] = useState<string | null>(null);
+  const [empName, setEmpName] = useState('');
+  const [empDept, setEmpDept] = useState('');
 
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [submitted, setSubmitted] = useState(false);
@@ -35,9 +37,11 @@ export function LeaveRequest() {
     async function fetchData() {
       if (!user) return;
       setLoading(true);
-      const empRes = await supabase.from('employees').select('id').eq('email', user.email).single();
+      const empRes = await supabase.from('employees').select('id, name, department').eq('email', user.email).single();
       if (empRes.data) {
         setEmpId(empRes.data.id);
+        setEmpName(empRes.data.name);
+        setEmpDept(empRes.data.department);
         const [balRes, reqRes] = await Promise.all([
           supabase.from('leave_balances').select('*').eq('employee_id', empRes.data.id).single(),
           supabase.from('leave_requests').select('*').eq('employee_id', empRes.data.id).order('applied_date', { ascending: false })
@@ -70,6 +74,8 @@ export function LeaveRequest() {
 
     const newReq = {
       employee_id: empId,
+      employee_name: empName,
+      department: empDept,
       leave_type: form.leaveType,
       start_date: form.startDate,
       end_date: form.endDate,
@@ -79,9 +85,9 @@ export function LeaveRequest() {
       applied_date: new Date().toISOString().split('T')[0]
     };
 
-    const { data } = await supabase.from('leave_requests').insert(newReq).select().single();
+    const { data, error } = await supabase.from('leave_requests').insert(newReq).select().single();
 
-    if (data) {
+    if (data && !error) {
       setMyRequests(prev => [data, ...prev]);
     }
 

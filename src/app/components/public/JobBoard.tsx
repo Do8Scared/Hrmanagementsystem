@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Search, Bookmark, Share2, Building2, Clock, X, Upload, CheckCircle2, ArrowLeft, ChevronRight } from 'lucide-react';
-import { jobPostings, type JobPosting, type EmploymentType } from '../../data/recruitmentData';
+import { type JobPosting, type EmploymentType } from '../../data/recruitmentData';
+import { useEffect } from 'react';
+import { supabase } from '../../../lib/supabaseClient';
 
 type FilterType = 'All' | EmploymentType | 'Saved Jobs';
 const FILTERS: FilterType[] = ['All', 'Full Time', 'Part Time', 'Contractual', 'Internship', 'Saved Jobs'];
@@ -12,7 +14,6 @@ const typeColor: Record<string, string> = {
   'Internship': 'bg-emerald-50 text-emerald-700',
 };
 
-const publicJobs = jobPostings.filter(j => j.publishToBoard && j.status !== 'Draft');
 
 export function JobBoard({ onBack }: { onBack?: () => void }) {
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -24,6 +25,24 @@ export function JobBoard({ onBack }: { onBack?: () => void }) {
   const [appForm, setAppForm] = useState({ name: '', email: '', phone: '', resume: '', coverLetter: '' });
   const [appSuccess, setAppSuccess] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const [jobPostings, setJobPostings] = useState<JobPosting[]>([]);
+
+  useEffect(() => {
+    supabase.from('job_postings').select('*').then(({ data }) => {
+      if (data) {
+        const mapped = data.map((r: any) => ({
+          id: r.id, title: r.title, department: r.department, datePosted: r.dateposted,
+          deadline: r.deadline, applicantCount: r.applicantcount, status: r.status,
+          description: r.description, qualifications: r.qualifications, slots: r.slots,
+          employmentType: r.employmenttype, publishToBoard: r.publishtoboard,
+          manpowerRequestId: r.manpowerrequestid,
+        }));
+        setJobPostings(mapped as JobPosting[]);
+      }
+    });
+  }, []);
+
+  const publicJobs = jobPostings.filter(j => j.publishToBoard && j.status !== 'Draft');
 
   const filtered = publicJobs.filter(j => {
     const matchSearch = !searchKeyword || j.title.toLowerCase().includes(searchKeyword.toLowerCase()) || j.description.toLowerCase().includes(searchKeyword.toLowerCase());
@@ -33,8 +52,22 @@ export function JobBoard({ onBack }: { onBack?: () => void }) {
 
   const visibleJobs = showAll ? filtered : filtered.slice(0, 6);
 
-  function handleApply(e: React.FormEvent) {
+  async function handleApply(e: React.FormEvent) {
     e.preventDefault();
+    if (applyJob) {
+      // Use DB lowercase column names
+      await supabase.from('applicants').insert({
+        name: appForm.name,
+        email: appForm.email,
+        phone: appForm.phone,
+        jobpostingid: applyJob.id,
+        jobtitle: applyJob.title,
+        applicationdate: new Date().toISOString().split('T')[0],
+        stage: 'Applied',
+        resumefile: appForm.resume || 'resume.pdf',
+      });
+      await supabase.from('job_postings').update({ applicantcount: applyJob.applicantCount + 1 }).eq('id', applyJob.id);
+    }
     setAppSuccess(true);
   }
 

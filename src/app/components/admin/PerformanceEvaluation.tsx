@@ -49,19 +49,19 @@ export function PerformanceEvaluation() {
     return {
       id: ev.id,
       employeeId: ev.employee_id,
-      employeeName: emp ? emp.name : 'Unknown',
-      department: emp ? emp.department : 'Unknown',
+      employeeName: emp ? emp.name : (ev.employee_name || 'Unknown'),
+      department: emp ? emp.department : (ev.department || 'Unknown'),
       period: ev.period,
       evaluator: ev.evaluator,
       date: ev.date,
       comments: ev.comments,
       overallRating: ev.overall_rating,
       criteria: {
-        attendance: ev.attendance,
-        productivity: ev.productivity,
-        teamwork: ev.teamwork,
-        communication: ev.communication,
-        initiative: ev.initiative
+        attendance: ev.attendance_rating,
+        productivity: ev.productivity_rating,
+        teamwork: ev.teamwork_rating,
+        communication: ev.communication_rating,
+        initiative: ev.initiative_rating
       }
     };
   });
@@ -75,15 +75,17 @@ export function PerformanceEvaluation() {
     
     const newEval = {
       employee_id: form.employeeId,
+      employee_name: emp.name,
+      department: emp.department,
       period: form.period,
       evaluator: user.name,
       date: new Date().toISOString().split('T')[0],
       comments: form.comments,
-      attendance: form.criteria.attendance,
-      productivity: form.criteria.productivity,
-      teamwork: form.criteria.teamwork,
-      communication: form.criteria.communication,
-      initiative: form.criteria.initiative,
+      attendance_rating: form.criteria.attendance,
+      productivity_rating: form.criteria.productivity,
+      teamwork_rating: form.criteria.teamwork,
+      communication_rating: form.criteria.communication,
+      initiative_rating: form.criteria.initiative,
       overall_rating: overallRating(form.criteria)
     };
 

@@ -30,7 +30,16 @@ export function MyPerformance() {
       if (empRes.data) {
         const evalRes = await supabase.from('performance_evaluations').select('*').eq('employee_id', empRes.data.id).order('date', { ascending: false });
         if (evalRes.data) {
-          setEvaluations(evalRes.data);
+          // Map DB column names (attendance_rating) to local keys (attendance)
+          const mapped = evalRes.data.map(ev => ({
+            ...ev,
+            attendance: ev.attendance_rating,
+            productivity: ev.productivity_rating,
+            teamwork: ev.teamwork_rating,
+            communication: ev.communication_rating,
+            initiative: ev.initiative_rating,
+          }));
+          setEvaluations(mapped);
         }
       }
       setLoading(false);

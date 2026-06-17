@@ -44,7 +44,7 @@ export function EmployeeDashboard({ onNavigate }: Props) {
           .select('*')
           .eq('employee_id', empRes.data.id)
           .eq('date', today)
-          .single();
+          .maybeSingle();
         
         if (myAtt) {
           setTodayRecord(myAtt);
@@ -58,14 +58,14 @@ export function EmployeeDashboard({ onNavigate }: Props) {
           .eq('employee_id', empRes.data.id)
           .order('id', { ascending: false })
           .limit(1)
-          .single();
+          .maybeSingle();
         
         if (myPay) setLatestPayslip(myPay);
 
         const { data: myBal } = await supabase.from('leave_balances')
           .select('*')
           .eq('employee_id', empRes.data.id)
-          .single();
+          .maybeSingle();
         
         if (myBal) setBalance(myBal);
       }
@@ -101,9 +101,12 @@ export function EmployeeDashboard({ onNavigate }: Props) {
     
     setTimedOut(true);
 
-    await supabase.from('attendance_records')
+    const { data } = await supabase.from('attendance_records')
       .update({ time_out: timeStr })
-      .eq('id', todayRecord.id);
+      .eq('id', todayRecord.id)
+      .select().single();
+
+    if (data) setTodayRecord(data);
   }
 
   const greetingHour = new Date().getHours();
@@ -158,7 +161,7 @@ export function EmployeeDashboard({ onNavigate }: Props) {
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Time Out</span>
-              <span className="font-medium text-foreground">{timedOut ? todayRecord?.time_out || '17:00' : '—'}</span>
+              <span className="font-medium text-foreground">{timedOut && todayRecord?.time_out ? todayRecord.time_out : '—'}</span>
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Status</span>
@@ -257,7 +260,7 @@ export function EmployeeDashboard({ onNavigate }: Props) {
             <div className="flex items-center gap-3 px-6 py-3 rounded-xl bg-gray-50 border border-gray-200">
               <CheckCircle2 size={18} className="text-gray-500" />
               <div>
-                <div className="text-sm font-semibold text-gray-700">Timed Out at {todayRecord?.time_out || '17:00'}</div>
+                <div className="text-sm font-semibold text-gray-700">Timed Out at {todayRecord?.time_out}</div>
                 <div className="text-xs text-gray-500">Shift complete</div>
               </div>
             </div>

@@ -298,15 +298,6 @@ export function Layout({ user, currentPage, onNavigate, onLogout, onSimulateExpi
                       <Lock size={15} className="text-muted-foreground flex-shrink-0" />
                       Change Password
                     </button>
-                    {onSimulateExpiry && (
-                      <button
-                        onClick={() => { setProfileMenuOpen(false); onSimulateExpiry(); }}
-                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-amber-600 hover:bg-amber-50 transition-colors text-left"
-                      >
-                        <Clock size={15} className="flex-shrink-0" />
-                        Simulate Session Expiry
-                      </button>
-                    )}
                   </div>
 
                   <div className="border-t border-border py-1">

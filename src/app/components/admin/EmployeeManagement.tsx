@@ -37,7 +37,15 @@ export function EmployeeManagement({ onNavigate, profileEmployee }: Props) {
   async function fetchEmployees() {
     setLoading(true);
     const { data } = await supabase.from('employees').select('*');
-    if (data) setEmployees(data as any);
+    if (data) {
+      const mapped = data.map(d => ({
+        ...d,
+        joinDate: d.join_date,
+        birthDate: d.birth_date,
+        emergencyContact: d.emergency_contact
+      }));
+      setEmployees(mapped as any);
+    }
     setLoading(false);
   }
 
@@ -79,6 +87,21 @@ export function EmployeeManagement({ onNavigate, profileEmployee }: Props) {
     
     const initials = form.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
     const payload = {
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      department: form.department,
+      position: form.position,
+      gender: form.gender,
+      salary: Number(form.salary),
+      address: form.address,
+      birth_date: form.birthDate,
+      join_date: form.joinDate,
+      emergency_contact: form.emergencyContact,
+      initials
+    };
+    
+    const localPayload = {
       ...form,
       salary: Number(form.salary),
       initials
@@ -86,12 +109,16 @@ export function EmployeeManagement({ onNavigate, profileEmployee }: Props) {
 
     if (editEmployee) {
       await supabase.from('employees').update(payload).eq('id', editEmployee.id);
-      setEmployees(prev => prev.map(e => e.id === editEmployee.id ? { ...e, ...payload } : e));
+      setEmployees(prev => prev.map(e => e.id === editEmployee.id ? { ...e, ...localPayload } : e));
     } else {
-      const newId = `EMP${String(employees.length + 1).padStart(3, '0')}`;
+      const maxIdNum = employees.reduce((max, emp) => {
+        const num = parseInt(emp.id.replace('EMP', ''), 10);
+        return isNaN(num) ? max : Math.max(max, num);
+      }, 0);
+      const newId = `EMP${String(maxIdNum + 1).padStart(3, '0')}`;
       const newEmp = { id: newId, status: 'Active', ...payload };
       await supabase.from('employees').insert(newEmp);
-      setEmployees(prev => [...prev, newEmp]);
+      setEmployees(prev => [...prev, { id: newId, status: 'Active', ...localPayload }]);
     }
     setShowModal(false);
   }

@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Send, Save, Eye, X, ChevronRight, Check, Clock, AlertCircle } from 'lucide-react';
-import { manpowerRequests as initialRequests, type ManpowerRequest, type EmploymentType, type UrgencyLevel } from '../../data/recruitmentData';
+import { type ManpowerRequest, type EmploymentType, type UrgencyLevel } from '../../data/recruitmentData';
 import { StatusBadge } from '../StatusBadge';
+import { useEffect } from 'react';
+import { supabase } from '../../../lib/supabaseClient';
 
 const urgencyColor: Record<UrgencyLevel, string> = {
   Low: 'bg-gray-100 text-gray-600',
@@ -26,33 +28,55 @@ const EMPTY_FORM = {
 };
 
 export function ManpowerRequestPage() {
-  const [requests, setRequests] = useState(
-    initialRequests.filter(r => r.requestingManager === 'Maria Santos')
-  );
+  const [requests, setRequests] = useState<ManpowerRequest[]>([]);
+  useEffect(() => {
+    supabase.from('manpower_requests').select('*').eq('requestingmanager', 'Maria Santos').then(({ data }) => {
+      if (data) {
+        const mapped = data.map((r: any) => ({
+          id: r.id, department: r.department, requestingManager: r.requestingmanager,
+          positionTitle: r.positiontitle, headcount: r.headcount, dateRequested: r.daterequested,
+          status: r.status, employmentType: r.employmenttype, jobDescription: r.jobdescription,
+          qualifications: r.qualifications, urgency: r.urgency, justification: r.justification,
+          preferredStartDate: r.preferredstartdate,
+        }));
+        setRequests(mapped as ManpowerRequest[]);
+      }
+    });
+  }, []);
   const [form, setForm] = useState(EMPTY_FORM);
   const [submitted, setSubmitted] = useState(false);
   const [savedDraft, setSavedDraft] = useState(false);
   const [viewRequest, setViewRequest] = useState<ManpowerRequest | null>(null);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.positionTitle) return;
-    const newReq: ManpowerRequest = {
-      id: `MR-${String(requests.length + 10).padStart(3, '0')}`,
+    // Map camelCase to DB lowercase
+    const newReq = {
       department: 'Engineering',
-      requestingManager: 'Maria Santos',
-      positionTitle: form.positionTitle,
+      requestingmanager: 'Maria Santos',
+      positiontitle: form.positionTitle,
       headcount: Number(form.headcount),
-      dateRequested: '2026-06-16',
+      daterequested: new Date().toISOString().split('T')[0],
       status: 'Pending',
-      employmentType: form.employmentType,
-      jobDescription: form.jobDescription,
+      employmenttype: form.employmentType,
+      jobdescription: form.jobDescription,
       qualifications: form.qualifications,
       urgency: form.urgency,
       justification: form.justification,
-      preferredStartDate: form.preferredStartDate,
+      preferredstartdate: form.preferredStartDate,
     };
-    setRequests(prev => [newReq, ...prev]);
+    const { data } = await supabase.from('manpower_requests').insert(newReq).select().single();
+    if (data) {
+      const mapped: ManpowerRequest = {
+        id: data.id, department: data.department, requestingManager: data.requestingmanager,
+        positionTitle: data.positiontitle, headcount: data.headcount, dateRequested: data.daterequested,
+        status: data.status, employmentType: data.employmenttype, jobDescription: data.jobdescription,
+        qualifications: data.qualifications, urgency: data.urgency, justification: data.justification,
+        preferredStartDate: data.preferredstartdate,
+      };
+      setRequests(prev => [mapped, ...prev]);
+    }
     setForm(EMPTY_FORM);
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 4000);

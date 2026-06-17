@@ -29,7 +29,7 @@ const defaultPageForRole: Record<AppRole, Page> = {
 };
 
 export default function App() {
-  const { user, loading, sessionExpired, logout, simulateExpiry } = useAuth();
+  const { user, loading, sessionExpired, lastEmail, logout, simulateExpiry } = useAuth();
   const [currentPage, setCurrentPage] = useState<Page>('admin-dashboard');
   const [profileEmployee, setProfileEmployee] = useState<Employee | null>(null);
   const [showJobBoard, setShowJobBoard] = useState(false);
@@ -72,6 +72,7 @@ export default function App() {
         <LoginScreen
           onLogin={handleLogin}
           initialView={sessionExpired ? 'session-expired' : 'login'}
+          sessionEmail={lastEmail ?? undefined}
         />
         <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
           <button
@@ -90,8 +91,8 @@ export default function App() {
 
     // Announcements — accessible from all roles
     if (currentPage === 'announcements') return <AnnouncementsHub />;
-    if (currentPage === 'emp-announcements') return <AnnouncementsFeed role="employee" />;
-    if (currentPage === 'manager-announcements') return <AnnouncementsFeed role="manager" />;
+    if (currentPage === 'emp-announcements') return <AnnouncementsFeed role="employee" userId={user.id} />;
+    if (currentPage === 'manager-announcements') return <AnnouncementsFeed role="manager" userId={user.id} />;
 
     if (user.role === 'manager') {
       switch (currentPage) {

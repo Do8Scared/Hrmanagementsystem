@@ -17,6 +17,7 @@ interface AuthContextType {
   user: AuthUser | null;
   loading: boolean;
   sessionExpired: boolean;
+  lastEmail: string | null;
   login: (email: string) => Promise<void>;
   logout: () => void;
   simulateExpiry: () => void;
@@ -28,6 +29,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [sessionExpired, setSessionExpired] = useState(false);
+  const [lastEmail, setLastEmail] = useState<string | null>(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('hrms_user');
@@ -77,13 +79,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const simulateExpiry = () => {
+    setLastEmail(user?.email ?? null);
     setUser(null);
     setSessionExpired(true);
     localStorage.removeItem('hrms_user');
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, sessionExpired, login, logout, simulateExpiry }}>
+    <AuthContext.Provider value={{ user, loading, sessionExpired, lastEmail, login, logout, simulateExpiry }}>
       {children}
     </AuthContext.Provider>
   );

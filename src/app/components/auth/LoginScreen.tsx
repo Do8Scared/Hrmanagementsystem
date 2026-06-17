@@ -13,7 +13,7 @@ interface LoginScreenProps {
 export function LoginScreen({ onLogin, initialView = 'login', sessionEmail }: LoginScreenProps) {
   const { login } = useAuth();
   const [view, setView] = useState<AuthView>(initialView);
-  const [email, setEmail] = useState(initialView === 'session-expired' ? (sessionEmail ?? 'juan.delacruz@hrms.ph') : '');
+  const [email, setEmail] = useState(sessionEmail ?? '');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
@@ -126,8 +126,7 @@ export function LoginScreen({ onLogin, initialView = 'login', sessionEmail }: Lo
                       value={email}
                       onChange={e => setEmail(e.target.value)}
                       placeholder="Enter your email"
-                      className={inputCls + (view === 'session-expired' ? ' text-[#9CA3AF] bg-[#F0F0F0]' : '')}
-                      readOnly={view === 'session-expired'}
+                      className={inputCls}
                       autoComplete="email"
                     />
                   </div>

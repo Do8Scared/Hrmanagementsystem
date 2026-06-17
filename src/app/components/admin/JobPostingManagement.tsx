@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Plus, Eye, Check, X, FileText, ChevronRight, ChevronLeft, Star, Paperclip, ArrowRight, Calendar, Video, MapPin, Send, Briefcase } from 'lucide-react';
 import {
-  manpowerRequests as initialMR, jobPostings as initialJP, applicants as initialApplicants,
-  interviews as initialInterviews, interviewFeedbacks as initialFeedbacks,
   APPLICANT_STAGES,
   type ManpowerRequest, type JobPosting, type Applicant, type Interview, type InterviewFeedback,
   type ApplicantStage, type EmploymentType, type ManpowerRequestStatus,
 } from '../../data/recruitmentData';
+import { useEffect } from 'react';
+import { supabase } from '../../../lib/supabaseClient';
 import { StatusBadge } from '../StatusBadge';
 
 type Tab = 'inbox' | 'postings' | 'tracker' | 'scheduling' | 'feedback';
@@ -44,11 +44,58 @@ const interviewStatusColor: Record<string, string> = {
 
 export function JobPostingManagement() {
   const [tab, setTab] = useState<Tab>('inbox');
-  const [mrList, setMrList] = useState(initialMR);
-  const [jpList, setJpList] = useState(initialJP);
-  const [appList, setAppList] = useState(initialApplicants);
-  const [intList, setIntList] = useState(initialInterviews);
-  const [fbList, setFbList] = useState(initialFeedbacks);
+  const [mrList, setMrList] = useState<ManpowerRequest[]>([]);
+  const [jpList, setJpList] = useState<JobPosting[]>([]);
+  const [appList, setAppList] = useState<Applicant[]>([]);
+  const [intList, setIntList] = useState<Interview[]>([]);
+  const [fbList, setFbList] = useState<InterviewFeedback[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const [mrRes, jpRes, appRes, intRes, fbRes] = await Promise.all([
+        supabase.from('manpower_requests').select('*'),
+        supabase.from('job_postings').select('*'),
+        supabase.from('applicants').select('*'),
+        supabase.from('interviews').select('*'),
+        supabase.from('interview_feedbacks').select('*')
+      ]);
+      // Map DB (all lowercase) to TypeScript interface (camelCase)
+      if (mrRes.data) setMrList(mrRes.data.map((r: any) => ({
+        id: r.id, department: r.department, requestingManager: r.requestingmanager,
+        positionTitle: r.positiontitle, headcount: r.headcount, dateRequested: r.daterequested,
+        status: r.status, employmentType: r.employmenttype, jobDescription: r.jobdescription,
+        qualifications: r.qualifications, urgency: r.urgency, justification: r.justification,
+        preferredStartDate: r.preferredstartdate,
+      })));
+      if (jpRes.data) setJpList(jpRes.data.map((r: any) => ({
+        id: r.id, title: r.title, department: r.department, datePosted: r.dateposted,
+        deadline: r.deadline, applicantCount: r.applicantcount, status: r.status,
+        description: r.description, qualifications: r.qualifications, slots: r.slots,
+        employmentType: r.employmenttype, publishToBoard: r.publishtoboard,
+        manpowerRequestId: r.manpowerrequestid,
+      })));
+      if (appRes.data) setAppList(appRes.data.map((r: any) => ({
+        id: r.id, name: r.name, email: r.email, phone: r.phone,
+        jobPostingId: r.jobpostingid, jobTitle: r.jobtitle,
+        applicationDate: r.applicationdate, stage: r.stage, resumeFile: r.resumefile,
+      })));
+      if (intRes.data) setIntList(intRes.data.map((r: any) => ({
+        id: r.id, applicantId: r.applicantid, applicantName: r.applicantname,
+        jobTitle: r.jobtitle, date: r.date, time: r.time, format: r.format,
+        interviewer: r.interviewer, notes: r.notes, status: r.status,
+      })));
+      if (fbRes.data) setFbList(fbRes.data.map((r: any) => ({
+        id: r.id, applicantId: r.applicantid, applicantName: r.applicantname,
+        position: r.position, interviewerId: r.interviewerid,
+        evaluatorName: r.evaluatorname, overallImpression: r.overallimpression,
+        communicationSkills: r.communicationskills, technicalKnowledge: r.technicalknowledge,
+        cultureFit: r.culturefit, problemSolving: r.problemsolving,
+        strengths: r.strengths, areasOfConcern: r.areasofconcern,
+        recommendation: r.recommendation, submittedDate: r.submitteddate,
+      })));
+    }
+    fetchData();
+  }, []);
 
   return (
     <div className="space-y-5">
@@ -87,29 +134,42 @@ function ManpowerRequestInbox({ mrList, setMrList, jpList, setJpList }: {
   const [rejectReason, setRejectReason] = useState('');
   const [showRejectInput, setShowRejectInput] = useState(false);
 
-  function handleApprove(mr: ManpowerRequest) {
+  async function handleApprove(mr: ManpowerRequest) {
+    await supabase.from('manpower_requests').update({ status: 'Approved' }).eq('id', mr.id);
     setMrList(prev => prev.map(r => r.id === mr.id ? { ...r, status: 'Approved' } : r));
-    const newPosting: JobPosting = {
-      id: `JP-${String(jpList.length + 1).padStart(3, '0')}`,
+    // Map camelCase to DB lowercase
+    const newPosting = {
       title: mr.positionTitle,
       department: mr.department,
-      datePosted: '2026-06-16',
+      dateposted: '2026-06-16',
       deadline: mr.preferredStartDate,
-      applicantCount: 0,
+      applicantcount: 0,
       status: 'Open',
       description: mr.jobDescription,
       qualifications: mr.qualifications,
       slots: mr.headcount,
-      employmentType: mr.employmentType,
-      publishToBoard: true,
-      manpowerRequestId: mr.id,
+      employmenttype: mr.employmentType,
+      publishtoboard: true,
+      manpowerrequestid: mr.id,
     };
-    setJpList(prev => [newPosting, ...prev]);
+    const { data } = await supabase.from('job_postings').insert(newPosting).select().single();
+    if (data) {
+      const mapped: JobPosting = {
+        id: data.id, title: data.title, department: data.department,
+        datePosted: data.dateposted, deadline: data.deadline,
+        applicantCount: data.applicantcount, status: data.status,
+        description: data.description, qualifications: data.qualifications,
+        slots: data.slots, employmentType: data.employmenttype,
+        publishToBoard: data.publishtoboard, manpowerRequestId: data.manpowerrequestid,
+      };
+      setJpList(prev => [mapped, ...prev]);
+    }
     setSelected(null);
   }
 
-  function handleReject(mr: ManpowerRequest) {
+  async function handleReject(mr: ManpowerRequest) {
     if (!rejectReason) return;
+    await supabase.from('manpower_requests').update({ status: 'Rejected' }).eq('id', mr.id);
     setMrList(prev => prev.map(r => r.id === mr.id ? { ...r, status: 'Rejected' } : r));
     setShowRejectInput(false);
     setRejectReason('');
@@ -235,17 +295,30 @@ function JobPostingsList({ jpList, setJpList }: { jpList: JobPosting[]; setJpLis
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({ title: '', department: '', employmentType: 'Full Time' as EmploymentType, description: '', qualifications: '', slots: '1', deadline: '', publishToBoard: true });
 
-  function handleAdd() {
+  async function handleAdd() {
     if (!form.title || !form.department) return;
-    const newJp: JobPosting = {
-      id: `JP-${String(jpList.length + 1).padStart(3, '0')}`,
-      title: form.title, department: form.department, datePosted: form.publishToBoard ? '2026-06-16' : '',
-      deadline: form.deadline, applicantCount: 0,
+    // Map camelCase to DB lowercase
+    const newJp = {
+      title: form.title, department: form.department,
+      dateposted: form.publishToBoard ? '2026-06-16' : null,
+      deadline: form.deadline, applicantcount: 0,
       status: form.publishToBoard ? 'Open' : 'Draft',
       description: form.description, qualifications: form.qualifications,
-      slots: Number(form.slots), employmentType: form.employmentType, publishToBoard: form.publishToBoard,
+      slots: Number(form.slots), employmenttype: form.employmentType,
+      publishtoboard: form.publishToBoard,
     };
-    setJpList(prev => [newJp, ...prev]);
+    const { data } = await supabase.from('job_postings').insert(newJp).select().single();
+    if (data) {
+      const mapped: JobPosting = {
+        id: data.id, title: data.title, department: data.department,
+        datePosted: data.dateposted, deadline: data.deadline,
+        applicantCount: data.applicantcount, status: data.status,
+        description: data.description, qualifications: data.qualifications,
+        slots: data.slots, employmentType: data.employmenttype,
+        publishToBoard: data.publishtoboard, manpowerRequestId: data.manpowerrequestid,
+      };
+      setJpList(prev => [mapped, ...prev]);
+    }
     setShowModal(false);
     setForm({ title: '', department: '', employmentType: 'Full Time', description: '', qualifications: '', slots: '1', deadline: '', publishToBoard: true });
   }
@@ -282,7 +355,7 @@ function JobPostingsList({ jpList, setJpList }: { jpList: JobPosting[]; setJpLis
                 <div className="flex gap-1">
                   <button className="px-2 py-1 rounded text-xs border border-border text-muted-foreground hover:bg-secondary">View</button>
                   <button className="px-2 py-1 rounded text-xs border border-border text-muted-foreground hover:bg-secondary">Edit</button>
-                  {jp.status === 'Open' && <button onClick={() => setJpList(p => p.map(j => j.id === jp.id ? { ...j, status: 'Closed' } : j))} className="px-2 py-1 rounded text-xs bg-red-50 text-red-600 border border-red-200 hover:bg-red-100">Close</button>}
+                  {jp.status === 'Open' && <button onClick={async () => { await supabase.from('job_postings').update({ status: 'Closed' }).eq('id', jp.id); setJpList(p => p.map(j => j.id === jp.id ? { ...j, status: 'Closed' } : j)); }} className="px-2 py-1 rounded text-xs bg-red-50 text-red-600 border border-red-200 hover:bg-red-100">Close</button>}
                 </div>
               </td>
             </tr>
@@ -347,13 +420,14 @@ function ApplicantTracker({ appList, setAppList, jpList, setTab }: {
   const jobApplicants = appList.filter(a => a.jobPostingId === selectedJob);
   const kanbanStages: ApplicantStage[] = ['Applied', 'Shortlisted', 'Interview Scheduled', 'Interviewed', 'Job Offer', 'Hired', 'Rejected'];
 
-  function moveStage(applicantId: string, direction: 1 | -1) {
-    setAppList(prev => prev.map(a => {
-      if (a.id !== applicantId) return a;
-      const idx = kanbanStages.indexOf(a.stage);
-      const newIdx = Math.max(0, Math.min(kanbanStages.length - 1, idx + direction));
-      return { ...a, stage: kanbanStages[newIdx] };
-    }));
+  async function moveStage(applicantId: string, direction: 1 | -1) {
+    const a = appList.find(app => app.id === applicantId);
+    if (!a) return;
+    const idx = kanbanStages.indexOf(a.stage);
+    const newIdx = Math.max(0, Math.min(kanbanStages.length - 1, idx + direction));
+    const newStage = kanbanStages[newIdx];
+    await supabase.from('applicants').update({ stage: newStage }).eq('id', applicantId);
+    setAppList(prev => prev.map(a => a.id === applicantId ? { ...a, stage: newStage } : a));
   }
 
   return (
@@ -423,17 +497,25 @@ function InterviewScheduling({ intList, setIntList, appList }: {
 
   const WEEKDAYS = ['Mon Jun 16', 'Tue Jun 17', 'Wed Jun 18', 'Thu Jun 19', 'Fri Jun 20'];
 
-  function handleSchedule() {
+  async function handleSchedule() {
     if (!form.applicantId || !form.date) return;
     const app = appList.find(a => a.id === form.applicantId);
     if (!app) return;
-    const newInt: Interview = {
-      id: `INT-${String(intList.length + 1).padStart(3, '0')}`,
-      applicantId: form.applicantId, applicantName: app.name, jobTitle: app.jobTitle,
+    // Map camelCase to DB lowercase
+    const newInt = {
+      applicantid: form.applicantId, applicantname: app.name, jobtitle: app.jobTitle,
       date: form.date, time: form.time, format: form.format, interviewer: form.interviewer,
       notes: form.notes, status: 'Upcoming',
     };
-    setIntList(prev => [newInt, ...prev]);
+    const { data } = await supabase.from('interviews').insert(newInt).select().single();
+    if (data) {
+      const mapped: Interview = {
+        id: data.id, applicantId: data.applicantid, applicantName: data.applicantname,
+        jobTitle: data.jobtitle, date: data.date, time: data.time, format: data.format,
+        interviewer: data.interviewer, notes: data.notes, status: data.status,
+      };
+      setIntList(prev => [mapped, ...prev]);
+    }
     setShowNotif(app.name);
     setShowForm(false);
     setForm({ applicantId: '', date: '', time: '10:00', format: 'Virtual', interviewer: '', notes: '' });
@@ -504,7 +586,7 @@ function InterviewScheduling({ intList, setIntList, appList }: {
               <td className="px-3 py-3"><span className={`px-2 py-0.5 rounded text-xs font-medium ${interviewStatusColor[iv.status]}`}>{iv.status}</span></td>
               <td className="px-3 py-3">
                 {iv.status === 'Upcoming' && (
-                  <button onClick={() => setIntList(p => p.map(x => x.id === iv.id ? { ...x, status: 'Cancelled' } : x))} className="px-2 py-1 rounded text-xs bg-red-50 text-red-600 border border-red-200 hover:bg-red-100">Cancel</button>
+                  <button onClick={async () => { await supabase.from('interviews').update({ status: 'Cancelled' }).eq('id', iv.id); setIntList(p => p.map(x => x.id === iv.id ? { ...x, status: 'Cancelled' } : x)); }} className="px-2 py-1 rounded text-xs bg-red-50 text-red-600 border border-red-200 hover:bg-red-100">Cancel</button>
                 )}
               </td>
             </tr>

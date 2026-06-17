@@ -5,11 +5,11 @@ import {
   Bold, Italic, List, Paperclip,
 } from 'lucide-react';
 import {
-  announcements as initialAnnouncements,
-  acknowledgements as initialAcks,
   type Announcement, type DocType, type DocStatus, type TargetAudience,
   type AcknowledgementRecord,
 } from '../../data/announcementsData';
+import { useEffect } from 'react';
+import { supabase } from '../../../lib/supabaseClient';
 
 const typeConfig: Record<DocType, { color: string; bg: string; border: string; icon: React.ElementType }> = {
   Advisory: { color: 'text-blue-700', bg: 'bg-blue-50', border: 'border-l-blue-500', icon: Megaphone },
@@ -48,8 +48,54 @@ type Tab = 'All' | DocType;
 type View = 'list' | 'tracker';
 
 export function AnnouncementsHub() {
-  const [docs, setDocs] = useState(initialAnnouncements);
-  const [acks, setAcks] = useState(initialAcks);
+  const [docs, setDocs] = useState<Announcement[]>([]);
+  const [acks, setAcks] = useState<Record<string, AcknowledgementRecord[]>>({});
+
+  useEffect(() => {
+    fetchDocs();
+  }, []);
+
+  async function fetchDocs() {
+    const { data: d } = await supabase.from('announcements').select('*').order('created_at', { ascending: false });
+    if (d) {
+      // Map DB columns (all lowercase) to TypeScript interface (camelCase)
+      const mapped = d.map((row: any) => ({
+        id: row.id,
+        type: row.type,
+        title: row.title,
+        refNumber: row.refnumber,
+        effectivityDate: row.effectivitydate,
+        publishedDate: row.publisheddate,
+        publishedBy: row.publishedby,
+        targetAudience: row.targetaudience,
+        targetDepartments: row.targetdepartments,
+        status: row.status,
+        content: row.content,
+        attachedFile: row.attachedfile,
+        requiresAcknowledgement: row.requiresacknowledgement,
+        totalRecipients: row.totalrecipients,
+        readCount: row.readcount,
+      }));
+      setDocs(mapped as Announcement[]);
+    }
+    const { data: a } = await supabase.from('acknowledgements').select('*');
+    if (a) {
+      const grouped: Record<string, AcknowledgementRecord[]> = {};
+      a.forEach((ack: any) => {
+        const annId = ack.announcementid;
+        if (!grouped[annId]) grouped[annId] = [];
+        grouped[annId].push({
+          employeeId: ack.employeeid,
+          employeeName: ack.employeename,
+          department: ack.department,
+          role: ack.role,
+          dateRead: ack.dateread,
+          status: ack.status,
+        });
+      });
+      setAcks(grouped);
+    }
+  }
   const [tab, setTab] = useState<Tab>('All');
   const [view, setView] = useState<View>('list');
   const [trackerDoc, setTrackerDoc] = useState<Announcement | null>(null);
@@ -84,31 +130,64 @@ export function AnnouncementsHub() {
     setShowCreate(true);
   }
 
-  function handleSave(publish: boolean) {
-    const now = '2026-06-16';
+  async function handleSave(publish: boolean) {
+    const now = new Date().toISOString().split('T')[0];
+    // Map camelCase form fields to DB column names (all lowercase)
+    const dbPayload: any = {
+      type: form.type,
+      title: form.title,
+      refnumber: form.refNumber,
+      effectivitydate: form.effectivityDate,
+      targetaudience: form.targetAudience,
+      targetdepartments: form.targetDepartments,
+      requiresacknowledgement: form.requiresAcknowledgement,
+      content: form.content,
+      attachedfile: form.attachedFile,
+      status: publish ? 'Published' : form.status,
+    };
+
     if (editDoc) {
-      setDocs(prev => prev.map(d => d.id === editDoc.id ? {
-        ...d, ...form,
-        status: publish ? 'Published' : form.status,
-        publishedDate: publish ? now : d.publishedDate,
-      } : d));
+      dbPayload.publisheddate = publish ? now : editDoc.publishedDate;
+      await supabase.from('announcements').update(dbPayload).eq('id', editDoc.id);
+      // Update local state with camelCase version
+      const localUpdate = { ...form, status: dbPayload.status as DocStatus, publishedDate: dbPayload.publisheddate };
+      setDocs(prev => prev.map(d => d.id === editDoc.id ? { ...d, ...localUpdate } : d));
     } else {
-      const newDoc: Announcement = {
-        id: `ANN-${String(docs.length + 1).padStart(3, '0')}`,
-        ...form,
-        status: publish ? 'Published' : 'Draft',
-        publishedDate: publish ? now : '',
-        publishedBy: 'Sofia Garcia',
-        totalRecipients: form.targetAudience === 'All Employees' ? 24 : form.targetAudience === 'Managers Only' ? 6 : 8,
-        readCount: 0,
-      };
-      setDocs(prev => [newDoc, ...prev]);
+      dbPayload.status = publish ? 'Published' : 'Draft';
+      dbPayload.publisheddate = publish ? now : null;
+      dbPayload.publishedby = 'Sofia Garcia';
+      dbPayload.totalrecipients = form.targetAudience === 'All Employees' ? 24 : form.targetAudience === 'Managers Only' ? 6 : 8;
+      dbPayload.readcount = 0;
+
+      const { data } = await supabase.from('announcements').insert(dbPayload).select().single();
+      if (data) {
+        // Map DB response back to camelCase
+        const mapped: Announcement = {
+          id: data.id,
+          type: data.type,
+          title: data.title,
+          refNumber: data.refnumber,
+          effectivityDate: data.effectivitydate,
+          publishedDate: data.publisheddate,
+          publishedBy: data.publishedby,
+          targetAudience: data.targetaudience,
+          targetDepartments: data.targetdepartments,
+          status: data.status,
+          content: data.content,
+          attachedFile: data.attachedfile,
+          requiresAcknowledgement: data.requiresacknowledgement,
+          totalRecipients: data.totalrecipients,
+          readCount: data.readcount,
+        };
+        setDocs(prev => [mapped, ...prev]);
+      }
     }
     setShowCreate(false);
   }
 
-  function handleArchive(id: string) {
-    setDocs(prev => prev.map(d => d.id === id ? { ...d, status: 'Archived' } : d));
+  async function handleArchive(id: string) {
+    await supabase.from('announcements').update({ status: 'Archived' }).eq('id', id);
+    setDocs(prev => prev.map(d => d.id === id ? { ...d, status: 'Archived' as DocStatus } : d));
   }
 
   function openTracker(doc: Announcement) {

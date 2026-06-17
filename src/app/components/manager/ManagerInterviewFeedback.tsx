@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Star, Check, X, Send } from 'lucide-react';
-import { interviews, interviewFeedbacks as initialFeedbacks, type InterviewFeedback, type FeedbackRecommendation } from '../../data/recruitmentData';
+import { type Interview, type InterviewFeedback, type FeedbackRecommendation } from '../../data/recruitmentData';
+import { useEffect } from 'react';
+import { supabase } from '../../../lib/supabaseClient';
 
 const CRITERIA = [
   { key: 'communicationSkills' as const, label: 'Communication Skills' },
@@ -21,8 +23,35 @@ const EMPTY_FORM = {
 };
 
 export function ManagerInterviewFeedback() {
-  const myInterviews = interviews.filter(i => i.interviewer === 'Maria Santos');
-  const [feedbacks, setFeedbacks] = useState(initialFeedbacks);
+  const [myInterviews, setMyInterviews] = useState<Interview[]>([]);
+  const [feedbacks, setFeedbacks] = useState<InterviewFeedback[]>([]);
+
+  useEffect(() => {
+    supabase.from('interviews').select('*').eq('interviewer', 'Maria Santos').then(({ data }) => {
+      if (data) {
+        const mapped = data.map((r: any) => ({
+          id: r.id, applicantId: r.applicantid, applicantName: r.applicantname,
+          jobTitle: r.jobtitle, date: r.date, time: r.time, format: r.format,
+          interviewer: r.interviewer, notes: r.notes, status: r.status,
+        }));
+        setMyInterviews(mapped as Interview[]);
+      }
+    });
+    supabase.from('interview_feedbacks').select('*').eq('evaluatorname', 'Maria Santos').then(({ data }) => {
+      if (data) {
+        const mapped = data.map((r: any) => ({
+          id: r.id, applicantId: r.applicantid, applicantName: r.applicantname,
+          position: r.position, interviewerId: r.interviewerid,
+          evaluatorName: r.evaluatorname, overallImpression: r.overallimpression,
+          communicationSkills: r.communicationskills, technicalKnowledge: r.technicalknowledge,
+          cultureFit: r.culturefit, problemSolving: r.problemsolving,
+          strengths: r.strengths, areasOfConcern: r.areasofconcern,
+          recommendation: r.recommendation, submittedDate: r.submitteddate,
+        }));
+        setFeedbacks(mapped as InterviewFeedback[]);
+      }
+    });
+  }, []);
   const [activeApplicant, setActiveApplicant] = useState<string | null>(null);
   const [form, setForm] = useState(EMPTY_FORM);
   const [submitted, setSubmitted] = useState<string[]>([]);
@@ -31,26 +60,38 @@ export function ManagerInterviewFeedback() {
     return !!feedbacks.find(f => f.applicantId === applicantId) || submitted.includes(applicantId);
   }
 
-  function handleSubmit(interview: typeof myInterviews[0]) {
+  async function handleSubmit(interview: Interview) {
     if (!form.recommendation || form.overallImpression === 0) return;
-    const newFb: InterviewFeedback = {
-      id: `FB-${String(feedbacks.length + 1).padStart(3, '0')}`,
-      applicantId: interview.applicantId,
-      applicantName: interview.applicantName,
+    // Map camelCase to DB lowercase
+    const newFb = {
+      applicantid: interview.applicantId,
+      applicantname: interview.applicantName,
       position: interview.jobTitle,
-      interviewerId: 'EMP001',
-      evaluatorName: 'Maria Santos',
-      overallImpression: form.overallImpression,
-      communicationSkills: form.communicationSkills,
-      technicalKnowledge: form.technicalKnowledge,
-      cultureFit: form.cultureFit,
-      problemSolving: form.problemSolving,
+      interviewerid: 'EMP001',
+      evaluatorname: 'Maria Santos',
+      overallimpression: form.overallImpression,
+      communicationskills: form.communicationSkills,
+      technicalknowledge: form.technicalKnowledge,
+      culturefit: form.cultureFit,
+      problemsolving: form.problemSolving,
       strengths: form.strengths,
-      areasOfConcern: form.areasOfConcern,
+      areasofconcern: form.areasOfConcern,
       recommendation: form.recommendation as FeedbackRecommendation,
-      submittedDate: '2026-06-16',
+      submitteddate: new Date().toISOString().split('T')[0],
     };
-    setFeedbacks(p => [...p, newFb]);
+    const { data } = await supabase.from('interview_feedbacks').insert(newFb).select().single();
+    if (data) {
+      const mapped: InterviewFeedback = {
+        id: data.id, applicantId: data.applicantid, applicantName: data.applicantname,
+        position: data.position, interviewerId: data.interviewerid,
+        evaluatorName: data.evaluatorname, overallImpression: data.overallimpression,
+        communicationSkills: data.communicationskills, technicalKnowledge: data.technicalknowledge,
+        cultureFit: data.culturefit, problemSolving: data.problemsolving,
+        strengths: data.strengths, areasOfConcern: data.areasofconcern,
+        recommendation: data.recommendation, submittedDate: data.submitteddate,
+      };
+      setFeedbacks(p => [...p, mapped]);
+    }
     setSubmitted(p => [...p, interview.applicantId]);
     setActiveApplicant(null);
     setForm(EMPTY_FORM);

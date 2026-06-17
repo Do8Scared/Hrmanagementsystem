@@ -2,7 +2,6 @@ import { Users, UserCheck, UserX, DollarSign, TrendingUp, Activity } from 'lucid
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
-import { employees, monthlyAttendanceData, recentActivities, attendanceRecords } from '../../data/mockData';
 import { type Page } from '../Layout';
 
 interface Props {
@@ -44,11 +43,46 @@ export function AdminDashboard({ onNavigate }: Props) {
     fetchData();
   }, []);
 
-  const today = '2026-06-16';
+  const today = new Date().toISOString().split('T')[0];
   const todayRecords = attendanceRecords.filter(r => r.date === today);
   const activeCount = employees.filter(e => e.status === 'Active').length;
   const onLeaveCount = employees.filter(e => e.status === 'On Leave').length;
   const presentToday = todayRecords.filter(r => r.status === 'Present' || r.status === 'Late').length;
+
+  const monthlyDataMap: Record<string, any> = {
+    'Jan': { month: 'Jan', present: 0, late: 0, absent: 0, undertime: 0 },
+    'Feb': { month: 'Feb', present: 0, late: 0, absent: 0, undertime: 0 },
+    'Mar': { month: 'Mar', present: 0, late: 0, absent: 0, undertime: 0 },
+    'Apr': { month: 'Apr', present: 0, late: 0, absent: 0, undertime: 0 },
+    'May': { month: 'May', present: 0, late: 0, absent: 0, undertime: 0 },
+    'Jun': { month: 'Jun', present: 0, late: 0, absent: 0, undertime: 0 },
+  };
+
+  attendanceRecords.forEach(r => {
+    const m = new Date(r.date).toLocaleString('default', { month: 'short' });
+    if (monthlyDataMap[m]) {
+      if (r.status === 'Present') monthlyDataMap[m].present += 1;
+      else if (r.status === 'Late') monthlyDataMap[m].late += 1;
+      else if (r.status === 'Absent') monthlyDataMap[m].absent += 1;
+      else if (r.status === 'Undertime') monthlyDataMap[m].undertime += 1;
+    }
+  });
+  const computedMonthlyData = Object.values(monthlyDataMap);
+
+  const computedActivities = [...attendanceRecords]
+    .filter(r => r.time_in)
+    .sort((a, b) => new Date(`${b.date}T${b.time_in}`).getTime() - new Date(`${a.date}T${a.time_in}`).getTime())
+    .slice(0, 5)
+    .map(r => {
+      const emp = employees.find(e => e.id === r.employee_id);
+      return {
+        id: r.id.toString(),
+        type: 'employee',
+        action: r.time_out ? 'Timed Out' : 'Timed In',
+        subject: emp ? emp.name : 'Employee',
+        time: `${r.date} ${r.time_out ? r.time_out : r.time_in}`
+      };
+    });
 
   const summaryCards = [
     {
@@ -129,7 +163,7 @@ export function AdminDashboard({ onNavigate }: Props) {
             </div>
           </div>
           <ResponsiveContainer width="100%" height={240}>
-            <BarChart data={monthlyAttendanceData} barSize={18} barGap={2} barCategoryGap="20%">
+            <BarChart data={computedMonthlyData} barSize={18} barGap={2} barCategoryGap="20%">
               <CartesianGrid strokeDasharray="3 3" stroke="#F0F0F0" vertical={false} />
               <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#9CA3AF' }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 12, fill: '#9CA3AF' }} axisLine={false} tickLine={false} />
@@ -165,7 +199,7 @@ export function AdminDashboard({ onNavigate }: Props) {
             <Activity size={16} className="text-muted-foreground" />
           </div>
           <div className="space-y-3">
-            {recentActivities.map(activity => (
+            {computedActivities.map(activity => (
               <div key={activity.id} className="flex items-start gap-3">
                 <div className={`w-8 h-8 rounded-lg ${activityColors[activity.type]} flex items-center justify-center flex-shrink-0 text-sm`}>
                   {activityIcons[activity.type]}
@@ -206,7 +240,7 @@ export function AdminDashboard({ onNavigate }: Props) {
             </thead>
             <tbody>
               {employees.filter(e => e.status !== 'Inactive').slice(0, 7).map((emp, i) => {
-                const record = attendanceRecords.find(r => r.employee_id === emp.id && r.date === today);
+                const record = attendanceRecords.find(r => r.employee_id === emp.id && r.date === new Date().toISOString().split('T')[0]);
                 const statusLabel = emp.status === 'On Leave' ? 'On Leave' : (record?.status ?? 'Absent');
                 const statusColor: Record<string, string> = {
                   Present: 'text-emerald-600 bg-emerald-50',

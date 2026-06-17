@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { FileText, Megaphone, BookOpen, Download, CheckCircle2, Clock, X, AlertTriangle, ArrowLeft, Paperclip } from 'lucide-react';
-import { announcements, type Announcement, type DocType } from '../../data/announcementsData';
+import { FileText, Megaphone, BookOpen, Download, CheckCircle2, Clock, X, AlertTriangle, ArrowLeft, Paperclip, Check } from 'lucide-react';
+import { type Announcement, type DocType } from '../../data/announcementsData';
+import { useEffect } from 'react';
+import { supabase } from '../../../lib/supabaseClient';
 
 const typeConfig: Record<DocType, { color: string; bg: string; borderColor: string; icon: React.ElementType; label: string }> = {
   Advisory: { color: 'text-blue-700', bg: 'bg-blue-50', borderColor: 'border-l-blue-500', icon: Megaphone, label: 'Advisory' },
@@ -20,6 +22,42 @@ export function AnnouncementsFeed({ role, userId = 'EMP002' }: Props) {
   const [selected, setSelected] = useState<Announcement | null>(null);
   const [acknowledged, setAcknowledged] = useState<Record<string, string>>({}); // id -> timestamp
   const [ackChecked, setAckChecked] = useState<Record<string, boolean>>({});
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const { data: d } = await supabase.from('announcements').select('*').order('created_at', { ascending: false });
+      if (d) {
+        // Map DB columns (all lowercase) to TypeScript interface (camelCase)
+        const mapped = d.map((row: any) => ({
+          id: row.id,
+          type: row.type,
+          title: row.title,
+          refNumber: row.refnumber,
+          effectivityDate: row.effectivitydate,
+          publishedDate: row.publisheddate,
+          publishedBy: row.publishedby,
+          targetAudience: row.targetaudience,
+          targetDepartments: row.targetdepartments,
+          status: row.status,
+          content: row.content,
+          attachedFile: row.attachedfile,
+          requiresAcknowledgement: row.requiresacknowledgement,
+          totalRecipients: row.totalrecipients,
+          readCount: row.readcount,
+        }));
+        setAnnouncements(mapped as Announcement[]);
+      }
+      // DB column is 'employeeid' (all lowercase)
+      const { data: a } = await supabase.from('acknowledgements').select('*').eq('employeeid', userId);
+      if (a) {
+        const ackMap: Record<string, string> = {};
+        a.forEach((ack: any) => ackMap[ack.announcementid] = ack.dateread);
+        setAcknowledged(ackMap);
+      }
+    }
+    fetchData();
+  }, [userId]);
 
   const published = announcements.filter(a => a.status === 'Published' && (
     a.targetAudience === 'All Employees' ||
@@ -35,10 +73,27 @@ export function AnnouncementsFeed({ role, userId = 'EMP002' }: Props) {
     return a.type === filter;
   });
 
-  function handleAcknowledge(id: string) {
+  async function handleAcknowledge(id: string) {
     const now = new Date().toLocaleString('en-PH', { dateStyle: 'medium', timeStyle: 'short' });
     setAcknowledged(prev => ({ ...prev, [id]: now }));
     setAckChecked(prev => ({ ...prev, [id]: true }));
+
+    const { data: user } = await supabase.from('employees').select('*').eq('id', userId).maybeSingle();
+    // Use DB column names (all lowercase)
+    await supabase.from('acknowledgements').insert({
+      announcementid: id,
+      employeeid: userId,
+      employeename: user?.name || 'Unknown',
+      department: user?.department || 'Unknown',
+      role: user?.position || 'Unknown',
+      status: 'Read',
+      dateread: now
+    });
+
+    const doc = announcements.find(a => a.id === id);
+    if (doc) {
+      await supabase.from('announcements').update({ readcount: doc.readCount + 1 }).eq('id', id);
+    }
   }
 
   if (selected) {
@@ -253,10 +308,4 @@ export function AnnouncementsFeed({ role, userId = 'EMP002' }: Props) {
   );
 }
 
-function Check({ size, className }: { size: number; className?: string }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" className={className}>
-      <polyline points="20 6 9 17 4 12" />
-    </svg>
-  );
-}
+
