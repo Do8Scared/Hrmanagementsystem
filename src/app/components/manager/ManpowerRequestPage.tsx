@@ -64,7 +64,7 @@ export function ManpowerRequestPage() {
       qualifications: form.qualifications,
       urgency: form.urgency,
       justification: form.justification,
-      preferredstartdate: form.preferredStartDate,
+      preferredstartdate: form.preferredStartDate || null,
     };
     const { data } = await supabase.from('manpower_requests').insert(newReq).select().single();
     if (data) {

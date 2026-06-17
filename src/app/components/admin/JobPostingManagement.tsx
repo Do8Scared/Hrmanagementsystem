@@ -142,7 +142,7 @@ function ManpowerRequestInbox({ mrList, setMrList, jpList, setJpList }: {
       title: mr.positionTitle,
       department: mr.department,
       dateposted: '2026-06-16',
-      deadline: mr.preferredStartDate,
+      deadline: mr.preferredStartDate || null,
       applicantcount: 0,
       status: 'Open',
       description: mr.jobDescription,
@@ -301,7 +301,7 @@ function JobPostingsList({ jpList, setJpList }: { jpList: JobPosting[]; setJpLis
     const newJp = {
       title: form.title, department: form.department,
       dateposted: form.publishToBoard ? '2026-06-16' : null,
-      deadline: form.deadline, applicantcount: 0,
+      deadline: form.deadline || null, applicantcount: 0,
       status: form.publishToBoard ? 'Open' : 'Draft',
       description: form.description, qualifications: form.qualifications,
       slots: Number(form.slots), employmenttype: form.employmentType,

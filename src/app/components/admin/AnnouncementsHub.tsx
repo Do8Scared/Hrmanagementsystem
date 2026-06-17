@@ -137,18 +137,19 @@ export function AnnouncementsHub() {
       type: form.type,
       title: form.title,
       refnumber: form.refNumber,
-      effectivitydate: form.effectivityDate,
+      effectivitydate: form.effectivityDate || null,
       targetaudience: form.targetAudience,
-      targetdepartments: form.targetDepartments,
+      targetdepartments: form.targetDepartments.length > 0 ? form.targetDepartments : null,
       requiresacknowledgement: form.requiresAcknowledgement,
       content: form.content,
-      attachedfile: form.attachedFile,
+      attachedfile: form.attachedFile || null,
       status: publish ? 'Published' : form.status,
     };
 
     if (editDoc) {
       dbPayload.publisheddate = publish ? now : editDoc.publishedDate;
-      await supabase.from('announcements').update(dbPayload).eq('id', editDoc.id);
+      const { error } = await supabase.from('announcements').update(dbPayload).eq('id', editDoc.id);
+      if (error) { console.error('Update error:', error); return; }
       // Update local state with camelCase version
       const localUpdate = { ...form, status: dbPayload.status as DocStatus, publishedDate: dbPayload.publisheddate };
       setDocs(prev => prev.map(d => d.id === editDoc.id ? { ...d, ...localUpdate } : d));
@@ -159,7 +160,8 @@ export function AnnouncementsHub() {
       dbPayload.totalrecipients = form.targetAudience === 'All Employees' ? 24 : form.targetAudience === 'Managers Only' ? 6 : 8;
       dbPayload.readcount = 0;
 
-      const { data } = await supabase.from('announcements').insert(dbPayload).select().single();
+      const { data, error } = await supabase.from('announcements').insert(dbPayload).select().single();
+      if (error) { console.error('Insert error:', error); return; }
       if (data) {
         // Map DB response back to camelCase
         const mapped: Announcement = {
