@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Download, ChevronLeft, ChevronRight, Search } from 'lucide-react';
-import { employees, attendanceRecords, type AttendanceStatus } from '../../data/mockData';
 import { StatusBadge } from '../StatusBadge';
+import { supabase } from '../../../lib/supabaseClient';
+
+type AttendanceStatus = 'Present' | 'Late' | 'Absent' | 'Undertime';
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'];
@@ -13,38 +15,74 @@ const statusColor: Record<AttendanceStatus, string> = {
   Undertime: 'bg-orange-400',
 };
 
-const mockFullAttendance = (empId: string, year: number, month: number): Array<{
-  date: string; timeIn: string | null; timeOut: string | null; totalHours: number | null; status: AttendanceStatus;
-}> => {
-  const days = new Date(year, month, 0).getDate();
-  const result = [];
-  for (let d = 1; d <= days; d++) {
-    const dow = new Date(year, month - 1, d).getDay();
-    if (dow === 0 || dow === 6) continue;
-    const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-    const existing = attendanceRecords.find(r => r.employeeId === empId && r.date === dateStr);
-    if (existing) {
-      result.push({ date: dateStr, timeIn: existing.timeIn, timeOut: existing.timeOut, totalHours: existing.totalHours, status: existing.status });
-    } else if (d <= 16) {
-      const rand = Math.random();
-      const status: AttendanceStatus = rand < 0.75 ? 'Present' : rand < 0.85 ? 'Late' : rand < 0.92 ? 'Absent' : 'Undertime';
-      const tIn = status === 'Absent' ? null : status === 'Late' ? '09:' + String(Math.floor(Math.random() * 30 + 10)).padStart(2, '0') : '08:0' + Math.floor(Math.random() * 9);
-      const tOut = status === 'Absent' ? null : status === 'Undertime' ? '15:' + String(Math.floor(Math.random() * 59)).padStart(2, '0') : '17:0' + Math.floor(Math.random() * 5);
-      result.push({ date: dateStr, timeIn: tIn, timeOut: tOut, totalHours: tIn && tOut ? 8 + Math.random() : null, status });
-    }
-  }
-  return result;
-};
+// Fill missing days with Absent or random data if required? No, let's just use the actual database records.
+// If there are missing days, they will just show Absent or not have records.
+// The original mock generated random records for days 1 to 16. The seeded db has the exact mock data.
+// We will generate the calendar days and lookup the record.
 
 export function AttendanceManagement() {
-  const [selectedEmp, setSelectedEmp] = useState(employees[0].id);
+  const [employees, setEmployees] = useState<any[]>([]);
+  const [attendanceRecords, setAttendanceRecords] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedEmp, setSelectedEmp] = useState<string>('');
   const [year, setYear] = useState(2026);
   const [month, setMonth] = useState(6);
   const [search, setSearch] = useState('');
   const [view, setView] = useState<'table' | 'calendar'>('table');
 
-  const emp = employees.find(e => e.id === selectedEmp)!;
-  const records = mockFullAttendance(selectedEmp, year, month);
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      const [empRes, attRes] = await Promise.all([
+        supabase.from('employees').select('*'),
+        supabase.from('attendance_records').select('*')
+      ]);
+      if (empRes.data) {
+        setEmployees(empRes.data);
+        if (empRes.data.length > 0) setSelectedEmp(empRes.data[0].id);
+      }
+      if (attRes.data) setAttendanceRecords(attRes.data);
+      setLoading(false);
+    }
+    fetchData();
+  }, []);
+
+  const emp = employees.find(e => e.id === selectedEmp);
+  
+  // Get records for selected employee and month
+  const records = useMemo(() => {
+    if (!emp) return [];
+    
+    // We can simulate the missing days as absent for the days up to today if we want,
+    // but better to just use what's in the DB.
+    const result = [];
+    const days = new Date(year, month, 0).getDate();
+    for (let d = 1; d <= days; d++) {
+      const dow = new Date(year, month - 1, d).getDay();
+      if (dow === 0 || dow === 6) continue; // Skip weekends
+      const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      
+      const record = attendanceRecords.find(r => r.employee_id === selectedEmp && r.date === dateStr);
+      if (record) {
+        result.push({
+          date: record.date,
+          timeIn: record.time_in,
+          timeOut: record.time_out,
+          totalHours: record.total_hours,
+          status: record.status as AttendanceStatus
+        });
+      } else if (new Date(dateStr) < new Date('2026-06-17')) { // Past days without record are Absent
+        result.push({
+          date: dateStr,
+          timeIn: null,
+          timeOut: null,
+          totalHours: null,
+          status: 'Absent' as AttendanceStatus
+        });
+      }
+    }
+    return result;
+  }, [selectedEmp, year, month, attendanceRecords, emp]);
 
   const summary = {
     present: records.filter(r => r.status === 'Present').length,
@@ -67,7 +105,7 @@ export function AttendanceManagement() {
     else setMonth(m => m + 1);
   };
 
-  const calendarDays = (() => {
+  const calendarDays = useMemo(() => {
     const days = new Date(year, month, 0).getDate();
     const firstDow = new Date(year, month - 1, 1).getDay();
     const result: Array<{ day: number | null; record?: typeof records[0] }> = [];
@@ -77,7 +115,13 @@ export function AttendanceManagement() {
       result.push({ day: d, record: records.find(r => r.date === dateStr) });
     }
     return result;
-  })();
+  }, [year, month, records]);
+
+  if (loading) {
+    return <div className="p-8 text-center text-muted-foreground">Loading attendance data...</div>;
+  }
+
+  if (!emp) return null;
 
   return (
     <div className="space-y-5">
@@ -191,6 +235,11 @@ export function AttendanceManagement() {
                       </tr>
                     );
                   })}
+                  {records.length === 0 && (
+                    <tr>
+                      <td colSpan={6} className="px-5 py-8 text-center text-muted-foreground text-sm">No records found for this month.</td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>

@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Clock, CalendarDays, DollarSign, LogIn, LogOut, CheckCircle2 } from 'lucide-react';
-import { employees, attendanceRecords, employeePayslips, leaveBalances } from '../../data/mockData';
 import { type Page } from '../Layout';
+import { useAuth } from '../../../lib/useAuth';
+import { supabase } from '../../../lib/supabaseClient';
 
 interface Props {
   onNavigate: (page: Page) => void;
@@ -10,16 +11,106 @@ interface Props {
 const fmt = (n: number) => `₱${n.toLocaleString('en-PH', { minimumFractionDigits: 2 })}`;
 
 export function EmployeeDashboard({ onNavigate }: Props) {
-  const emp = employees.find(e => e.id === 'EMP002')!;
-  const todayRecord = attendanceRecords.find(r => r.employeeId === 'EMP002' && r.date === '2026-06-16');
-  const latestPayslip = employeePayslips[0];
-  const balance = leaveBalances.find(b => b.employeeId === 'EMP002')!;
-  const [timedIn, setTimedIn] = useState(!!todayRecord?.timeIn);
-  const [timedOut, setTimedOut] = useState(!!todayRecord?.timeOut);
-  const [currentTime] = useState('08:07');
+  const { user } = useAuth();
+  const [emp, setEmp] = useState<any>(null);
+  const [todayRecord, setTodayRecord] = useState<any>(null);
+  const [latestPayslip, setLatestPayslip] = useState<any>(null);
+  const [balance, setBalance] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  const greetingHour = 8;
+  const [timedIn, setTimedIn] = useState(false);
+  const [timedOut, setTimedOut] = useState(false);
+  const [currentTime, setCurrentTime] = useState('');
+
+  useEffect(() => {
+    async function fetchData() {
+      if (!user) return;
+      setLoading(true);
+
+      const today = new Date().toISOString().split('T')[0];
+
+      const [empRes, attRes, payRes, balRes] = await Promise.all([
+        supabase.from('employees').select('*').eq('email', user.email).single(),
+        supabase.from('attendance_records').select('*').eq('date', today), // we will filter by employee_id after if needed, or query specifically
+        supabase.from('payroll_records').select('*').order('period', { ascending: false }).limit(1),
+        supabase.from('leave_balances').select('*')
+      ]);
+
+      if (empRes.data) {
+        setEmp(empRes.data);
+        
+        // Refetch attendance with employee id to be safe
+        const { data: myAtt } = await supabase.from('attendance_records')
+          .select('*')
+          .eq('employee_id', empRes.data.id)
+          .eq('date', today)
+          .single();
+        
+        if (myAtt) {
+          setTodayRecord(myAtt);
+          setTimedIn(!!myAtt.time_in);
+          setTimedOut(!!myAtt.time_out);
+          if (myAtt.time_in) setCurrentTime(myAtt.time_in);
+        }
+
+        const { data: myPay } = await supabase.from('payroll_records')
+          .select('*')
+          .eq('employee_id', empRes.data.id)
+          .order('id', { ascending: false })
+          .limit(1)
+          .single();
+        
+        if (myPay) setLatestPayslip(myPay);
+
+        const { data: myBal } = await supabase.from('leave_balances')
+          .select('*')
+          .eq('employee_id', empRes.data.id)
+          .single();
+        
+        if (myBal) setBalance(myBal);
+      }
+      setLoading(false);
+    }
+    fetchData();
+  }, [user]);
+
+  async function handleTimeIn() {
+    if (!emp) return;
+    const now = new Date();
+    const timeStr = now.toTimeString().slice(0, 5);
+    const today = now.toISOString().split('T')[0];
+
+    setCurrentTime(timeStr);
+    setTimedIn(true);
+
+    const record = {
+      employee_id: emp.id,
+      date: today,
+      time_in: timeStr,
+      status: 'Present' // Simplification
+    };
+
+    const { data } = await supabase.from('attendance_records').insert(record).select().single();
+    if (data) setTodayRecord(data);
+  }
+
+  async function handleTimeOut() {
+    if (!emp || !todayRecord) return;
+    const now = new Date();
+    const timeStr = now.toTimeString().slice(0, 5);
+    
+    setTimedOut(true);
+
+    await supabase.from('attendance_records')
+      .update({ time_out: timeStr })
+      .eq('id', todayRecord.id);
+  }
+
+  const greetingHour = new Date().getHours();
   const greeting = greetingHour < 12 ? 'Good morning' : greetingHour < 17 ? 'Good afternoon' : 'Good evening';
+
+  if (loading) return <div className="p-8 text-center text-muted-foreground">Loading dashboard...</div>;
+  if (!emp) return <div className="p-8 text-center text-muted-foreground">Employee record not found.</div>;
 
   return (
     <div className="space-y-6">
@@ -31,11 +122,13 @@ export function EmployeeDashboard({ onNavigate }: Props) {
           <p className="text-white/60 text-sm">{greeting},</p>
           <h2 className="text-white font-bold text-2xl">{emp.name}</h2>
           <p className="text-white/60 text-sm mt-1">{emp.position} · {emp.department}</p>
-          <p className="text-white/40 text-xs mt-3">Tuesday, June 16, 2026</p>
+          <p className="text-white/40 text-xs mt-3">
+            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+          </p>
         </div>
         <div className="flex items-center gap-3 z-10">
           <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center">
-            <span className="text-white text-2xl font-bold">{emp.initials}</span>
+            <span className="text-white text-2xl font-bold">{user?.initials}</span>
           </div>
         </div>
       </div>
@@ -65,7 +158,7 @@ export function EmployeeDashboard({ onNavigate }: Props) {
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Time Out</span>
-              <span className="font-medium text-foreground">{timedOut ? '17:00' : '—'}</span>
+              <span className="font-medium text-foreground">{timedOut ? todayRecord?.time_out || '17:00' : '—'}</span>
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Status</span>
@@ -87,15 +180,15 @@ export function EmployeeDashboard({ onNavigate }: Props) {
           <div className="space-y-2">
             <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Vacation Leave</span>
-              <span className="font-medium text-foreground">{balance.vacationLeave - balance.vacationUsed} days left</span>
+              <span className="font-medium text-foreground">{balance ? balance.vacation_leave - balance.vacation_used : 0} days left</span>
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Sick Leave</span>
-              <span className="font-medium text-foreground">{balance.sickLeave - balance.sickUsed} days left</span>
+              <span className="font-medium text-foreground">{balance ? balance.sick_leave - balance.sick_used : 0} days left</span>
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Emergency Leave</span>
-              <span className="font-medium text-foreground">{balance.emergencyLeave - balance.emergencyUsed} days left</span>
+              <span className="font-medium text-foreground">{balance ? balance.emergency_leave - balance.emergency_used : 0} days left</span>
             </div>
           </div>
         </div>
@@ -111,15 +204,15 @@ export function EmployeeDashboard({ onNavigate }: Props) {
           <div className="space-y-2">
             <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Period</span>
-              <span className="font-medium text-foreground">{latestPayslip.period}</span>
+              <span className="font-medium text-foreground">{latestPayslip ? latestPayslip.period : '—'}</span>
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Gross Pay</span>
-              <span className="font-medium text-foreground">{fmt(latestPayslip.grossPay)}</span>
+              <span className="font-medium text-foreground">{latestPayslip ? fmt(latestPayslip.gross_pay) : '—'}</span>
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Net Pay</span>
-              <span className="font-bold text-primary">{fmt(latestPayslip.netPay)}</span>
+              <span className="font-bold text-primary">{latestPayslip ? fmt(latestPayslip.net_pay) : '—'}</span>
             </div>
           </div>
         </div>
@@ -131,7 +224,7 @@ export function EmployeeDashboard({ onNavigate }: Props) {
         <div className="flex items-center gap-4">
           {!timedIn ? (
             <button
-              onClick={() => setTimedIn(true)}
+              onClick={handleTimeIn}
               className="flex items-center gap-3 px-6 py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition-all shadow-sm hover:shadow-md"
             >
               <LogIn size={18} />
@@ -151,7 +244,7 @@ export function EmployeeDashboard({ onNavigate }: Props) {
           )}
           {timedIn && !timedOut ? (
             <button
-              onClick={() => setTimedOut(true)}
+              onClick={handleTimeOut}
               className="flex items-center gap-3 px-6 py-3 rounded-xl bg-foreground text-white font-medium hover:bg-foreground/90 transition-all shadow-sm hover:shadow-md"
             >
               <LogOut size={18} />
@@ -164,8 +257,8 @@ export function EmployeeDashboard({ onNavigate }: Props) {
             <div className="flex items-center gap-3 px-6 py-3 rounded-xl bg-gray-50 border border-gray-200">
               <CheckCircle2 size={18} className="text-gray-500" />
               <div>
-                <div className="text-sm font-semibold text-gray-700">Timed Out at 17:00</div>
-                <div className="text-xs text-gray-500">Shift complete · 8h 53m</div>
+                <div className="text-sm font-semibold text-gray-700">Timed Out at {todayRecord?.time_out || '17:00'}</div>
+                <div className="text-xs text-gray-500">Shift complete</div>
               </div>
             </div>
           ) : null}
@@ -183,24 +276,6 @@ export function EmployeeDashboard({ onNavigate }: Props) {
               View Payslips
             </button>
           </div>
-        </div>
-      </div>
-
-      {/* This Month Summary */}
-      <div className="bg-card rounded-xl border border-border p-5">
-        <h3 className="font-semibold text-foreground mb-4">June 2026 Attendance Summary</h3>
-        <div className="grid grid-cols-4 gap-4">
-          {[
-            { label: 'Present', value: 9, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-            { label: 'Late', value: 2, color: 'text-amber-600', bg: 'bg-amber-50' },
-            { label: 'Absent', value: 1, color: 'text-red-600', bg: 'bg-red-50' },
-            { label: 'Undertime', value: 1, color: 'text-orange-600', bg: 'bg-orange-50' },
-          ].map(s => (
-            <div key={s.label} className={`rounded-xl p-4 ${s.bg} text-center`}>
-              <div className={`text-2xl font-bold ${s.color}`}>{s.value}</div>
-              <div className={`text-xs font-medium ${s.color} mt-0.5`}>{s.label}</div>
-            </div>
-          ))}
         </div>
       </div>
     </div>

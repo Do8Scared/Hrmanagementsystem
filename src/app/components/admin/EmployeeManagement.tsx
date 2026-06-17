@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Plus, Eye, Pencil, Trash2, X, ChevronLeft, Filter, Download } from 'lucide-react';
-import { employees as initialEmployees, type Employee } from '../../data/mockData';
+import { type Employee } from '../../data/mockData';
 import { StatusBadge } from '../StatusBadge';
 import { type Page } from '../Layout';
+import { supabase } from '../../../lib/supabaseClient';
 
 interface Props {
   onNavigate: (page: Page, data?: unknown) => void;
@@ -17,7 +18,8 @@ const EMPTY_FORM = {
 };
 
 export function EmployeeManagement({ onNavigate, profileEmployee }: Props) {
-  const [employees, setEmployees] = useState(initialEmployees);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [deptFilter, setDeptFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('All');
@@ -27,6 +29,17 @@ export function EmployeeManagement({ onNavigate, profileEmployee }: Props) {
   const [form, setForm] = useState(EMPTY_FORM);
   const [page, setPage] = useState(1);
   const PER_PAGE = 8;
+
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
+
+  async function fetchEmployees() {
+    setLoading(true);
+    const { data } = await supabase.from('employees').select('*');
+    if (data) setEmployees(data as any);
+    setLoading(false);
+  }
 
   if (profileEmployee) {
     return <EmployeeProfile employee={profileEmployee} onBack={() => onNavigate('employees')} />;
@@ -55,30 +68,36 @@ export function EmployeeManagement({ onNavigate, profileEmployee }: Props) {
     setForm({
       name: emp.name, email: emp.email, phone: emp.phone,
       department: emp.department, position: emp.position,
-      gender: emp.gender, birthDate: emp.birthDate, joinDate: emp.joinDate,
-      salary: String(emp.salary), address: emp.address, emergencyContact: emp.emergencyContact,
+      gender: emp.gender, birthDate: emp.birthDate || '', joinDate: emp.joinDate || '',
+      salary: String(emp.salary), address: emp.address || '', emergencyContact: emp.emergencyContact || '',
     });
     setShowModal(true);
   }
 
-  function handleSave() {
+  async function handleSave() {
     if (!form.name || !form.email) return;
+    
+    const initials = form.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+    const payload = {
+      ...form,
+      salary: Number(form.salary),
+      initials
+    };
+
     if (editEmployee) {
-      setEmployees(prev => prev.map(e => e.id === editEmployee.id ? {
-        ...e, ...form, salary: Number(form.salary),
-        initials: form.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase(),
-      } : e));
+      await supabase.from('employees').update(payload).eq('id', editEmployee.id);
+      setEmployees(prev => prev.map(e => e.id === editEmployee.id ? { ...e, ...payload } : e));
     } else {
       const newId = `EMP${String(employees.length + 1).padStart(3, '0')}`;
-      setEmployees(prev => [...prev, {
-        id: newId, status: 'Active', ...form, salary: Number(form.salary),
-        initials: form.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase(),
-      }]);
+      const newEmp = { id: newId, status: 'Active', ...payload };
+      await supabase.from('employees').insert(newEmp);
+      setEmployees(prev => [...prev, newEmp]);
     }
     setShowModal(false);
   }
 
-  function handleDelete(id: string) {
+  async function handleDelete(id: string) {
+    await supabase.from('employees').delete().eq('id', id);
     setEmployees(prev => prev.filter(e => e.id !== id));
     setDeleteId(null);
   }

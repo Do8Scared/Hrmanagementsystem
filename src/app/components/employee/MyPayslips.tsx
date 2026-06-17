@@ -1,29 +1,53 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Download, Printer, ChevronRight } from 'lucide-react';
-import { employeePayslips, type PayrollRecord } from '../../data/mockData';
 import { StatusBadge } from '../StatusBadge';
+import { useAuth } from '../../../lib/useAuth';
+import { supabase } from '../../../lib/supabaseClient';
 
 const fmt = (n: number) => `₱${n.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
 export function MyPayslips() {
-  const [selected, setSelected] = useState<PayrollRecord | null>(null);
+  const { user } = useAuth();
+  const [selected, setSelected] = useState<any | null>(null);
+  const [payslips, setPayslips] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      if (!user) return;
+      setLoading(true);
+      const empRes = await supabase.from('employees').select('id').eq('email', user.email).single();
+      if (empRes.data) {
+        const payRes = await supabase.from('payroll_records').select('*').eq('employee_id', empRes.data.id).order('period', { ascending: false });
+        if (payRes.data) {
+          setPayslips(payRes.data);
+        }
+      }
+      setLoading(false);
+    }
+    fetchData();
+  }, [user]);
+
+  if (loading) return <div className="p-8 text-center text-muted-foreground">Loading payslips...</div>;
+
+  const latestPayslip = payslips.length > 0 ? payslips[0] : null;
 
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-3 gap-4">
         <div className="bg-card rounded-xl border border-border p-5">
           <div className="text-xs text-muted-foreground mb-1">Latest Net Pay</div>
-          <div className="text-2xl font-bold text-foreground">{fmt(employeePayslips[0].netPay)}</div>
-          <div className="text-xs text-muted-foreground mt-1">{employeePayslips[0].period}</div>
+          <div className="text-2xl font-bold text-foreground">{latestPayslip ? fmt(latestPayslip.net_pay) : '—'}</div>
+          <div className="text-xs text-muted-foreground mt-1">{latestPayslip ? latestPayslip.period : '—'}</div>
         </div>
         <div className="bg-card rounded-xl border border-border p-5">
           <div className="text-xs text-muted-foreground mb-1">Basic Salary</div>
-          <div className="text-2xl font-bold text-foreground">{fmt(75000)}</div>
-          <div className="text-xs text-muted-foreground mt-1">Software Engineer</div>
+          <div className="text-2xl font-bold text-foreground">{latestPayslip ? fmt(latestPayslip.basic_salary) : '—'}</div>
+          <div className="text-xs text-muted-foreground mt-1">{user?.position || '—'}</div>
         </div>
         <div className="bg-card rounded-xl border border-border p-5">
           <div className="text-xs text-muted-foreground mb-1">Total Deductions</div>
-          <div className="text-2xl font-bold text-red-500">{fmt(employeePayslips[0].totalDeductions)}</div>
+          <div className="text-2xl font-bold text-red-500">{latestPayslip ? fmt(latestPayslip.total_deductions) : '—'}</div>
           <div className="text-xs text-muted-foreground mt-1">SSS · PhilHealth · Pag-IBIG · Tax</div>
         </div>
       </div>
@@ -42,18 +66,18 @@ export function MyPayslips() {
             </tr>
           </thead>
           <tbody>
-            {employeePayslips.map((p, i) => (
+            {payslips.map((p, i) => (
               <tr
                 key={p.id}
                 onClick={() => setSelected(p)}
                 className={`border-b border-border/50 cursor-pointer hover:bg-secondary/30 transition-colors ${i % 2 !== 0 ? 'bg-secondary/10' : ''}`}
               >
                 <td className="px-5 py-4 text-sm font-medium text-foreground">{p.period}</td>
-                <td className="px-5 py-4 text-sm text-foreground">{fmt(p.basicSalary)}</td>
+                <td className="px-5 py-4 text-sm text-foreground">{fmt(p.basic_salary)}</td>
                 <td className="px-5 py-4 text-sm text-emerald-600">{p.overtime > 0 ? fmt(p.overtime) : '—'}</td>
-                <td className="px-5 py-4 text-sm font-medium text-foreground">{fmt(p.grossPay)}</td>
-                <td className="px-5 py-4 text-sm text-red-500">({fmt(p.totalDeductions)})</td>
-                <td className="px-5 py-4 text-sm font-bold text-primary">{fmt(p.netPay)}</td>
+                <td className="px-5 py-4 text-sm font-medium text-foreground">{fmt(p.gross_pay)}</td>
+                <td className="px-5 py-4 text-sm text-red-500">({fmt(p.total_deductions)})</td>
+                <td className="px-5 py-4 text-sm font-bold text-primary">{fmt(p.net_pay)}</td>
                 <td className="px-5 py-4"><StatusBadge status={p.status} /></td>
                 <td className="px-5 py-4 text-muted-foreground"><ChevronRight size={15} /></td>
               </tr>
@@ -82,8 +106,8 @@ export function MyPayslips() {
               <div className="flex justify-between items-center pb-4 border-b border-border">
                 <div>
                   <div className="text-xs text-muted-foreground">Employee</div>
-                  <div className="text-sm font-semibold text-foreground">Juan dela Cruz</div>
-                  <div className="text-xs text-muted-foreground">Engineering · EMP002</div>
+                  <div className="text-sm font-semibold text-foreground">{user?.name || '—'}</div>
+                  <div className="text-xs text-muted-foreground">{user?.department || '—'}</div>
                 </div>
                 <div className="text-right">
                   <div className="text-xs text-muted-foreground">Pay Period</div>
@@ -93,9 +117,9 @@ export function MyPayslips() {
               </div>
               <div className="space-y-1.5 pb-4 border-b border-border">
                 <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Earnings</div>
-                <Row label="Basic Salary" value={fmt(selected.basicSalary)} />
+                <Row label="Basic Salary" value={fmt(selected.basic_salary)} />
                 {selected.overtime > 0 && <Row label="Overtime Pay" value={`+${fmt(selected.overtime)}`} highlight="text-emerald-600" />}
-                <Row label="Gross Pay" value={fmt(selected.grossPay)} bold />
+                <Row label="Gross Pay" value={fmt(selected.gross_pay)} bold />
               </div>
               <div className="space-y-1.5 pb-4 border-b border-border">
                 <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Deductions</div>
@@ -103,11 +127,11 @@ export function MyPayslips() {
                 <Row label="PhilHealth Contribution" value={`(${fmt(selected.philhealth)})`} highlight="text-red-500" />
                 <Row label="Pag-IBIG Contribution" value={`(${fmt(selected.pagibig)})`} highlight="text-red-500" />
                 <Row label="Withholding Tax" value={`(${fmt(selected.tax)})`} highlight="text-red-500" />
-                <Row label="Total Deductions" value={`(${fmt(selected.totalDeductions)})`} bold highlight="text-red-600" />
+                <Row label="Total Deductions" value={`(${fmt(selected.total_deductions)})`} bold highlight="text-red-600" />
               </div>
               <div className="flex justify-between items-center py-3 px-4 bg-primary rounded-xl">
                 <span className="text-sm font-bold text-white">NET PAY</span>
-                <span className="text-xl font-bold text-white">{fmt(selected.netPay)}</span>
+                <span className="text-xl font-bold text-white">{fmt(selected.net_pay)}</span>
               </div>
               <p className="text-center text-xs text-muted-foreground">This is a computer-generated document.</p>
             </div>

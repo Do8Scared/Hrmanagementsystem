@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Layout, type Page } from './components/Layout';
 import { LoginScreen } from './components/auth/LoginScreen';
 import { AdminDashboard } from './components/admin/AdminDashboard';
@@ -20,9 +20,7 @@ import { ManagerInterviewFeedback } from './components/manager/ManagerInterviewF
 import { AnnouncementsFeed } from './components/shared/AnnouncementsFeed';
 import { JobBoard } from './components/public/JobBoard';
 import { type Employee } from './data/mockData';
-
-type AppState = 'login' | 'authenticated' | 'session-expired' | 'job-board';
-type AppRole = 'admin' | 'employee' | 'manager';
+import { useAuth, AppRole } from '../lib/useAuth';
 
 const defaultPageForRole: Record<AppRole, Page> = {
   admin: 'admin-dashboard',
@@ -30,34 +28,24 @@ const defaultPageForRole: Record<AppRole, Page> = {
   manager: 'manager-request',
 };
 
-const nextRole: Record<AppRole, AppRole> = {
-  admin: 'manager',
-  manager: 'employee',
-  employee: 'admin',
-};
-
 export default function App() {
-  const [appState, setAppState] = useState<AppState>('login');
-  const [role, setRole] = useState<AppRole>('admin');
+  const { user, login, logout, loading } = useAuth();
   const [currentPage, setCurrentPage] = useState<Page>('admin-dashboard');
   const [profileEmployee, setProfileEmployee] = useState<Employee | null>(null);
-  const [sessionEmail] = useState('juan.delacruz@hrms.ph');
+  const [showJobBoard, setShowJobBoard] = useState(false);
 
-  function handleLogin(selectedRole: 'admin' | 'employee') {
-    setRole(selectedRole);
-    setCurrentPage(defaultPageForRole[selectedRole]);
-    setAppState('authenticated');
+  useEffect(() => {
+    if (user) {
+      setCurrentPage(defaultPageForRole[user.role]);
+    }
+  }, [user]);
+
+  function handleLogin(role: 'admin' | 'employee') {
+    // login is handled inside LoginScreen which now calls login from useAuth
   }
 
   function handleLogout() {
-    setAppState('login');
-    setProfileEmployee(null);
-  }
-
-  function handleRoleChange() {
-    const next = nextRole[role];
-    setRole(next);
-    setCurrentPage(defaultPageForRole[next]);
+    logout();
     setProfileEmployee(null);
   }
 
@@ -70,21 +58,24 @@ export default function App() {
     setCurrentPage(page);
   }
 
-  if (appState === 'job-board') {
-    return <JobBoard onBack={() => setAppState('login')} />;
+  if (loading) {
+    return <div className="min-h-screen bg-[#1E2A4A] flex items-center justify-center"><div className="text-white">Loading...</div></div>;
   }
 
-  if (appState === 'login' || appState === 'session-expired') {
+  if (showJobBoard) {
+    return <JobBoard onBack={() => setShowJobBoard(false)} />;
+  }
+
+  if (!user) {
     return (
       <div>
         <LoginScreen
           onLogin={handleLogin}
-          initialView={appState === 'session-expired' ? 'session-expired' : 'login'}
-          sessionEmail={sessionEmail}
+          initialView="login"
         />
         <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
           <button
-            onClick={() => setAppState('job-board')}
+            onClick={() => setShowJobBoard(true)}
             className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white/70 text-xs rounded-full border border-white/20 hover:bg-white/20 transition-colors"
           >
             View Public Job Board
@@ -102,7 +93,7 @@ export default function App() {
     if (currentPage === 'emp-announcements') return <AnnouncementsFeed role="employee" />;
     if (currentPage === 'manager-announcements') return <AnnouncementsFeed role="manager" />;
 
-    if (role === 'manager') {
+    if (user.role === 'manager') {
       switch (currentPage) {
         case 'manager-request': return <ManpowerRequestPage />;
         case 'manager-feedback': return <ManagerInterviewFeedback />;
@@ -110,7 +101,7 @@ export default function App() {
       }
     }
 
-    if (role === 'admin') {
+    if (user.role === 'admin') {
       switch (currentPage) {
         case 'admin-dashboard': return <AdminDashboard onNavigate={handleNavigate} />;
         case 'employees':
@@ -138,12 +129,10 @@ export default function App() {
 
   return (
     <Layout
-      role={role}
+      user={user}
       currentPage={currentPage}
       onNavigate={handleNavigate}
-      onRoleChange={handleRoleChange}
       onLogout={handleLogout}
-      onSessionExpire={() => setAppState('session-expired')}
     >
       {renderPage()}
     </Layout>

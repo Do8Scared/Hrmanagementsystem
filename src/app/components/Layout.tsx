@@ -11,13 +11,13 @@ export type Page =
   | 'emp-dashboard' | 'my-attendance' | 'my-payslips' | 'leave-request' | 'my-performance' | 'my-profile' | 'emp-announcements'
   | 'manager-dashboard' | 'manager-request' | 'manager-feedback' | 'manager-announcements';
 
+import { AuthUser } from '../../lib/useAuth';
+
 interface LayoutProps {
-  role: 'admin' | 'employee' | 'manager';
+  user: AuthUser;
   currentPage: Page;
   onNavigate: (page: Page) => void;
-  onRoleChange: () => void;
   onLogout: () => void;
-  onSessionExpire?: () => void;
   children: React.ReactNode;
 }
 
@@ -71,16 +71,18 @@ const pageTitles: Record<string, string> = {
   'manager-feedback': 'Interview Feedback',
 };
 
-export function Layout({ role, currentPage, onNavigate, onRoleChange, onLogout, onSessionExpire, children }: LayoutProps) {
+export function Layout({ user, currentPage, onNavigate, onLogout, children }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [notifOpen, setNotifOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [showPasswordFromMenu, setShowPasswordFromMenu] = useState(false);
+  
+  const role = user.role;
   const navItems = role === 'admin' ? adminNav : role === 'manager' ? managerNav : employeeNav;
-  const userName = role === 'admin' ? 'Sofia Garcia' : role === 'manager' ? 'Maria Santos' : 'Juan dela Cruz';
-  const userRole = role === 'admin' ? 'HR Specialist' : role === 'manager' ? 'Operations Manager' : 'Software Engineer';
-  const userInitials = role === 'admin' ? 'SG' : role === 'manager' ? 'MS' : 'JD';
+  const userName = user.name;
+  const userRole = role === 'admin' ? 'HR Specialist' : role === 'manager' ? 'Operations Manager' : 'Employee';
+  const userInitials = user.initials;
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
@@ -151,17 +153,10 @@ export function Layout({ role, currentPage, onNavigate, onRoleChange, onLogout, 
                   <span className="text-white text-xs font-semibold">{userInitials}</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-white text-xs font-medium truncate">Matthew Gagap</div>
+                  <div className="text-white text-xs font-medium truncate">{userName}</div>
                   <div className="text-white/40 text-xs truncate">{userRole}</div>
                 </div>
               </div>
-              <button
-                onClick={onRoleChange}
-                className="w-full flex items-center gap-2 px-2 py-2 rounded-lg text-white/60 hover:text-white hover:bg-white/8 text-xs transition-all"
-              >
-                <Users size={14} />
-                <span>Switch to {role === 'admin' ? 'Manager' : role === 'manager' ? 'Employee' : 'Admin'} View</span>
-              </button>
               <button
                 onClick={() => setShowLogoutModal(true)}
                 className="w-full flex items-center gap-2 px-2 py-2 rounded-lg text-red-400/80 hover:text-red-400 hover:bg-red-500/10 text-xs transition-all"
@@ -216,15 +211,6 @@ export function Layout({ role, currentPage, onNavigate, onRoleChange, onLogout, 
           </div>
 
           <div className="flex items-center gap-3">
-            {onSessionExpire && (
-              <button
-                onClick={onSessionExpire}
-                className="px-3 py-1.5 rounded-lg text-xs border border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors"
-                title="Demo: simulate session timeout"
-              >
-                Simulate Session Expiry
-              </button>
-            )}
             <div className="relative">
               <button
                 onClick={() => setNotifOpen(v => !v)}

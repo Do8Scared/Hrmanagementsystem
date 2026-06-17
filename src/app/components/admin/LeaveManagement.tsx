@@ -1,31 +1,68 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Check, X as XIcon, Search, Filter } from 'lucide-react';
-import { leaveRequests as initialRequests, leaveBalances, employees, type LeaveRequest } from '../../data/mockData';
 import { StatusBadge } from '../StatusBadge';
+import { supabase } from '../../../lib/supabaseClient';
 
 const LEAVE_TYPES = ['All', 'Vacation Leave', 'Sick Leave', 'Emergency Leave', 'Maternity Leave', 'Paternity Leave', 'Bereavement Leave'];
 
 export function LeaveManagement() {
-  const [requests, setRequests] = useState(initialRequests);
+  const [requests, setRequests] = useState<any[]>([]);
+  const [balances, setBalances] = useState<any[]>([]);
+  const [employees, setEmployees] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('All');
   const [tab, setTab] = useState<'requests' | 'balances'>('requests');
   const [confirmAction, setConfirmAction] = useState<{ id: string; action: 'approve' | 'reject' } | null>(null);
 
-  const filtered = requests.filter(r => {
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      const [reqRes, balRes, empRes] = await Promise.all([
+        supabase.from('leave_requests').select('*'),
+        supabase.from('leave_balances').select('*'),
+        supabase.from('employees').select('id, name, department')
+      ]);
+      if (reqRes.data) setRequests(reqRes.data);
+      if (balRes.data) setBalances(balRes.data);
+      if (empRes.data) setEmployees(empRes.data);
+      setLoading(false);
+    }
+    fetchData();
+  }, []);
+
+  const displayRequests = requests.map(r => {
+    const emp = employees.find(e => e.id === r.employee_id);
+    return {
+      ...r,
+      employeeName: emp ? emp.name : 'Unknown',
+      department: emp ? emp.department : 'Unknown',
+      leaveType: r.leave_type,
+      startDate: r.start_date,
+      endDate: r.end_date,
+      appliedDate: r.applied_date
+    };
+  });
+
+  const filtered = displayRequests.filter(r => {
     const matchSearch = r.employeeName.toLowerCase().includes(search.toLowerCase());
     const matchType = typeFilter === 'All' || r.leaveType === typeFilter;
     const matchStatus = statusFilter === 'All' || r.status === statusFilter;
     return matchSearch && matchType && matchStatus;
   });
 
-  function handleAction(id: string, action: 'approve' | 'reject') {
+  async function handleAction(id: string, action: 'approve' | 'reject') {
+    const newStatus = action === 'approve' ? 'Approved' : 'Rejected';
+    await supabase.from('leave_requests').update({ status: newStatus }).eq('id', id);
     setRequests(prev => prev.map(r =>
-      r.id === id ? { ...r, status: action === 'approve' ? 'Approved' : 'Rejected' } : r
+      r.id === id ? { ...r, status: newStatus } : r
     ));
     setConfirmAction(null);
   }
+
+  if (loading) return <div className="p-8 text-center text-muted-foreground">Loading leave data...</div>;
 
   return (
     <div className="space-y-5">
@@ -158,14 +195,14 @@ export function LeaveManagement() {
             </thead>
             <tbody>
               {employees.slice(0, 5).map((emp, i) => {
-                const bal = leaveBalances.find(b => b.employeeId === emp.id);
+                const bal = balances.find(b => b.employee_id === emp.id);
                 if (!bal) return null;
                 return (
                   <tr key={emp.id} className={`border-b border-border/50 ${i % 2 === 0 ? '' : 'bg-secondary/10'}`}>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-2.5">
                         <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-                          <span className="text-white text-xs font-semibold">{emp.initials}</span>
+                          <span className="text-white text-xs font-semibold">{emp.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}</span>
                         </div>
                         <div>
                           <div className="text-xs font-medium text-foreground">{emp.name}</div>
@@ -174,13 +211,13 @@ export function LeaveManagement() {
                       </div>
                     </td>
                     <td className="px-5 py-4">
-                      <LeaveBalanceBar used={bal.vacationUsed} total={bal.vacationLeave} color="bg-blue-500" />
+                      <LeaveBalanceBar used={bal.vacation_used} total={bal.vacation_leave} color="bg-blue-500" />
                     </td>
                     <td className="px-5 py-4">
-                      <LeaveBalanceBar used={bal.sickUsed} total={bal.sickLeave} color="bg-emerald-500" />
+                      <LeaveBalanceBar used={bal.sick_used} total={bal.sick_leave} color="bg-emerald-500" />
                     </td>
                     <td className="px-5 py-4">
-                      <LeaveBalanceBar used={bal.emergencyUsed} total={bal.emergencyLeave} color="bg-purple-500" />
+                      <LeaveBalanceBar used={bal.emergency_used} total={bal.emergency_leave} color="bg-purple-500" />
                     </td>
                   </tr>
                 );

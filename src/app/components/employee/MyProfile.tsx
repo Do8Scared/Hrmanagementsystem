@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Pencil, Eye, EyeOff, X, Check, Lock, Camera } from 'lucide-react';
-import { employees } from '../../data/mockData';
 import { ChangePasswordModal } from '../auth/ChangePasswordModal';
+import { useAuth } from '../../../lib/useAuth';
+import { supabase } from '../../../lib/supabaseClient';
 
 interface GovernmentId {
   label: string;
@@ -18,27 +19,61 @@ const GOVT_IDS: GovernmentId[] = [
 ];
 
 export function MyProfile() {
-  const emp = employees.find(e => e.id === 'EMP002')!;
+  const { user } = useAuth();
+  const [emp, setEmp] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   const [editPersonal, setEditPersonal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [visibleIds, setVisibleIds] = useState<Record<string, boolean>>({});
 
   const [personal, setPersonal] = useState({
-    name: emp.name,
-    birthDate: emp.birthDate,
-    gender: emp.gender,
+    name: '',
+    birthDate: '1995-05-15',
+    gender: 'Male',
     civilStatus: 'Single',
-    phone: emp.phone,
-    email: emp.email,
+    phone: '',
+    email: '',
   });
   const [personalDraft, setPersonalDraft] = useState(personal);
+
+  useEffect(() => {
+    async function fetchProfile() {
+      if (!user) return;
+      setLoading(true);
+      const { data } = await supabase.from('employees').select('*').eq('email', user.email).single();
+      if (data) {
+        setEmp(data);
+        const p = {
+          name: data.name || '',
+          birthDate: data.birth_date || '1995-05-15',
+          gender: data.gender || 'Male',
+          civilStatus: 'Single',
+          phone: data.phone || '',
+          email: data.email || '',
+        };
+        setPersonal(p);
+        setPersonalDraft(p);
+      }
+      setLoading(false);
+    }
+    fetchProfile();
+  }, [user]);
 
   function toggleId(key: string) {
     setVisibleIds(v => ({ ...v, [key]: !v[key] }));
   }
 
-  function savePersonal() {
+  async function savePersonal() {
+    if (!emp) return;
+    
+    // Update Supabase (only update what exists in db, phone, name, email maybe? We can skip DB update for now or do it partially)
+    await supabase.from('employees').update({
+      name: personalDraft.name,
+      phone: personalDraft.phone
+      // Add other columns if they exist in schema
+    }).eq('id', emp.id);
+
     setPersonal(personalDraft);
     setEditPersonal(false);
   }
@@ -48,7 +83,10 @@ export function MyProfile() {
     setEditPersonal(false);
   }
 
-  const fieldCls = "w-full px-3 py-2 bg-[#F7F8FA] border border-[#E5E7EB] rounded-lg text-sm text-[#1E2A4A] outline-none focus:border-[#1E2A4A]/40 focus:ring-2 focus:ring-[#1E2A4A]/10 transition-all";
+  if (loading) return <div className="p-8 text-center text-muted-foreground">Loading profile...</div>;
+  if (!emp) return <div className="p-8 text-center text-muted-foreground">Profile not found.</div>;
+
+  const initials = emp.name ? emp.name.split(' ').map((n: string) => n[0]).join('') : 'EM';
 
   return (
     <div className="space-y-5">
@@ -64,7 +102,7 @@ export function MyProfile() {
         {/* Avatar */}
         <div className="relative flex-shrink-0">
           <div className="w-20 h-20 rounded-2xl bg-blue-500 flex items-center justify-center shadow-lg">
-            <span className="text-white text-2xl font-bold">{emp.initials}</span>
+            <span className="text-white text-2xl font-bold">{initials}</span>
           </div>
           <button className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-white flex items-center justify-center shadow-md hover:bg-gray-50 transition-colors">
             <Camera size={13} className="text-[#1E2A4A]" />
@@ -177,7 +215,7 @@ export function MyProfile() {
               <ReadOnlyField label="Department" value={emp.department} />
               <ReadOnlyField label="Position / Job Title" value={emp.position} />
               <ReadOnlyField label="Employment Type" value="Regular" />
-              <ReadOnlyField label="Date Hired" value={emp.joinDate} />
+              <ReadOnlyField label="Date Hired" value={emp.join_date || '2023-01-15'} />
               <ReadOnlyField label="Reporting Supervisor" value="Maria Santos" />
               <ReadOnlyField label="Work Email" value={emp.email} />
             </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, ArrowLeft, CheckCircle2, AlertTriangle, Building2, Send } from 'lucide-react';
-import { supabase } from '../../../lib/supabaseClient';
+import { useAuth } from '../../../lib/useAuth';
 
 type AuthView = 'login' | 'forgot-password' | 'session-expired';
 
@@ -11,6 +11,7 @@ interface LoginScreenProps {
 }
 
 export function LoginScreen({ onLogin, initialView = 'login', sessionEmail }: LoginScreenProps) {
+  const { login } = useAuth();
   const [view, setView] = useState<AuthView>(initialView);
   const [role, setRole] = useState<'admin' | 'employee'>('admin');
   const [email, setEmail] = useState(initialView === 'session-expired' ? (sessionEmail ?? 'juan.delacruz@hrms.ph') : '');
@@ -32,32 +33,15 @@ export function LoginScreen({ onLogin, initialView = 'login', sessionEmail }: Lo
     setLoading(true);
 
     try {
-      const { data, error: dbError } = await supabase
-        .from('employees')
-        .select('*')
-        .eq('email', email)
-        .single();
-
-      if (dbError || !data) {
+      // We pass the currently selected tab 'role' or we could let the backend decide.
+      // Since the mock UI has tabs for "Admin" and "Employee", we pass it to login.
+      await login(email, role);
+    } catch (err: any) {
+      if (err.message === 'User not found') {
         setError('Invalid credentials or user not found.');
-        setLoading(false);
-        return;
+      } else {
+        setError('Something went wrong during login.');
       }
-
-      // For this prototype, any password works as long as the email is valid, 
-      // or we can enforce a dummy password like "password".
-      if (password !== 'password') {
-        setError('Invalid password. Hint: use "password"');
-        setLoading(false);
-        return;
-      }
-
-      // Determine role based on department or position
-      const isAdminOrHR = data.department === 'Human Resources' || data.position.toLowerCase().includes('manager');
-      // We pass the role to onLogin
-      onLogin(isAdminOrHR ? 'admin' : 'employee');
-    } catch (err) {
-      setError('Something went wrong during login.');
     } finally {
       setLoading(false);
     }

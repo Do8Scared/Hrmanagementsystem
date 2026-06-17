@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Send, CalendarDays, Info } from 'lucide-react';
-import { leaveRequests as initialRequests, leaveBalances, type LeaveType } from '../../data/mockData';
 import { StatusBadge } from '../StatusBadge';
+import { useAuth } from '../../../lib/useAuth';
+import { supabase } from '../../../lib/supabaseClient';
 
+type LeaveType = 'Vacation Leave' | 'Sick Leave' | 'Emergency Leave' | 'Bereavement Leave' | 'Paternity Leave';
 const LEAVE_TYPES: LeaveType[] = ['Vacation Leave', 'Sick Leave', 'Emergency Leave', 'Bereavement Leave', 'Paternity Leave'];
 
 interface FormState {
@@ -20,12 +22,33 @@ const EMPTY_FORM: FormState = {
 };
 
 export function LeaveRequest() {
-  const balance = leaveBalances.find(b => b.employeeId === 'EMP002')!;
+  const { user } = useAuth();
+  const [balance, setBalance] = useState<any>(null);
+  const [myRequests, setMyRequests] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [empId, setEmpId] = useState<string | null>(null);
+
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [submitted, setSubmitted] = useState(false);
-  const [myRequests, setMyRequests] = useState(
-    initialRequests.filter(r => r.employeeId === 'EMP002')
-  );
+
+  useEffect(() => {
+    async function fetchData() {
+      if (!user) return;
+      setLoading(true);
+      const empRes = await supabase.from('employees').select('id').eq('email', user.email).single();
+      if (empRes.data) {
+        setEmpId(empRes.data.id);
+        const [balRes, reqRes] = await Promise.all([
+          supabase.from('leave_balances').select('*').eq('employee_id', empRes.data.id).single(),
+          supabase.from('leave_requests').select('*').eq('employee_id', empRes.data.id).order('applied_date', { ascending: false })
+        ]);
+        if (balRes.data) setBalance(balRes.data);
+        if (reqRes.data) setMyRequests(reqRes.data);
+      }
+      setLoading(false);
+    }
+    fetchData();
+  }, [user]);
 
   const workDays = (() => {
     if (!form.startDate || !form.endDate) return 0;
@@ -41,47 +64,53 @@ export function LeaveRequest() {
     return count;
   })();
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.startDate || !form.endDate || !form.reason) return;
+    if (!form.startDate || !form.endDate || !form.reason || !empId) return;
+
     const newReq = {
-      id: `LV_NEW_${Date.now()}`,
-      employeeId: 'EMP002',
-      employeeName: 'Juan dela Cruz',
-      department: 'Engineering',
-      leaveType: form.leaveType,
-      startDate: form.startDate,
-      endDate: form.endDate,
+      employee_id: empId,
+      leave_type: form.leaveType,
+      start_date: form.startDate,
+      end_date: form.endDate,
       days: workDays,
       reason: form.reason,
-      status: 'Pending' as const,
-      appliedDate: '2026-06-16',
+      status: 'Pending',
+      applied_date: new Date().toISOString().split('T')[0]
     };
-    setMyRequests(prev => [newReq, ...prev]);
+
+    const { data } = await supabase.from('leave_requests').insert(newReq).select().single();
+
+    if (data) {
+      setMyRequests(prev => [data, ...prev]);
+    }
+
     setForm(EMPTY_FORM);
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 4000);
   }
 
   const leaveBalanceMap: Record<string, number> = {
-    'Vacation Leave': balance.vacationLeave - balance.vacationUsed,
-    'Sick Leave': balance.sickLeave - balance.sickUsed,
-    'Emergency Leave': balance.emergencyLeave - balance.emergencyUsed,
+    'Vacation Leave': balance ? balance.vacation_leave - balance.vacation_used : 0,
+    'Sick Leave': balance ? balance.sick_leave - balance.sick_used : 0,
+    'Emergency Leave': balance ? balance.emergency_leave - balance.emergency_used : 0,
     'Bereavement Leave': 5,
     'Paternity Leave': 7,
   };
+
+  if (loading) return <div className="p-8 text-center text-muted-foreground">Loading leave requests...</div>;
 
   return (
     <div className="space-y-5">
       {/* Leave Balance Overview */}
       <div className="grid grid-cols-3 gap-4">
         {[
-          { label: 'Vacation Leave', used: balance.vacationUsed, total: balance.vacationLeave, color: 'bg-blue-500' },
-          { label: 'Sick Leave', used: balance.sickUsed, total: balance.sickLeave, color: 'bg-emerald-500' },
-          { label: 'Emergency Leave', used: balance.emergencyUsed, total: balance.emergencyLeave, color: 'bg-purple-500' },
+          { label: 'Vacation Leave', used: balance?.vacation_used || 0, total: balance?.vacation_leave || 0, color: 'bg-blue-500' },
+          { label: 'Sick Leave', used: balance?.sick_used || 0, total: balance?.sick_leave || 0, color: 'bg-emerald-500' },
+          { label: 'Emergency Leave', used: balance?.emergency_used || 0, total: balance?.emergency_leave || 0, color: 'bg-purple-500' },
         ].map(b => {
           const remaining = b.total - b.used;
-          const pct = (b.used / b.total) * 100;
+          const pct = b.total ? (b.used / b.total) * 100 : 0;
           return (
             <div key={b.label} className="bg-card rounded-xl border border-border p-5">
               <div className="flex justify-between items-baseline mb-3">
@@ -201,17 +230,17 @@ export function LeaveRequest() {
               ) : myRequests.map((r, i) => (
                 <tr key={r.id} className={`border-b border-border/50 hover:bg-secondary/20 transition-colors ${i % 2 !== 0 ? 'bg-secondary/10' : ''}`}>
                   <td className="px-4 py-3">
-                    <span className="text-xs bg-secondary text-foreground px-2.5 py-1 rounded-full whitespace-nowrap">{r.leaveType}</span>
+                    <span className="text-xs bg-secondary text-foreground px-2.5 py-1 rounded-full whitespace-nowrap">{r.leave_type}</span>
                   </td>
                   <td className="px-4 py-3">
-                    <div className="text-xs text-foreground">{r.startDate}</div>
-                    {r.endDate !== r.startDate && <div className="text-xs text-muted-foreground">to {r.endDate}</div>}
+                    <div className="text-xs text-foreground">{r.start_date}</div>
+                    {r.end_date !== r.start_date && <div className="text-xs text-muted-foreground">to {r.end_date}</div>}
                   </td>
                   <td className="px-4 py-3 text-xs font-semibold text-foreground">{r.days}d</td>
                   <td className="px-4 py-3">
                     <p className="text-xs text-muted-foreground max-w-36 truncate" title={r.reason}>{r.reason}</p>
                   </td>
-                  <td className="px-4 py-3 text-xs text-muted-foreground">{r.appliedDate}</td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground">{r.applied_date}</td>
                   <td className="px-4 py-3"><StatusBadge status={r.status} /></td>
                 </tr>
               ))}

@@ -1,26 +1,65 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Download, Printer, CheckCircle2 } from 'lucide-react';
-import { payrollRecords, type PayrollRecord } from '../../data/mockData';
 import { StatusBadge } from '../StatusBadge';
+import { supabase } from '../../../lib/supabaseClient';
 
 const fmt = (n: number) => `₱${n.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
 export function PayrollManagement() {
-  const [records, setRecords] = useState(payrollRecords);
-  const [selectedPayslip, setSelectedPayslip] = useState<PayrollRecord | null>(null);
+  const [records, setRecords] = useState<any[]>([]);
+  const [employees, setEmployees] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedPayslip, setSelectedPayslip] = useState<any | null>(null);
   const [processAll, setProcessAll] = useState(false);
 
-  const totalNetPay = records.reduce((s, r) => s + r.netPay, 0);
-  const pending = records.filter(r => r.status === 'Pending').length;
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      const [empRes, payRes] = await Promise.all([
+        supabase.from('employees').select('id, name, department'),
+        supabase.from('payroll_records').select('*')
+      ]);
+      if (empRes.data) setEmployees(empRes.data);
+      if (payRes.data) setRecords(payRes.data);
+      setLoading(false);
+    }
+    fetchData();
+  }, []);
 
-  function handleProcess(id: string) {
+  // Merge employee data with payroll records
+  const displayRecords = records.map(r => {
+    const emp = employees.find(e => e.id === r.employee_id);
+    return {
+      ...r,
+      employeeName: emp ? emp.name : 'Unknown',
+      department: emp ? emp.department : 'Unknown',
+      basicSalary: r.basic_salary,
+      grossPay: r.gross_pay,
+      totalDeductions: r.total_deductions,
+      netPay: r.net_pay
+    };
+  });
+
+  const totalNetPay = displayRecords.reduce((s, r) => s + r.netPay, 0);
+  const pending = displayRecords.filter(r => r.status === 'Pending').length;
+
+  async function handleProcess(id: string) {
+    await supabase.from('payroll_records').update({ status: 'Processed' }).eq('id', id);
     setRecords(prev => prev.map(r => r.id === id ? { ...r, status: 'Processed' } : r));
   }
 
-  function handleProcessAll() {
-    setRecords(prev => prev.map(r => ({ ...r, status: 'Processed' })));
+  async function handleProcessAll() {
+    const pendingIds = records.filter(r => r.status === 'Pending').map(r => r.id);
+    if (pendingIds.length > 0) {
+      await Promise.all(pendingIds.map(id => 
+        supabase.from('payroll_records').update({ status: 'Processed' }).eq('id', id)
+      ));
+      setRecords(prev => prev.map(r => ({ ...r, status: 'Processed' })));
+    }
     setProcessAll(false);
   }
+
+  if (loading) return <div className="p-8 text-center text-muted-foreground">Loading payroll data...</div>;
 
   return (
     <div className="space-y-5">
@@ -39,7 +78,7 @@ export function PayrollManagement() {
         <div className="bg-card rounded-xl border border-border p-5">
           <div className="text-xs text-muted-foreground mb-1">Total Deductions</div>
           <div className="text-2xl font-bold text-foreground">
-            {fmt(records.reduce((s, r) => s + r.totalDeductions, 0))}
+            {fmt(displayRecords.reduce((s, r) => s + r.totalDeductions, 0))}
           </div>
           <div className="text-xs text-muted-foreground mt-1">SSS + PhilHealth + Pag-IBIG + Tax</div>
         </div>
@@ -76,7 +115,7 @@ export function PayrollManagement() {
               </tr>
             </thead>
             <tbody>
-              {records.map((r, i) => (
+              {displayRecords.map((r, i) => (
                 <tr key={r.id} className={`border-b border-border/50 hover:bg-secondary/20 transition-colors ${i % 2 === 0 ? '' : 'bg-secondary/10'}`}>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2.5">

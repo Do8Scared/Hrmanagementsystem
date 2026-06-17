@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, X, Star } from 'lucide-react';
-import { performanceEvaluations as initialEvals, employees, type PerformanceEvaluation, type EvaluationCriteria } from '../../data/mockData';
+import { type EvaluationCriteria } from '../../data/mockData';
+import { supabase } from '../../../lib/supabaseClient';
+import { useAuth } from '../../../lib/useAuth';
 
 const CRITERIA_LABELS: { key: keyof EvaluationCriteria; label: string; description: string }[] = [
   { key: 'attendance', label: 'Attendance & Punctuality', description: 'Regularity and timeliness' },
@@ -20,33 +22,82 @@ const EMPTY_FORM = {
 };
 
 export function PerformanceEvaluation() {
-  const [evaluations, setEvaluations] = useState(initialEvals);
+  const { user } = useAuth();
+  const [evaluations, setEvaluations] = useState<any[]>([]);
+  const [employees, setEmployees] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
-  const [selectedEval, setSelectedEval] = useState<PerformanceEvaluation | null>(null);
+  const [selectedEval, setSelectedEval] = useState<any | null>(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      const [evalRes, empRes] = await Promise.all([
+        supabase.from('performance_evaluations').select('*').order('date', { ascending: false }),
+        supabase.from('employees').select('id, name, department, status')
+      ]);
+      if (evalRes.data) setEvaluations(evalRes.data);
+      if (empRes.data) setEmployees(empRes.data);
+      setLoading(false);
+    }
+    fetchData();
+  }, []);
+
+  const displayEvaluations = evaluations.map(ev => {
+    const emp = employees.find(e => e.id === ev.employee_id);
+    return {
+      id: ev.id,
+      employeeId: ev.employee_id,
+      employeeName: emp ? emp.name : 'Unknown',
+      department: emp ? emp.department : 'Unknown',
+      period: ev.period,
+      evaluator: ev.evaluator,
+      date: ev.date,
+      comments: ev.comments,
+      overallRating: ev.overall_rating,
+      criteria: {
+        attendance: ev.attendance,
+        productivity: ev.productivity,
+        teamwork: ev.teamwork,
+        communication: ev.communication,
+        initiative: ev.initiative
+      }
+    };
+  });
 
   const overallRating = (c: EvaluationCriteria) =>
     +(Object.values(c).reduce((s, v) => s + v, 0) / 5).toFixed(1);
 
-  function handleSubmit() {
-    if (!form.employeeId) return;
+  async function handleSubmit() {
+    if (!form.employeeId || !user) return;
     const emp = employees.find(e => e.id === form.employeeId)!;
-    const newEval: PerformanceEvaluation = {
-      id: `EVAL${String(evaluations.length + 1).padStart(3, '0')}`,
-      employeeId: form.employeeId,
-      employeeName: emp.name,
-      department: emp.department,
+    
+    const newEval = {
+      employee_id: form.employeeId,
       period: form.period,
-      criteria: form.criteria,
-      overallRating: overallRating(form.criteria),
-      evaluator: 'Sofia Garcia',
-      date: '2026-06-16',
+      evaluator: user.name,
+      date: new Date().toISOString().split('T')[0],
       comments: form.comments,
+      attendance: form.criteria.attendance,
+      productivity: form.criteria.productivity,
+      teamwork: form.criteria.teamwork,
+      communication: form.criteria.communication,
+      initiative: form.criteria.initiative,
+      overall_rating: overallRating(form.criteria)
     };
-    setEvaluations(prev => [newEval, ...prev]);
+
+    const { data, error } = await supabase.from('performance_evaluations').insert(newEval).select().single();
+    
+    if (data && !error) {
+      setEvaluations(prev => [data, ...prev]);
+    }
+    
     setShowForm(false);
     setForm(EMPTY_FORM);
   }
+
+  if (loading) return <div className="p-8 text-center text-muted-foreground">Loading performance data...</div>;
 
   const ratingColor = (r: number) => r >= 4.5 ? 'text-emerald-600' : r >= 3.5 ? 'text-blue-600' : r >= 2.5 ? 'text-amber-600' : 'text-red-600';
   const ratingBg = (r: number) => r >= 4.5 ? 'bg-emerald-50' : r >= 3.5 ? 'bg-blue-50' : r >= 2.5 ? 'bg-amber-50' : 'bg-red-50';
@@ -56,7 +107,7 @@ export function PerformanceEvaluation() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="font-semibold text-foreground">Performance Evaluations</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">{evaluations.length} evaluation records</p>
+          <p className="text-xs text-muted-foreground mt-0.5">{displayEvaluations.length} evaluation records</p>
         </div>
         <button
           onClick={() => setShowForm(true)}
@@ -68,7 +119,7 @@ export function PerformanceEvaluation() {
 
       {/* Evaluation Cards */}
       <div className="grid grid-cols-2 gap-4">
-        {evaluations.map(ev => (
+        {displayEvaluations.map(ev => (
           <div
             key={ev.id}
             className="bg-card rounded-xl border border-border p-5 cursor-pointer hover:shadow-md transition-all hover:border-primary/20"

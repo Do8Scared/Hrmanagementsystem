@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import { Star } from 'lucide-react';
-import { performanceEvaluations } from '../../data/mockData';
+import { useAuth } from '../../../lib/useAuth';
+import { supabase } from '../../../lib/supabaseClient';
 
 const CRITERIA_LABELS = [
   { key: 'attendance' as const, label: 'Attendance & Punctuality', icon: '🕐' },
@@ -16,8 +18,29 @@ const ratingBg = (r: number) => r >= 4.5 ? 'bg-emerald-50 border-emerald-100' : 
 const barColor = (r: number) => r >= 4 ? 'bg-emerald-500' : r >= 3 ? 'bg-blue-500' : r >= 2 ? 'bg-amber-500' : 'bg-red-500';
 
 export function MyPerformance() {
-  const myEvals = performanceEvaluations.filter(e => e.employeeId === 'EMP002');
-  const latest = myEvals[0];
+  const { user } = useAuth();
+  const [evaluations, setEvaluations] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      if (!user) return;
+      setLoading(true);
+      const empRes = await supabase.from('employees').select('id').eq('email', user.email).single();
+      if (empRes.data) {
+        const evalRes = await supabase.from('performance_evaluations').select('*').eq('employee_id', empRes.data.id).order('date', { ascending: false });
+        if (evalRes.data) {
+          setEvaluations(evalRes.data);
+        }
+      }
+      setLoading(false);
+    }
+    fetchData();
+  }, [user]);
+
+  if (loading) return <div className="p-8 text-center text-muted-foreground">Loading evaluations...</div>;
+
+  const latest = evaluations.length > 0 ? evaluations[0] : null;
 
   return (
     <div className="space-y-5">
@@ -33,7 +56,7 @@ export function MyPerformance() {
           </div>
           <div className="text-center z-10 flex-shrink-0">
             <div className="w-28 h-28 rounded-2xl bg-white/10 flex flex-col items-center justify-center">
-              <span className={`text-4xl font-bold text-white`}>{latest.overallRating}</span>
+              <span className={`text-4xl font-bold text-white`}>{latest.overall_rating}</span>
               <span className="text-white/60 text-sm">/ 5.0</span>
             </div>
             <div className="flex items-center justify-center gap-0.5 mt-2">
@@ -41,7 +64,7 @@ export function MyPerformance() {
                 <Star
                   key={v}
                   size={14}
-                  className={v <= Math.round(latest.overallRating) ? 'text-amber-400 fill-amber-400' : 'text-white/20 fill-white/20'}
+                  className={v <= Math.round(latest.overall_rating) ? 'text-amber-400 fill-amber-400' : 'text-white/20 fill-white/20'}
                 />
               ))}
             </div>
@@ -51,15 +74,15 @@ export function MyPerformance() {
 
       {/* Evaluations List */}
       <div className="space-y-4">
-        {myEvals.map(ev => (
+        {evaluations.map(ev => (
           <div key={ev.id} className="bg-card rounded-xl border border-border p-6">
             <div className="flex items-start justify-between mb-5">
               <div>
                 <h3 className="font-semibold text-foreground">{ev.period} Performance Evaluation</h3>
                 <p className="text-xs text-muted-foreground mt-0.5">Evaluated by {ev.evaluator} · {ev.date}</p>
               </div>
-              <div className={`px-4 py-2 rounded-xl border text-center ${ratingBg(ev.overallRating)}`}>
-                <div className={`text-2xl font-bold ${ratingColor(ev.overallRating)}`}>{ev.overallRating}</div>
+              <div className={`px-4 py-2 rounded-xl border text-center ${ratingBg(ev.overall_rating)}`}>
+                <div className={`text-2xl font-bold ${ratingColor(ev.overall_rating)}`}>{ev.overall_rating}</div>
                 <div className="text-xs text-muted-foreground">Overall</div>
               </div>
             </div>
@@ -69,9 +92,9 @@ export function MyPerformance() {
               {CRITERIA_LABELS.map(({ key, label, icon }) => (
                 <div key={key} className="bg-secondary rounded-xl p-3 text-center">
                   <div className="text-xl mb-1">{icon}</div>
-                  <div className={`text-xl font-bold ${ratingColor(ev.criteria[key])}`}>{ev.criteria[key]}</div>
+                  <div className={`text-xl font-bold ${ratingColor(ev[key])}`}>{ev[key]}</div>
                   <div className="text-xs text-muted-foreground mt-0.5 leading-tight">{label.split(' ')[0]}</div>
-                  <div className="text-xs text-muted-foreground">{ratingLabels[ev.criteria[key]]}</div>
+                  <div className="text-xs text-muted-foreground">{ratingLabels[ev[key]] || ratingLabels[1]}</div>
                 </div>
               ))}
             </div>
@@ -83,11 +106,11 @@ export function MyPerformance() {
                   <span className="text-xs text-muted-foreground w-44">{label}</span>
                   <div className="flex-1 h-2 bg-secondary rounded-full overflow-hidden">
                     <div
-                      className={`h-full rounded-full ${barColor(ev.criteria[key])} transition-all`}
-                      style={{ width: `${(ev.criteria[key] / 5) * 100}%` }}
+                      className={`h-full rounded-full ${barColor(ev[key])} transition-all`}
+                      style={{ width: `${(ev[key] / 5) * 100}%` }}
                     />
                   </div>
-                  <span className="text-xs font-semibold text-foreground w-6 text-right">{ev.criteria[key]}/5</span>
+                  <span className="text-xs font-semibold text-foreground w-6 text-right">{ev[key]}/5</span>
                 </div>
               ))}
             </div>
@@ -100,6 +123,11 @@ export function MyPerformance() {
             )}
           </div>
         ))}
+        {evaluations.length === 0 && (
+          <div className="text-center py-12 bg-card rounded-xl border border-border">
+            <p className="text-muted-foreground text-sm">No performance evaluations found.</p>
+          </div>
+        )}
       </div>
     </div>
   );
