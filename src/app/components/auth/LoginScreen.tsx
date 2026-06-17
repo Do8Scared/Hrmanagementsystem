@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, ArrowLeft, CheckCircle2, AlertTriangle, Building2, Send } from 'lucide-react';
+import { supabase } from '../../../lib/supabaseClient';
 
 type AuthView = 'login' | 'forgot-password' | 'session-expired';
 
@@ -21,7 +22,7 @@ export function LoginScreen({ onLogin, initialView = 'login', sessionEmail }: Lo
   const [resetSent, setResetSent] = useState(false);
   const [error, setError] = useState('');
 
-  function handleLogin(e: React.FormEvent) {
+  async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     if (!email || !password) {
       setError('Please enter both email and password.');
@@ -29,10 +30,37 @@ export function LoginScreen({ onLogin, initialView = 'login', sessionEmail }: Lo
     }
     setError('');
     setLoading(true);
-    setTimeout(() => {
+
+    try {
+      const { data, error: dbError } = await supabase
+        .from('employees')
+        .select('*')
+        .eq('email', email)
+        .single();
+
+      if (dbError || !data) {
+        setError('Invalid credentials or user not found.');
+        setLoading(false);
+        return;
+      }
+
+      // For this prototype, any password works as long as the email is valid, 
+      // or we can enforce a dummy password like "password".
+      if (password !== 'password') {
+        setError('Invalid password. Hint: use "password"');
+        setLoading(false);
+        return;
+      }
+
+      // Determine role based on department or position
+      const isAdminOrHR = data.department === 'Human Resources' || data.position.toLowerCase().includes('manager');
+      // We pass the role to onLogin
+      onLogin(isAdminOrHR ? 'admin' : 'employee');
+    } catch (err) {
+      setError('Something went wrong during login.');
+    } finally {
       setLoading(false);
-      onLogin(role);
-    }, 1200);
+    }
   }
 
   function handleResetSubmit(e: React.FormEvent) {

@@ -23,7 +23,27 @@ const activityColors: Record<string, string> = {
   performance: 'bg-amber-50 text-amber-600',
 };
 
+import { useEffect, useState } from 'react';
+import { supabase } from '../../../lib/supabaseClient';
+
 export function AdminDashboard({ onNavigate }: Props) {
+  const [employees, setEmployees] = useState<any[]>([]);
+  const [attendanceRecords, setAttendanceRecords] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      const [empRes, attRes] = await Promise.all([
+        supabase.from('employees').select('*'),
+        supabase.from('attendance_records').select('*')
+      ]);
+      if (empRes.data) setEmployees(empRes.data);
+      if (attRes.data) setAttendanceRecords(attRes.data);
+      setLoading(false);
+    }
+    fetchData();
+  }, []);
+
   const today = '2026-06-16';
   const todayRecords = attendanceRecords.filter(r => r.date === today);
   const activeCount = employees.filter(e => e.status === 'Active').length;
@@ -43,7 +63,7 @@ export function AdminDashboard({ onNavigate }: Props) {
     {
       label: 'Present Today',
       value: presentToday,
-      sub: `${Math.round((presentToday / activeCount) * 100)}% attendance rate`,
+      sub: activeCount ? `${Math.round((presentToday / activeCount) * 100)}% attendance rate` : '0% attendance rate',
       icon: UserCheck,
       color: 'bg-emerald-500',
       light: 'bg-emerald-50',
@@ -68,6 +88,10 @@ export function AdminDashboard({ onNavigate }: Props) {
       textColor: 'text-violet-600',
     },
   ];
+
+  if (loading) {
+    return <div className="p-8 text-center text-muted-foreground">Loading dashboard data...</div>;
+  }
 
   return (
     <div className="space-y-6">
@@ -182,7 +206,7 @@ export function AdminDashboard({ onNavigate }: Props) {
             </thead>
             <tbody>
               {employees.filter(e => e.status !== 'Inactive').slice(0, 7).map((emp, i) => {
-                const record = attendanceRecords.find(r => r.employeeId === emp.id && r.date === today);
+                const record = attendanceRecords.find(r => r.employee_id === emp.id && r.date === today);
                 const statusLabel = emp.status === 'On Leave' ? 'On Leave' : (record?.status ?? 'Absent');
                 const statusColor: Record<string, string> = {
                   Present: 'text-emerald-600 bg-emerald-50',
@@ -202,7 +226,7 @@ export function AdminDashboard({ onNavigate }: Props) {
                       </div>
                     </td>
                     <td className="py-3 pr-4 text-sm text-muted-foreground">{emp.department}</td>
-                    <td className="py-3 pr-4 text-sm text-foreground">{record?.timeIn ?? '—'}</td>
+                    <td className="py-3 pr-4 text-sm text-foreground">{record?.time_in ?? '—'}</td>
                     <td className="py-3">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColor[statusLabel] ?? 'text-gray-600 bg-gray-100'}`}>
                         {statusLabel}
