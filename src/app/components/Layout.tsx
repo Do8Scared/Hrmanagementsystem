@@ -18,6 +18,7 @@ interface LayoutProps {
   currentPage: Page;
   onNavigate: (page: Page) => void;
   onLogout: () => void;
+  onSimulateExpiry?: () => void;
   children: React.ReactNode;
 }
 
@@ -71,7 +72,7 @@ const pageTitles: Record<string, string> = {
   'manager-feedback': 'Interview Feedback',
 };
 
-export function Layout({ user, currentPage, onNavigate, onLogout, children }: LayoutProps) {
+export function Layout({ user, currentPage, onNavigate, onLogout, onSimulateExpiry, children }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [notifOpen, setNotifOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -297,6 +298,15 @@ export function Layout({ user, currentPage, onNavigate, onLogout, children }: La
                       <Lock size={15} className="text-muted-foreground flex-shrink-0" />
                       Change Password
                     </button>
+                    {onSimulateExpiry && (
+                      <button
+                        onClick={() => { setProfileMenuOpen(false); onSimulateExpiry(); }}
+                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-amber-600 hover:bg-amber-50 transition-colors text-left"
+                      >
+                        <Clock size={15} className="flex-shrink-0" />
+                        Simulate Session Expiry
+                      </button>
+                    )}
                   </div>
 
                   <div className="border-t border-border py-1">

@@ -16,8 +16,10 @@ export interface AuthUser {
 interface AuthContextType {
   user: AuthUser | null;
   loading: boolean;
+  sessionExpired: boolean;
   login: (email: string, role: AppRole) => Promise<void>;
   logout: () => void;
+  simulateExpiry: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,11 +27,9 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [sessionExpired, setSessionExpired] = useState(false);
 
   useEffect(() => {
-    // In a real app, we'd check Supabase Auth session here:
-    // supabase.auth.getSession()...
-    // For this prototype, we're relying on local storage to persist the pseudo-session
     const storedUser = localStorage.getItem('hrms_user');
     if (storedUser) {
       try {
@@ -61,16 +61,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     setUser(authUser);
+    setSessionExpired(false);
     localStorage.setItem('hrms_user', JSON.stringify(authUser));
   };
 
   const logout = () => {
     setUser(null);
+    setSessionExpired(false);
+    localStorage.removeItem('hrms_user');
+  };
+
+  const simulateExpiry = () => {
+    setUser(null);
+    setSessionExpired(true);
     localStorage.removeItem('hrms_user');
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, sessionExpired, login, logout, simulateExpiry }}>
       {children}
     </AuthContext.Provider>
   );

@@ -29,7 +29,7 @@ const defaultPageForRole: Record<AppRole, Page> = {
 };
 
 export default function App() {
-  const { user, login, logout, loading } = useAuth();
+  const { user, loading, sessionExpired, logout, simulateExpiry } = useAuth();
   const [currentPage, setCurrentPage] = useState<Page>('admin-dashboard');
   const [profileEmployee, setProfileEmployee] = useState<Employee | null>(null);
   const [showJobBoard, setShowJobBoard] = useState(false);
@@ -71,7 +71,7 @@ export default function App() {
       <div>
         <LoginScreen
           onLogin={handleLogin}
-          initialView="login"
+          initialView={sessionExpired ? 'session-expired' : 'login'}
         />
         <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
           <button
@@ -133,6 +133,7 @@ export default function App() {
       currentPage={currentPage}
       onNavigate={handleNavigate}
       onLogout={handleLogout}
+      onSimulateExpiry={simulateExpiry}
     >
       {renderPage()}
     </Layout>
