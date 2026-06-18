@@ -492,7 +492,7 @@ function InterviewScheduling({ intList, setIntList, appList }: {
   appList: Applicant[];
 }) {
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ applicantId: '', date: '', time: '10:00', format: 'Virtual' as const, interviewer: '', notes: '' });
+  const [form, setForm] = useState({ applicantId: '', date: '', time: '10:00', format: 'Virtual' as 'Virtual' | 'On-site', interviewer: '', notes: '' });
   const [showNotif, setShowNotif] = useState<string | null>(null);
 
   const WEEKDAYS = ['Mon Jun 16', 'Tue Jun 17', 'Wed Jun 18', 'Thu Jun 19', 'Fri Jun 20'];

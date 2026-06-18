@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { Lock, Eye, EyeOff, X, CheckCircle2, Circle } from 'lucide-react';
+import { Lock, Eye, EyeOff, X, CheckCircle2, Circle, AlertTriangle } from 'lucide-react';
+import { supabase } from '../../../lib/supabaseClient';
 
 interface Props {
   onClose: () => void;
+  userId: string;
 }
 
 type Strength = 0 | 1 | 2 | 3 | 4;
@@ -33,7 +35,7 @@ function getStrength(password: string): Strength {
   return score as Strength;
 }
 
-export function ChangePasswordModal({ onClose }: Props) {
+export function ChangePasswordModal({ onClose, userId }: Props) {
   const [current, setCurrent] = useState('');
   const [newPass, setNewPass] = useState('');
   const [confirm, setConfirm] = useState('');
@@ -42,6 +44,7 @@ export function ChangePasswordModal({ onClose }: Props) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [saving, setSaving] = useState(false);
 
   const strength = getStrength(newPass);
   const cfg = STRENGTH_CONFIG[strength];
@@ -53,14 +56,41 @@ export function ChangePasswordModal({ onClose }: Props) {
     { label: 'One special character', met: /[^A-Za-z0-9]/.test(newPass) },
   ];
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!current) { setError('Please enter your current password.'); return; }
     if (strength < 3) { setError('Please choose a stronger password.'); return; }
     if (newPass !== confirm) { setError('New passwords do not match.'); return; }
     setError('');
-    setSuccess(true);
-    setTimeout(onClose, 2000);
+    setSaving(true);
+
+    try {
+      const { data, error: rpcError } = await supabase
+        .rpc('change_password', {
+          p_employee_id: userId,
+          p_old_password: current,
+          p_new_password: newPass,
+        });
+
+      if (rpcError) {
+        setError('Something went wrong. Please try again.');
+        setSaving(false);
+        return;
+      }
+
+      if (data && !data.success) {
+        setError(data.error || 'Failed to change password.');
+        setSaving(false);
+        return;
+      }
+
+      setSuccess(true);
+      setTimeout(onClose, 2000);
+    } catch {
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setSaving(false);
+    }
   }
 
   const inputCls = "w-full pl-10 pr-11 py-3 bg-[#F7F8FA] border border-[#E8EAF0] rounded-xl text-sm text-[#1E2A4A] outline-none focus:border-[#1E2A4A]/40 focus:ring-2 focus:ring-[#1E2A4A]/10 transition-all placeholder:text-[#9CA3AF]";
@@ -189,7 +219,9 @@ export function ChangePasswordModal({ onClose }: Props) {
                 </div>
 
                 {error && (
-                  <p className="text-xs text-red-500 bg-red-50 px-3 py-2 rounded-lg">{error}</p>
+                  <p className="text-xs text-red-500 bg-red-50 px-3 py-2 rounded-lg flex items-center gap-1.5">
+                    <AlertTriangle size={13} className="flex-shrink-0" /> {error}
+                  </p>
                 )}
 
                 {/* Actions */}
@@ -203,13 +235,21 @@ export function ChangePasswordModal({ onClose }: Props) {
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 py-3 rounded-xl text-white text-sm font-semibold transition-all"
+                    disabled={saving}
+                    className="flex-1 py-3 rounded-xl text-white text-sm font-semibold transition-all flex items-center justify-center gap-2"
                     style={{
-                      background: '#1E2A4A',
-                      boxShadow: '0 4px 14px rgba(30,42,74,0.35)',
+                      background: saving ? '#374151' : '#1E2A4A',
+                      boxShadow: saving ? 'none' : '0 4px 14px rgba(30,42,74,0.35)',
                     }}
                   >
-                    Update Password
+                    {saving ? (
+                      <>
+                        <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Updating...
+                      </>
+                    ) : (
+                      'Update Password'
+                    )}
                   </button>
                 </div>
               </form>

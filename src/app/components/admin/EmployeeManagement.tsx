@@ -93,22 +93,23 @@ export function EmployeeManagement({ onNavigate, profileEmployee }: Props) {
       department: form.department,
       position: form.position,
       gender: form.gender,
-      salary: Number(form.salary),
+      salary: Number(form.salary) || 0,
       address: form.address,
-      birth_date: form.birthDate,
-      join_date: form.joinDate,
+      birth_date: form.birthDate || null,
+      join_date: form.joinDate || null,
       emergency_contact: form.emergencyContact,
       initials
     };
     
     const localPayload = {
       ...form,
-      salary: Number(form.salary),
+      salary: Number(form.salary) || 0,
       initials
     };
 
     if (editEmployee) {
-      await supabase.from('employees').update(payload).eq('id', editEmployee.id);
+      const { error } = await supabase.from('employees').update(payload).eq('id', editEmployee.id);
+      if (error) { alert('Error updating employee: ' + error.message); return; }
       setEmployees(prev => prev.map(e => e.id === editEmployee.id ? { ...e, ...localPayload } : e));
     } else {
       const maxIdNum = employees.reduce((max, emp) => {
@@ -117,7 +118,8 @@ export function EmployeeManagement({ onNavigate, profileEmployee }: Props) {
       }, 0);
       const newId = `EMP${String(maxIdNum + 1).padStart(3, '0')}`;
       const newEmp = { id: newId, status: 'Active', ...payload };
-      await supabase.from('employees').insert(newEmp);
+      const { error } = await supabase.from('employees').insert(newEmp);
+      if (error) { alert('Error adding employee: ' + error.message); return; }
       setEmployees(prev => [...prev, { id: newId, status: 'Active', ...localPayload }]);
     }
     setShowModal(false);

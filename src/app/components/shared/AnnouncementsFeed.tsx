@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FileText, Megaphone, BookOpen, Download, CheckCircle2, Clock, X, AlertTriangle, ArrowLeft, Paperclip, Check } from 'lucide-react';
+import { FileText, Megaphone, BookOpen, Download, CheckCircle2, Clock, X, AlertTriangle, ArrowLeft, Paperclip, Check, Archive } from 'lucide-react';
 import { type Announcement, type DocType } from '../../data/announcementsData';
 import { useEffect } from 'react';
 import { supabase } from '../../../lib/supabaseClient';
@@ -93,6 +93,19 @@ export function AnnouncementsFeed({ role, userId = 'EMP002' }: Props) {
     const doc = announcements.find(a => a.id === id);
     if (doc) {
       await supabase.from('announcements').update({ readcount: doc.readCount + 1 }).eq('id', id);
+    }
+  }
+
+  async function handleArchive(e: React.MouseEvent, id: string) {
+    e.stopPropagation();
+    if (!confirm('Are you sure you want to archive this announcement? It will be removed from the feed.')) return;
+    
+    const { error } = await supabase.from('announcements').update({ status: 'Archived' }).eq('id', id);
+    if (!error) {
+      setAnnouncements(prev => prev.filter(a => a.id !== id));
+      if (selected?.id === id) setSelected(null);
+    } else {
+      alert('Failed to archive: ' + error.message);
     }
   }
 
@@ -280,7 +293,7 @@ export function AnnouncementsFeed({ role, userId = 'EMP002' }: Props) {
                         Read More →
                       </button>
                     </div>
-                    <div className="flex-shrink-0">
+                    <div className="flex-shrink-0 flex flex-col items-end gap-2">
                       {doc.requiresAcknowledgement ? (
                         isAcked ? (
                           <span className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-700 text-xs font-medium rounded-full border border-emerald-200">
@@ -295,6 +308,15 @@ export function AnnouncementsFeed({ role, userId = 'EMP002' }: Props) {
                         <span className="flex items-center gap-1.5 px-3 py-1.5 bg-secondary text-muted-foreground text-xs rounded-full">
                           No action needed
                         </span>
+                      )}
+                      
+                      {role === 'manager' && (
+                        <button
+                          onClick={(e) => handleArchive(e, doc.id)}
+                          className="text-xs font-medium text-red-500 hover:text-red-700 transition-colors flex items-center gap-1"
+                        >
+                          <Archive size={12} /> Archive
+                        </button>
                       )}
                     </div>
                   </div>

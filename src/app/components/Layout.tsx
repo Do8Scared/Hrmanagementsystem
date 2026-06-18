@@ -187,7 +187,7 @@ export function Layout({ user, currentPage, onNavigate, onLogout, onSimulateExpi
       )}
 
       {showPasswordFromMenu && (
-        <ChangePasswordModal onClose={() => setShowPasswordFromMenu(false)} />
+        <ChangePasswordModal onClose={() => setShowPasswordFromMenu(false)} userId={user.id} />
       )}
 
       {profileMenuOpen && (

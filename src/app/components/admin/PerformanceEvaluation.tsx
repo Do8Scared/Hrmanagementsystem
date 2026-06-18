@@ -131,7 +131,7 @@ export function PerformanceEvaluation() {
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
                   <span className="text-white text-sm font-semibold">
-                    {ev.employeeName.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                    {ev.employeeName.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
                   </span>
                 </div>
                 <div>
@@ -271,7 +271,7 @@ export function PerformanceEvaluation() {
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-xl bg-primary flex items-center justify-center">
                   <span className="text-white text-lg font-bold">
-                    {selectedEval.employeeName.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                    {selectedEval.employeeName.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
                   </span>
                 </div>
                 <div className="flex-1">

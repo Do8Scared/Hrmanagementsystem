@@ -21,6 +21,7 @@ import { AnnouncementsFeed } from './components/shared/AnnouncementsFeed';
 import { JobBoard } from './components/public/JobBoard';
 import { type Employee } from './data/mockData';
 import { useAuth, AppRole } from '../lib/useAuth';
+import { useSessionTimeout } from '../lib/useSessionTimeout';
 
 const defaultPageForRole: Record<AppRole, Page> = {
   admin: 'admin-dashboard',
@@ -33,6 +34,9 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>('admin-dashboard');
   const [profileEmployee, setProfileEmployee] = useState<Employee | null>(null);
   const [showJobBoard, setShowJobBoard] = useState(false);
+
+  // 15 minutes timeout
+  useSessionTimeout(simulateExpiry, !!user);
 
   useEffect(() => {
     if (user) {
@@ -87,6 +91,8 @@ export default function App() {
   }
 
   function renderPage() {
+    if (!user) return null;
+
     if (currentPage === 'my-profile') return <MyProfile />;
 
     // Announcements — accessible from all roles

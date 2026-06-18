@@ -87,6 +87,7 @@ export function MyProfile() {
   if (!emp) return <div className="p-8 text-center text-muted-foreground">Profile not found.</div>;
 
   const initials = emp.name ? emp.name.split(' ').map((n: string) => n[0]).join('') : 'EM';
+  const fieldCls = "w-full px-3 py-2 bg-[#F7F8FA] rounded-lg text-sm border-0 outline-none text-[#1E2A4A] focus:ring-2 focus:ring-blue-500/30";
 
   return (
     <div className="space-y-5">
@@ -252,7 +253,7 @@ export function MyProfile() {
       </div>
 
       {showPasswordModal && (
-        <ChangePasswordModal onClose={() => setShowPasswordModal(false)} />
+        <ChangePasswordModal onClose={() => setShowPasswordModal(false)} userId={user?.id ?? ''} />
       )}
     </div>
   );

@@ -220,7 +220,7 @@ export function AdminDashboard({ onNavigate }: Props) {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h3 className="font-semibold text-foreground">Today's Attendance Snapshot</h3>
-            <p className="text-xs text-muted-foreground mt-0.5">June 16, 2026</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
           </div>
           <button
             onClick={() => onNavigate('attendance')}

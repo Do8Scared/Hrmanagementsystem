@@ -282,11 +282,4 @@ export function ManpowerRequestPage() {
       )}
     </div>
   );
-
-  function getTimelineStep(status: string): number {
-    if (status === 'Rejected') return 2;
-    if (status === 'Pending') return 1;
-    if (status === 'Approved') return 2;
-    return 3;
-  }
 }

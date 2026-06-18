@@ -32,11 +32,11 @@ export function LoginScreen({ onLogin, initialView = 'login', sessionEmail }: Lo
     setLoading(true);
 
     try {
-      await login(email);
+      await login(email, password);
       onLogin();
     } catch (err: any) {
-      if (err.message === 'User not found') {
-        setError('Invalid credentials or user not found.');
+      if (err.message === 'Invalid credentials') {
+        setError('Invalid email or password. Please try again.');
       } else {
         setError('Something went wrong during login.');
       }

@@ -132,7 +132,7 @@ export function LeaveManagement() {
                       <div className="flex items-center gap-2.5">
                         <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
                           <span className="text-white text-xs font-semibold">
-                            {r.employeeName.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                            {r.employeeName.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
                           </span>
                         </div>
                         <div>

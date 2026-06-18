@@ -18,7 +18,7 @@ interface AuthContextType {
   loading: boolean;
   sessionExpired: boolean;
   lastEmail: string | null;
-  login: (email: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   simulateExpiry: () => void;
 }
@@ -43,28 +43,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(false);
   }, []);
 
-  const login = async (email: string) => {
+  const login = async (email: string, password: string) => {
+    // Call the verify_password RPC function which checks bcrypt hash server-side
     const { data, error } = await supabase
-      .from('employees')
-      .select('*')
-      .eq('email', email)
-      .single();
+      .rpc('verify_password', { p_email: email, p_password: password });
 
-    if (error || !data) throw new Error('User not found');
+    if (error) throw new Error('Something went wrong during login.');
+    if (!data || data.length === 0) throw new Error('Invalid credentials');
+
+    const emp = data[0];
 
     let assignedRole: AppRole = 'employee';
-    if (data.department === 'Human Resources' || data.position?.toLowerCase().includes('manager') || data.position?.toLowerCase().includes('head')) {
+    if (emp.out_department === 'Human Resources' || emp.out_position?.toLowerCase().includes('manager') || emp.out_position?.toLowerCase().includes('head')) {
       assignedRole = 'admin';
     }
 
     const authUser: AuthUser = {
-      id: data.id,
-      email: data.email,
-      name: data.name,
-      department: data.department,
-      position: data.position,
+      id: emp.out_id,
+      email: emp.out_email,
+      name: emp.out_name,
+      department: emp.out_department,
+      position: emp.out_position,
       role: assignedRole,
-      initials: data.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase(),
+      initials: emp.out_name.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase(),
     };
 
     setUser(authUser);
