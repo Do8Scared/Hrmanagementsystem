@@ -76,7 +76,7 @@ export function MyPayslips() {
                 <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center mx-auto mb-2">
                   <span className="text-white font-bold text-lg">H</span>
                 </div>
-                <h3 className="font-bold text-foreground text-lg">HorizonHR Inc.</h3>
+                <h3 className="font-bold text-foreground text-lg">Corazon Travel and Tours</h3>
                 <p className="text-xs text-muted-foreground">BGC Corporate Center, Taguig City, Philippines</p>
               </div>
               <div className="flex justify-between items-center pb-4 border-b border-border">

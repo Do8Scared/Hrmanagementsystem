@@ -3,7 +3,7 @@ import { FileText, Megaphone, BookOpen, Download, CheckCircle2, Clock, X, AlertT
 import { announcements, type Announcement, type DocType } from '../../data/announcementsData';
 
 const typeConfig: Record<DocType, { color: string; bg: string; borderColor: string; icon: React.ElementType; label: string }> = {
-  Advisory: { color: 'text-blue-700', bg: 'bg-blue-50', borderColor: 'border-l-blue-500', icon: Megaphone, label: 'Advisory' },
+  Advisory: { color: 'text-accent', bg: 'bg-secondary', borderColor: 'border-l-blue-500', icon: Megaphone, label: 'Advisory' },
   Memorandum: { color: 'text-purple-700', bg: 'bg-purple-50', borderColor: 'border-l-purple-500', icon: FileText, label: 'Memorandum' },
   Policy: { color: 'text-emerald-700', bg: 'bg-emerald-50', borderColor: 'border-l-emerald-500', icon: BookOpen, label: 'Policy' },
 };

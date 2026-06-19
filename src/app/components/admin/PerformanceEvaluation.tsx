@@ -48,8 +48,8 @@ export function PerformanceEvaluation() {
     setForm(EMPTY_FORM);
   }
 
-  const ratingColor = (r: number) => r >= 4.5 ? 'text-emerald-600' : r >= 3.5 ? 'text-blue-600' : r >= 2.5 ? 'text-amber-600' : 'text-red-600';
-  const ratingBg = (r: number) => r >= 4.5 ? 'bg-emerald-50' : r >= 3.5 ? 'bg-blue-50' : r >= 2.5 ? 'bg-amber-50' : 'bg-red-50';
+  const ratingColor = (r: number) => r >= 4.5 ? 'text-emerald-600' : r >= 3.5 ? 'text-accent' : r >= 2.5 ? 'text-amber-600' : 'text-red-600';
+  const ratingBg = (r: number) => r >= 4.5 ? 'bg-emerald-50' : r >= 3.5 ? 'bg-secondary' : r >= 2.5 ? 'bg-amber-50' : 'bg-red-50';
 
   return (
     <div className="space-y-5">

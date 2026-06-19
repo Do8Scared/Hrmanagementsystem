@@ -76,7 +76,7 @@ export function LeaveRequest() {
       {/* Leave Balance Overview */}
       <div className="grid grid-cols-3 gap-4">
         {[
-          { label: 'Vacation Leave', used: balance.vacationUsed, total: balance.vacationLeave, color: 'bg-blue-500' },
+          { label: 'Vacation Leave', used: balance.vacationUsed, total: balance.vacationLeave, color: 'bg-primary' },
           { label: 'Sick Leave', used: balance.sickUsed, total: balance.sickLeave, color: 'bg-emerald-500' },
           { label: 'Emergency Leave', used: balance.emergencyUsed, total: balance.emergencyLeave, color: 'bg-purple-500' },
         ].map(b => {
@@ -153,7 +153,7 @@ export function LeaveRequest() {
             </div>
 
             {workDays > 0 && (
-              <div className="px-3 py-2 bg-blue-50 rounded-lg text-xs text-blue-700">
+              <div className="px-3 py-2 bg-secondary rounded-lg text-xs text-accent">
                 Duration: <strong>{workDays} working day{workDays > 1 ? 's' : ''}</strong>
               </div>
             )}

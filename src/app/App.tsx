@@ -3,18 +3,19 @@ import { Layout, type Page } from './components/Layout';
 import { LoginScreen } from './components/auth/LoginScreen';
 import { AdminDashboard } from './components/admin/AdminDashboard';
 import { EmployeeManagement } from './components/admin/EmployeeManagement';
-import { AttendanceManagement } from './components/admin/AttendanceManagement';
-import { PayrollManagement } from './components/admin/PayrollManagement';
+import { PayrollAttendance } from './components/admin/PayrollAttendance';
 import { LeaveManagement } from './components/admin/LeaveManagement';
-import { PerformanceEvaluation } from './components/admin/PerformanceEvaluation';
 import { JobPostingManagement } from './components/admin/JobPostingManagement';
 import { AnnouncementsHub } from './components/admin/AnnouncementsHub';
+import { HRAdminModule } from './components/admin/HRAdminModule';
 import { EmployeeDashboard } from './components/employee/EmployeeDashboard';
 import { MyAttendance } from './components/employee/MyAttendance';
 import { MyPayslips } from './components/employee/MyPayslips';
 import { LeaveRequest } from './components/employee/LeaveRequest';
 import { MyPerformance } from './components/employee/MyPerformance';
 import { MyProfile } from './components/employee/MyProfile';
+import { MyHRCases } from './components/employee/MyHRCases';
+import { ManagerDashboard } from './components/manager/ManagerDashboard';
 import { ManpowerRequestPage } from './components/manager/ManpowerRequestPage';
 import { ManagerInterviewFeedback } from './components/manager/ManagerInterviewFeedback';
 import { AnnouncementsFeed } from './components/shared/AnnouncementsFeed';
@@ -27,7 +28,7 @@ type AppRole = 'admin' | 'employee' | 'manager';
 const defaultPageForRole: Record<AppRole, Page> = {
   admin: 'admin-dashboard',
   employee: 'emp-dashboard',
-  manager: 'manager-request',
+  manager: 'manager-dashboard',
 };
 
 const nextRole: Record<AppRole, AppRole> = {
@@ -104,9 +105,11 @@ export default function App() {
 
     if (role === 'manager') {
       switch (currentPage) {
+        case 'manager-dashboard': return <ManagerDashboard onNavigate={handleNavigate} />;
         case 'manager-request': return <ManpowerRequestPage />;
         case 'manager-feedback': return <ManagerInterviewFeedback />;
-        default: return <ManpowerRequestPage />;
+        case 'hr-admin': return <HRAdminModule viewerRole="manager" />;
+        default: return <ManagerDashboard onNavigate={handleNavigate} />;
       }
     }
 
@@ -116,11 +119,12 @@ export default function App() {
         case 'employees':
         case 'employee-profile':
           return <EmployeeManagement onNavigate={handleNavigate} profileEmployee={currentPage === 'employee-profile' ? profileEmployee : null} />;
-        case 'attendance': return <AttendanceManagement />;
-        case 'payroll': return <PayrollManagement />;
+        case 'attendance':
+        case 'payroll':
+        case 'payroll-attendance': return <PayrollAttendance />;
         case 'leaves': return <LeaveManagement />;
-        case 'performance': return <PerformanceEvaluation />;
         case 'recruitment': return <JobPostingManagement />;
+        case 'hr-admin': return <HRAdminModule viewerRole="admin" />;
         default: return <AdminDashboard onNavigate={handleNavigate} />;
       }
     }
@@ -132,6 +136,7 @@ export default function App() {
       case 'my-payslips': return <MyPayslips />;
       case 'leave-request': return <LeaveRequest />;
       case 'my-performance': return <MyPerformance />;
+      case 'my-hr-cases': return <MyHRCases />;
       default: return <EmployeeDashboard onNavigate={handleNavigate} />;
     }
   }

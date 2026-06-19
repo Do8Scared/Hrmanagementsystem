@@ -46,8 +46,8 @@ export function EmployeeDashboard({ onNavigate }: Props) {
         <div className="bg-card rounded-xl border border-border p-5">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
-                <Clock size={16} className="text-blue-600" />
+              <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center">
+                <Clock size={16} className="text-accent" />
               </div>
               <span className="text-sm font-medium text-foreground">Today's Attendance</span>
             </div>

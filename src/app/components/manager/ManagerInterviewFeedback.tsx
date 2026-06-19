@@ -200,7 +200,7 @@ export function ManagerInterviewFeedback() {
                 onClick={() => handleSubmit(activeInterview)}
                 disabled={!form.recommendation || form.overallImpression === 0}
                 className="flex items-center gap-2 px-5 py-2 rounded-lg text-white text-sm font-medium transition-all disabled:opacity-50"
-                style={{ background: '#1E2A4A' }}
+                style={{ background: 'var(--primary)' }}
               >
                 <Send size={14} /> Submit Feedback
               </button>

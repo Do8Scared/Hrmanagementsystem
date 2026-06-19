@@ -2,44 +2,53 @@
 
 :root {
   --font-size: 15px;
-  --font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --background: #F5F6FA;
-  --foreground: #1E2A4A;
-  --card: #ffffff;
-  --card-foreground: #1E2A4A;
-  --popover: #ffffff;
-  --popover-foreground: #1E2A4A;
-  --primary: #1E2A4A;
-  --primary-foreground: #ffffff;
-  --secondary: #EEF1F8;
-  --secondary-foreground: #1E2A4A;
-  --muted: #EEF1F8;
-  --muted-foreground: #6B7280;
-  --accent: #3B82F6;
-  --accent-foreground: #ffffff;
-  --destructive: #EF4444;
-  --destructive-foreground: #ffffff;
-  --border: #E5E7EB;
+  --font-family: 'Nunito', system-ui, sans-serif;
+
+  /* ── Corazon palette ─────────────────────────────────────────────────────── */
+  /* Extracted from logo: deep crimson bg + warm gold banner + cream highlights */
+
+  --background: #FBF7F1;           /* warm parchment — off-white with warmth    */
+  --foreground: #2A1215;           /* very dark crimson-brown for text           */
+  --card: #FFFFFF;
+  --card-foreground: #2A1215;
+  --popover: #FFFFFF;
+  --popover-foreground: #2A1215;
+  --primary: #8B1A1E;              /* deep crimson — logo background colour      */
+  --primary-foreground: #FFFFFF;
+  --secondary: #F5EBE0;            /* warm cream — secondary surfaces            */
+  --secondary-foreground: #2A1215;
+  --muted: #EDE3D8;                /* muted warm sand                            */
+  --muted-foreground: #7A5C50;     /* warm taupe for secondary text              */
+  --accent: #C8890A;               /* warm gold — logo banner colour             */
+  --accent-foreground: #FFFFFF;
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+  --border: #E8D8C8;               /* warm beige border                          */
   --input: transparent;
-  --input-background: #F9FAFB;
-  --switch-background: #cbced4;
-  --font-weight-medium: 600;
+  --input-background: #FBF4EC;
+  --switch-background: #C8A88A;
+  --font-weight-medium: 700;
   --font-weight-normal: 400;
-  --ring: #3B82F6;
-  --chart-1: #3B82F6;
-  --chart-2: #10B981;
-  --chart-3: #F59E0B;
-  --chart-4: #EF4444;
-  --chart-5: #8B5CF6;
-  --radius: 0.5rem;
-  --sidebar: #1E2A4A;
-  --sidebar-foreground: #ffffff;
-  --sidebar-primary: #3B82F6;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #2D3F6B;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: rgba(255,255,255,0.08);
-  --sidebar-ring: #3B82F6;
+  --ring: #C8890A;
+
+  /* Charts — warm palette in line with brand */
+  --chart-1: #C8890A;              /* gold                                       */
+  --chart-2: #10B981;              /* emerald (keep functional green)            */
+  --chart-3: #8B1A1E;              /* crimson                                    */
+  --chart-4: #F59E0B;              /* amber                                      */
+  --chart-5: #7C3AED;              /* purple accent                              */
+
+  --radius: 0.625rem;
+
+  /* Sidebar — deep crimson matching logo background */
+  --sidebar: #6E1216;              /* dark crimson sidebar                       */
+  --sidebar-foreground: #FFF5E9;
+  --sidebar-primary: #E8A800;      /* bright gold for active nav items           */
+  --sidebar-primary-foreground: #2A1215;
+  --sidebar-accent: #5A0D10;       /* darker crimson for hover states            */
+  --sidebar-accent-foreground: #FFF5E9;
+  --sidebar-border: rgba(255, 235, 180, 0.12);
+  --sidebar-ring: #E8A800;
 }
 
 .dark {
@@ -62,7 +71,7 @@
   --border: oklch(0.269 0 0);
   --input: oklch(0.269 0 0);
   --ring: oklch(0.439 0 0);
-  --font-weight-medium: 500;
+  --font-weight-medium: 700;
   --font-weight-normal: 400;
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
@@ -130,11 +139,6 @@
     font-family: var(--font-family);
   }
 
-  /**
-  * Default typography styles for HTML elements (h1-h4, p, label, button, input).
-  * These are in @layer base, so Tailwind utility classes (like text-sm, text-lg) automatically override them.
-  */
-
   html {
     font-size: var(--font-size);
   }
@@ -142,19 +146,19 @@
   h1 {
     font-size: var(--text-2xl);
     font-weight: var(--font-weight-medium);
-    line-height: 1.5;
+    line-height: 1.4;
   }
 
   h2 {
     font-size: var(--text-xl);
     font-weight: var(--font-weight-medium);
-    line-height: 1.5;
+    line-height: 1.4;
   }
 
   h3 {
     font-size: var(--text-lg);
     font-weight: var(--font-weight-medium);
-    line-height: 1.5;
+    line-height: 1.4;
   }
 
   h4 {

@@ -166,7 +166,7 @@ export function EmployeeManagement({ onNavigate, profileEmployee }: Props) {
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() => onNavigate('employee-profile', emp)}
-                      className="p-1.5 rounded-lg text-muted-foreground hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                      className="p-1.5 rounded-lg text-muted-foreground hover:bg-secondary hover:text-accent transition-colors"
                       title="View Profile"
                     >
                       <Eye size={15} />

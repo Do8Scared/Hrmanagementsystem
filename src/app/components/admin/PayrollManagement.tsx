@@ -104,7 +104,7 @@ export function PayrollManagement() {
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => setSelectedPayslip(r)}
-                        className="px-2.5 py-1 rounded-md text-xs text-accent border border-accent/30 hover:bg-blue-50 transition-colors"
+                        className="px-2.5 py-1 rounded-md text-xs text-accent border border-accent/30 hover:bg-secondary transition-colors"
                       >
                         View Payslip
                       </button>
@@ -142,7 +142,7 @@ export function PayrollManagement() {
                 <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center mx-auto mb-2">
                   <span className="text-white font-bold text-lg">H</span>
                 </div>
-                <h3 className="font-bold text-foreground text-lg">HorizonHR Inc.</h3>
+                <h3 className="font-bold text-foreground text-lg">Corazon Travel and Tours</h3>
                 <p className="text-xs text-muted-foreground">BGC Corporate Center, Taguig City, Philippines</p>
                 <p className="text-xs text-muted-foreground">TIN: 123-456-789-000</p>
               </div>
