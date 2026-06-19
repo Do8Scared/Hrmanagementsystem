@@ -83,7 +83,7 @@ export function ManpowerRequestPage() {
             </div>
           )}
           {savedDraft && (
-            <div className="flex items-center gap-3 px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl text-sm text-blue-700">
+            <div className="flex items-center gap-3 px-4 py-3 bg-secondary border border-border rounded-xl text-sm text-accent">
               <Save size={16} className="flex-shrink-0" /> Draft saved successfully.
             </div>
           )}
@@ -159,7 +159,7 @@ export function ManpowerRequestPage() {
             <button
               type="submit"
               className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-white text-sm font-medium transition-all hover:opacity-90"
-              style={{ background: '#1E2A4A', boxShadow: '0 4px 14px rgba(30,42,74,0.3)' }}
+              style={{ background: 'var(--primary)', boxShadow: '0 4px 14px rgba(110,18,22,0.35)' }}
             >
               <Send size={15} /> Submit Request
             </button>

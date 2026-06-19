@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import {
   LayoutDashboard, Users, Clock, DollarSign, CalendarDays, Star,
-  Bell, ChevronDown, LogOut, Menu, X, Building2, User, Lock, Briefcase, Megaphone
+  Bell, ChevronDown, LogOut, Menu, X, User, Lock, Briefcase, Megaphone,
+  ShieldAlert
 } from 'lucide-react';
+import corazonLogo from '@/imports/Screenshot_2026-06-18_at_10.57.47_PM.png';
+import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { LogoutModal } from './auth/LogoutModal';
 import { ChangePasswordModal } from './auth/ChangePasswordModal';
 
 export type Page =
-  | 'admin-dashboard' | 'employees' | 'employee-profile' | 'attendance' | 'payroll' | 'leaves' | 'performance' | 'recruitment' | 'announcements'
-  | 'emp-dashboard' | 'my-attendance' | 'my-payslips' | 'leave-request' | 'my-performance' | 'my-profile' | 'emp-announcements'
+  | 'admin-dashboard' | 'employees' | 'employee-profile' | 'attendance' | 'payroll' | 'payroll-attendance' | 'leaves' | 'performance' | 'recruitment' | 'announcements' | 'hr-admin'
+  | 'emp-dashboard' | 'my-attendance' | 'my-payslips' | 'leave-request' | 'my-performance' | 'my-profile' | 'emp-announcements' | 'my-hr-cases'
   | 'manager-dashboard' | 'manager-request' | 'manager-feedback' | 'manager-announcements';
 
 interface LayoutProps {
@@ -24,11 +27,10 @@ interface LayoutProps {
 const adminNav = [
   { id: 'admin-dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'employees', label: 'Employee Management', icon: Users },
-  { id: 'attendance', label: 'Attendance', icon: Clock },
-  { id: 'payroll', label: 'Payroll', icon: DollarSign },
+  { id: 'payroll-attendance', label: 'Payroll & Attendance', icon: DollarSign },
   { id: 'leaves', label: 'Leave Management', icon: CalendarDays },
-  { id: 'performance', label: 'Performance', icon: Star },
   { id: 'recruitment', label: 'Recruitment', icon: Briefcase },
+  { id: 'hr-admin', label: 'HR Admin / ER', icon: ShieldAlert },
   { id: 'announcements', label: 'Announcements', icon: Megaphone },
 ];
 
@@ -38,6 +40,7 @@ const employeeNav = [
   { id: 'my-payslips', label: 'My Payslips', icon: DollarSign },
   { id: 'leave-request', label: 'Leave Request', icon: CalendarDays },
   { id: 'my-performance', label: 'My Performance', icon: Star },
+  { id: 'my-hr-cases', label: 'HR Cases', icon: ShieldAlert },
   { id: 'emp-announcements', label: 'Announcements', icon: Megaphone },
 ];
 
@@ -45,6 +48,7 @@ const managerNav = [
   { id: 'manager-dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'manager-request', label: 'Manpower Request', icon: Briefcase },
   { id: 'manager-feedback', label: 'Interview Feedback', icon: Star },
+  { id: 'hr-admin', label: 'Employee Relations', icon: ShieldAlert },
   { id: 'manager-announcements', label: 'Announcements', icon: Megaphone },
 ];
 
@@ -54,16 +58,19 @@ const pageTitles: Record<string, string> = {
   'employee-profile': 'Employee Profile',
   'attendance': 'Attendance Management',
   'payroll': 'Payroll Management',
+  'payroll-attendance': 'Payroll & Attendance',
   'leaves': 'Leave Management',
   'performance': 'Performance Evaluation',
+  'recruitment': 'Recruitment',
+  'hr-admin': 'HR Admin / Employee Relations',
+  'announcements': 'Announcements & Policies',
   'emp-dashboard': 'Dashboard',
   'my-attendance': 'My Attendance',
   'my-payslips': 'My Payslips',
   'leave-request': 'Leave Request',
   'my-performance': 'My Performance',
   'my-profile': 'My Profile',
-  'recruitment': 'Recruitment',
-  'announcements': 'Announcements & Policies',
+  'my-hr-cases': 'My HR Cases',
   'emp-announcements': 'Announcements',
   'manager-announcements': 'Announcements',
   'manager-dashboard': 'Dashboard',
@@ -87,25 +94,31 @@ export function Layout({ role, currentPage, onNavigate, onRoleChange, onLogout, 
       {/* Sidebar */}
       <aside
         className={`flex flex-col flex-shrink-0 transition-all duration-300 ${sidebarOpen ? 'w-64' : 'w-16'}`}
-        style={{ background: '#1E2A4A' }}
+        style={{ background: 'var(--sidebar)' }}
       >
         {/* Logo */}
-        <div className="flex items-center gap-3 px-4 py-5 border-b border-white/10">
-          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500 flex-shrink-0">
-            <Building2 size={16} className="text-white" />
-          </div>
-          {sidebarOpen && (
-            <div>
-              <div className="text-white font-semibold text-sm leading-tight">Corazon Travel and Tours</div>
-              <div className="text-white/50 text-xs">Management System</div>
+        <div className={`flex items-center border-b border-white/10 ${sidebarOpen ? 'px-3 py-3' : 'px-2 py-3 justify-center'}`}>
+          {sidebarOpen ? (
+            <ImageWithFallback
+              src={corazonLogo}
+              alt="Corazon Travel and Tours"
+              className="h-12 w-auto object-contain"
+            />
+          ) : (
+            <div className="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0">
+              <ImageWithFallback
+                src={corazonLogo}
+                alt="Corazon"
+                className="w-full h-full object-cover"
+              />
             </div>
           )}
         </div>
 
         {/* Role indicator */}
         {sidebarOpen && (
-          <div className="px-4 pt-4 pb-2">
-            <div className="text-white/40 text-xs uppercase tracking-wider font-semibold">
+          <div className="px-4 pt-3 pb-1.5">
+            <div className="text-xs uppercase tracking-wider font-bold" style={{ color: 'var(--sidebar-primary)', opacity: 0.85 }}>
               {role === 'admin' ? 'Admin / HR' : role === 'manager' ? 'Manager Portal' : 'Employee Portal'}
             </div>
           </div>
@@ -115,27 +128,32 @@ export function Layout({ role, currentPage, onNavigate, onRoleChange, onLogout, 
         <nav className="flex-1 px-2 py-2 space-y-0.5 overflow-y-auto">
           {navItems.map(item => {
             const Icon = item.icon;
-            const isActive = currentPage === item.id || (item.id === 'employees' && currentPage === 'employee-profile');
+            const isActive = currentPage === item.id || (item.id === 'employees' && currentPage === 'employee-profile') || (item.id === 'payroll-attendance' && (currentPage === 'attendance' || currentPage === 'payroll'));
             const isAnnouncements = item.id === 'announcements' || item.id === 'emp-announcements' || item.id === 'manager-announcements';
+            const hasAlert = isAnnouncements || (item.id === 'hr-admin') || (item.id === 'my-hr-cases');
             return (
               <button
                 key={item.id}
                 onClick={() => onNavigate(item.id as Page)}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 ${
                   isActive
-                    ? 'bg-white/15 text-white font-medium'
-                    : 'text-white/60 hover:bg-white/8 hover:text-white/90'
+                    ? 'text-white font-bold'
+                    : 'hover:text-white/90'
                 }`}
+                style={isActive
+                  ? { background: 'rgba(232,168,0,0.18)', color: '#FFF5E9' }
+                  : { color: 'rgba(255,245,233,0.55)' }
+                }
               >
                 <div className="relative flex-shrink-0">
-                  <Icon size={18} />
-                  {isAnnouncements && !isActive && (
-                    <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-red-400 rounded-full" />
+                  <Icon size={18} style={isActive ? { color: 'var(--sidebar-primary)' } : {}} />
+                  {hasAlert && !isActive && (
+                    <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-amber-400 rounded-full" />
                   )}
                 </div>
                 {sidebarOpen && <span className="truncate">{item.label}</span>}
                 {isActive && sidebarOpen && (
-                  <span className="ml-auto w-1.5 h-1.5 rounded-full bg-blue-400" />
+                  <span className="ml-auto w-1.5 h-1.5 rounded-full" style={{ background: 'var(--sidebar-primary)' }} />
                 )}
               </button>
             );
@@ -147,12 +165,12 @@ export function Layout({ role, currentPage, onNavigate, onRoleChange, onLogout, 
           {sidebarOpen ? (
             <div className="space-y-2">
               <div className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-white/8 transition-colors">
-                <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-xs font-semibold">{userInitials}</span>
+                <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'var(--sidebar-primary)' }}>
+                  <span className="text-xs font-bold" style={{ color: 'var(--sidebar-primary-foreground)' }}>{userInitials}</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-white text-xs font-medium truncate">Matthew Gagap</div>
-                  <div className="text-white/40 text-xs truncate">{userRole}</div>
+                  <div className="text-xs font-bold truncate" style={{ color: 'var(--sidebar-foreground)' }}>{userName}</div>
+                  <div className="text-xs truncate" style={{ color: 'rgba(255,245,233,0.45)' }}>{userRole}</div>
                 </div>
               </div>
               <button
@@ -172,8 +190,8 @@ export function Layout({ role, currentPage, onNavigate, onRoleChange, onLogout, 
             </div>
           ) : (
             <div className="flex flex-col items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
-                <span className="text-white text-xs font-semibold">{userInitials}</span>
+              <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'var(--sidebar-primary)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--sidebar-primary-foreground)' }}>{userInitials}</span>
               </div>
               <button onClick={() => setShowLogoutModal(true)} className="text-red-400/80 hover:text-red-400 transition-colors" title="Log Out">
                 <LogOut size={14} />
@@ -210,7 +228,7 @@ export function Layout({ role, currentPage, onNavigate, onRoleChange, onLogout, 
               {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
             <div>
-              <h1 className="text-foreground font-semibold">{pageTitles[currentPage] ?? 'HorizonHR'}</h1>
+              <h1 className="text-foreground font-semibold">{pageTitles[currentPage] ?? 'Corazon Travel and Tours'}</h1>
               <p className="text-muted-foreground text-xs">Tuesday, June 16, 2026</p>
             </div>
           </div>
@@ -240,7 +258,7 @@ export function Layout({ role, currentPage, onNavigate, onRoleChange, onLogout, 
                     <span className="text-xs text-muted-foreground">5 new</span>
                   </div>
                   {[
-                    { type: 'Advisory', msg: 'Q2 2026 Company Performance Update', time: '2 hrs ago', accent: 'bg-blue-500' },
+                    { type: 'Advisory', msg: 'Q2 2026 Company Performance Update', time: '2 hrs ago', accent: 'bg-primary' },
                     { type: 'Policy', msg: 'Updated Flexible Work Arrangement Policy', time: '4 hrs ago', accent: 'bg-emerald-500' },
                     { type: 'Memorandum', msg: 'Office Closure — June 19 Holiday', time: '1 day ago', accent: 'bg-purple-500' },
                     { type: 'System', msg: 'Leave request from Juan dela Cruz pending', time: '10 min ago', accent: 'bg-amber-500' },

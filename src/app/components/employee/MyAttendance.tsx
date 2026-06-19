@@ -74,7 +74,7 @@ export function MyAttendance() {
           { label: 'Present', value: present, color: 'text-emerald-700', bg: 'bg-emerald-50 border-emerald-100' },
           { label: 'Late', value: late, color: 'text-amber-700', bg: 'bg-amber-50 border-amber-100' },
           { label: 'Absent', value: absent, color: 'text-red-700', bg: 'bg-red-50 border-red-100' },
-          { label: 'Total Hours', value: `${totalHours.toFixed(1)}h`, color: 'text-primary', bg: 'bg-blue-50 border-blue-100' },
+          { label: 'Total Hours', value: `${totalHours.toFixed(1)}h`, color: 'text-primary', bg: 'bg-secondary border-border' },
         ].map(s => (
           <div key={s.label} className={`rounded-xl border p-4 ${s.bg}`}>
             <div className={`text-xl font-bold ${s.color}`}>{s.value}</div>

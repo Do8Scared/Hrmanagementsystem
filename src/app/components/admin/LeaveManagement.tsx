@@ -174,7 +174,7 @@ export function LeaveManagement() {
                       </div>
                     </td>
                     <td className="px-5 py-4">
-                      <LeaveBalanceBar used={bal.vacationUsed} total={bal.vacationLeave} color="bg-blue-500" />
+                      <LeaveBalanceBar used={bal.vacationUsed} total={bal.vacationLeave} color="bg-primary" />
                     </td>
                     <td className="px-5 py-4">
                       <LeaveBalanceBar used={bal.sickUsed} total={bal.sickLeave} color="bg-emerald-500" />

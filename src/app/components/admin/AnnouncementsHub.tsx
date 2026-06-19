@@ -12,7 +12,7 @@ import {
 } from '../../data/announcementsData';
 
 const typeConfig: Record<DocType, { color: string; bg: string; border: string; icon: React.ElementType }> = {
-  Advisory: { color: 'text-blue-700', bg: 'bg-blue-50', border: 'border-l-blue-500', icon: Megaphone },
+  Advisory: { color: 'text-accent', bg: 'bg-secondary', border: 'border-l-blue-500', icon: Megaphone },
   Memorandum: { color: 'text-purple-700', bg: 'bg-purple-50', border: 'border-l-purple-500', icon: FileText },
   Policy: { color: 'text-emerald-700', bg: 'bg-emerald-50', border: 'border-l-emerald-500', icon: BookOpen },
 };
@@ -346,7 +346,7 @@ export function AnnouncementsHub() {
                   </td>
                   <td className="px-5 py-4">
                     <div className="flex gap-1">
-                      <button onClick={() => openEdit(doc)} className="p-1.5 rounded-lg text-muted-foreground hover:bg-blue-50 hover:text-blue-600 transition-colors" title="Edit"><Eye size={14} /></button>
+                      <button onClick={() => openEdit(doc)} className="p-1.5 rounded-lg text-muted-foreground hover:bg-secondary hover:text-accent transition-colors" title="Edit"><Eye size={14} /></button>
                       <button onClick={() => openEdit(doc)} className="p-1.5 rounded-lg text-muted-foreground hover:bg-amber-50 hover:text-amber-600 transition-colors" title="Edit"><Pencil size={14} /></button>
                       {doc.status !== 'Archived' && (
                         <button onClick={() => handleArchive(doc.id)} className="p-1.5 rounded-lg text-muted-foreground hover:bg-gray-100 hover:text-gray-600 transition-colors" title="Archive"><Archive size={14} /></button>

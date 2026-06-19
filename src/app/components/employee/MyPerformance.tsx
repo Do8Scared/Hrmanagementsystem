@@ -11,9 +11,9 @@ const CRITERIA_LABELS = [
 
 const ratingLabels = ['', 'Poor', 'Below Average', 'Average', 'Good', 'Excellent'];
 
-const ratingColor = (r: number) => r >= 4.5 ? 'text-emerald-600' : r >= 3.5 ? 'text-blue-600' : r >= 2.5 ? 'text-amber-600' : 'text-red-600';
-const ratingBg = (r: number) => r >= 4.5 ? 'bg-emerald-50 border-emerald-100' : r >= 3.5 ? 'bg-blue-50 border-blue-100' : r >= 2.5 ? 'bg-amber-50 border-amber-100' : 'bg-red-50 border-red-100';
-const barColor = (r: number) => r >= 4 ? 'bg-emerald-500' : r >= 3 ? 'bg-blue-500' : r >= 2 ? 'bg-amber-500' : 'bg-red-500';
+const ratingColor = (r: number) => r >= 4.5 ? 'text-emerald-600' : r >= 3.5 ? 'text-accent' : r >= 2.5 ? 'text-amber-600' : 'text-red-600';
+const ratingBg = (r: number) => r >= 4.5 ? 'bg-emerald-50 border-emerald-100' : r >= 3.5 ? 'bg-secondary border-border' : r >= 2.5 ? 'bg-amber-50 border-amber-100' : 'bg-red-50 border-red-100';
+const barColor = (r: number) => r >= 4 ? 'bg-emerald-500' : r >= 3 ? 'bg-primary' : r >= 2 ? 'bg-amber-500' : 'bg-red-500';
 
 export function MyPerformance() {
   const myEvals = performanceEvaluations.filter(e => e.employeeId === 'EMP002');

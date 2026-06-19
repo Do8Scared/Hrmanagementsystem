@@ -28,7 +28,7 @@ const urgencyColor: Record<string, string> = {
 
 const stageColor: Record<ApplicantStage, string> = {
   Applied: 'bg-gray-100 text-gray-600',
-  Shortlisted: 'bg-blue-50 text-blue-700',
+  Shortlisted: 'bg-secondary text-accent',
   'Interview Scheduled': 'bg-purple-50 text-purple-700',
   Interviewed: 'bg-amber-50 text-amber-700',
   'Job Offer': 'bg-orange-50 text-orange-700',
@@ -37,7 +37,7 @@ const stageColor: Record<ApplicantStage, string> = {
 };
 
 const interviewStatusColor: Record<string, string> = {
-  Upcoming: 'bg-blue-100 text-blue-700',
+  Upcoming: 'bg-amber-50 text-accent',
   Done: 'bg-emerald-100 text-emerald-700',
   Cancelled: 'bg-red-100 text-red-600',
 };
@@ -273,7 +273,7 @@ function JobPostingsList({ jpList, setJpList }: { jpList: JobPosting[]; setJpLis
             <tr key={jp.id} className={`border-b border-border/50 hover:bg-secondary/20 ${i % 2 !== 0 ? 'bg-secondary/10' : ''}`}>
               <td className="px-3 py-3 text-sm font-medium text-foreground">{jp.title}</td>
               <td className="px-3 py-3 text-xs text-muted-foreground">{jp.department}</td>
-              <td className="px-3 py-3"><span className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-xs">{jp.employmentType}</span></td>
+              <td className="px-3 py-3"><span className="px-2 py-0.5 rounded-full bg-secondary text-accent text-xs">{jp.employmentType}</span></td>
               <td className="px-3 py-3 text-xs text-muted-foreground">{jp.datePosted || '—'}</td>
               <td className="px-3 py-3 text-xs text-muted-foreground">{jp.deadline}</td>
               <td className="px-3 py-3 text-sm font-semibold text-foreground text-center">{jp.applicantCount}</td>
@@ -394,7 +394,7 @@ function ApplicantTracker({ appList, setAppList, jpList, setTab }: {
                       <button onClick={() => moveStage(app.id, 1)} disabled={stage === kanbanStages[kanbanStages.length - 1]} className="flex-1 py-1 rounded bg-secondary text-xs text-muted-foreground hover:bg-border disabled:opacity-30 transition-colors">→</button>
                     </div>
                     {(stage === 'Shortlisted' || stage === 'Applied') && (
-                      <button onClick={() => setTab('scheduling')} className="w-full mt-1.5 py-1 rounded bg-blue-50 text-blue-700 text-xs hover:bg-blue-100 transition-colors">Schedule Interview</button>
+                      <button onClick={() => setTab('scheduling')} className="w-full mt-1.5 py-1 rounded bg-secondary text-accent text-xs hover:bg-amber-50 transition-colors">Schedule Interview</button>
                     )}
                   </div>
                 ))}
@@ -480,7 +480,7 @@ function InterviewScheduling({ intList, setIntList, appList }: {
           })}
         </div>
         <div className="flex items-center gap-4 mt-3 pt-3 border-t border-border">
-          {[{ label: 'Upcoming', c: 'bg-blue-100 text-blue-700' }, { label: 'Done', c: 'bg-emerald-100 text-emerald-700' }, { label: 'Cancelled', c: 'bg-red-100 text-red-600' }].map(s => (
+          {[{ label: 'Upcoming', c: 'bg-amber-50 text-accent' }, { label: 'Done', c: 'bg-emerald-100 text-emerald-700' }, { label: 'Cancelled', c: 'bg-red-100 text-red-600' }].map(s => (
             <span key={s.label} className={`px-2.5 py-0.5 rounded text-xs font-medium ${s.c}`}>{s.label}</span>
           ))}
         </div>

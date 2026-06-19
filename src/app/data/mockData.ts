@@ -193,4 +193,186 @@ export const recentActivities = [
   { id: 4, action: 'Performance evaluation submitted', subject: 'Ana Reyes — Q1 2026', time: '2 days ago', type: 'performance' },
   { id: 5, action: 'Leave request rejected', subject: 'Jerome Villanueva', time: '3 days ago', type: 'leave' },
   { id: 6, action: 'Employee profile updated', subject: 'Isabella Lim', time: '4 days ago', type: 'employee' },
+  { id: 7, action: 'NTE issued', subject: 'Miguel Torres — habitual tardiness', time: '5 days ago', type: 'hr-admin' },
+  { id: 8, action: 'NOD issued', subject: 'Rafael Cruz — written warning', time: '1 week ago', type: 'hr-admin' },
+];
+
+// ─── HR Admin / Employee Relations ───────────────────────────────────────────
+
+export type NTEStatus =
+  | 'Pending Explanation'
+  | 'Explanation Submitted'
+  | 'Under Review'
+  | 'Decision Issued'
+  | 'Closed'
+  | 'Voided';
+
+export type IncidentType =
+  | 'Habitual Tardiness'
+  | 'Absenteeism Without Leave'
+  | 'Insubordination'
+  | 'Unsatisfactory Work Quality'
+  | 'Misconduct'
+  | 'Violation of Company Policy'
+  | 'Other';
+
+export type NODDecision = 'Written Warning' | 'Suspension' | 'Dismissal' | 'Exonerated';
+
+export interface ExplanationLetter {
+  filename: string;
+  submittedDate: string;
+  submittedBy: string;
+}
+
+export interface AuditEntry {
+  id: string;
+  action: string;
+  performedBy: string;
+  role: 'admin' | 'manager' | 'employee';
+  timestamp: string;
+  details?: string;
+}
+
+export interface NTERecord {
+  id: string;
+  employeeId: string;
+  employeeName: string;
+  department: string;
+  issuedBy: string;
+  issuedByRole: 'admin' | 'manager';
+  assignedTo: string;
+  issuedDate: string;
+  incidentDate: string;
+  incidentType: IncidentType;
+  description: string;
+  responseDeadline: string;
+  status: NTEStatus;
+  escalationRequired: boolean;
+  escalationApprovedBy?: string;
+  escalationApprovedDate?: string;
+  managerRecommendation?: string;
+  acknowledgedAt?: string;
+  explanationLetter?: ExplanationLetter;
+  auditLog: AuditEntry[];
+}
+
+export interface NODRecord {
+  id: string;
+  nteId: string;
+  employeeId: string;
+  employeeName: string;
+  department: string;
+  issuedBy: string;
+  issuedDate: string;
+  decision: NODDecision;
+  suspensionDays?: number;
+  effectiveDate: string;
+  details: string;
+  managerRecommendation?: string;
+  acknowledgedAt?: string;
+  auditLog: AuditEntry[];
+}
+
+export interface NTETemplate {
+  id: string;
+  name: string;
+  type: 'NTE' | 'NOD';
+  incidentType?: IncidentType;
+  decisionType?: NODDecision;
+  subject: string;
+  body: string;
+}
+
+export const nteTemplates: NTETemplate[] = [
+  {
+    id: 'TPL-NTE-001', name: 'Habitual Tardiness', type: 'NTE', incidentType: 'Habitual Tardiness',
+    subject: 'Notice to Explain — Habitual Tardiness',
+    body: `Dear [EMPLOYEE_NAME],\n\nThis serves as a formal Notice to Explain regarding your habitual tardiness recorded for the period of [PERIOD].\n\nOur records show that you arrived late on multiple occasions in violation of the Company's attendance policy and your employment contract.\n\nYou are hereby required to submit a written explanation within five (5) calendar days from receipt of this notice.\n\nFailure to submit your written explanation within the prescribed period shall be construed as a waiver of your right to be heard.\n\nThis notice is issued in accordance with the twin-notice rule under the Philippine Labor Code.`,
+  },
+  {
+    id: 'TPL-NTE-002', name: 'Unauthorized Absence (AWOL)', type: 'NTE', incidentType: 'Absenteeism Without Leave',
+    subject: 'Notice to Explain — Absence Without Official Leave (AWOL)',
+    body: `Dear [EMPLOYEE_NAME],\n\nThis serves as a formal Notice to Explain regarding your unauthorized absence from work on [DATE(S)], without prior approval and without notifying your immediate superior.\n\nThis constitutes a violation of the Company's attendance and leave policies.\n\nYou are hereby required to submit a written explanation within five (5) calendar days from receipt of this notice.\n\nFailure to respond within the prescribed period shall be deemed a waiver of your right to be heard.\n\nThis notice is issued pursuant to the twin-notice rule under the Philippine Labor Code.`,
+  },
+  {
+    id: 'TPL-NTE-003', name: 'Insubordination', type: 'NTE', incidentType: 'Insubordination',
+    subject: 'Notice to Explain — Insubordination',
+    body: `Dear [EMPLOYEE_NAME],\n\nThis serves as a formal Notice to Explain regarding an act of insubordination on [DATE].\n\nSpecifically, you willfully refused or disobeyed a lawful directive from your superior, which is a serious violation of Company policy.\n\nYou are required to submit a written explanation within five (5) calendar days from receipt of this notice.\n\nThis notice is issued pursuant to the twin-notice rule mandated by DOLE.`,
+  },
+  {
+    id: 'TPL-NOD-001', name: 'Written Warning', type: 'NOD', decisionType: 'Written Warning',
+    subject: 'Notice of Decision — Written Warning',
+    body: `Dear [EMPLOYEE_NAME],\n\nThis Notice of Decision is issued in connection with the Notice to Explain (NTE) dated [NTE_DATE].\n\nAfter careful evaluation of the facts and your written explanation, Management hereby issues a FORMAL WRITTEN WARNING for [VIOLATION].\n\nA repetition or escalation of this conduct shall warrant more severe disciplinary action, up to and including dismissal from employment.\n\nThis decision is issued in accordance with the twin-notice rule under the Philippine Labor Code.`,
+  },
+  {
+    id: 'TPL-NOD-002', name: 'Suspension Without Pay', type: 'NOD', decisionType: 'Suspension',
+    subject: 'Notice of Decision — Suspension Without Pay',
+    body: `Dear [EMPLOYEE_NAME],\n\nThis Notice of Decision is issued in connection with the Notice to Explain (NTE) dated [NTE_DATE].\n\nManagement has decided to impose a SUSPENSION WITHOUT PAY for [SUSPENSION_DAYS] working days, effective [EFFECTIVE_DATE].\n\nYou are required to report back to work on [RETURN_DATE]. Future violations will be dealt with more severely.\n\nThis decision is issued in accordance with DOLE regulations and the Company's Code of Conduct.`,
+  },
+];
+
+export const nteRecords: NTERecord[] = [
+  {
+    id: 'NTE-2026-001', employeeId: 'EMP006', employeeName: 'Miguel Torres', department: 'Sales',
+    issuedBy: 'Sofia Garcia', issuedByRole: 'admin', assignedTo: 'Sofia Garcia',
+    issuedDate: '2026-06-11', incidentDate: '2026-06-01', incidentType: 'Habitual Tardiness',
+    description: 'Employee has recorded 8 instances of tardiness within May 2026, arriving between 30–90 minutes late without valid justification. Repeat violation after verbal warning on April 15, 2026.',
+    responseDeadline: '2026-06-16', status: 'Under Review', escalationRequired: false,
+    managerRecommendation: 'Repeated pattern over 2 months. Prior verbal warning on record. Recommend written warning.',
+    acknowledgedAt: '2026-06-11',
+    explanationLetter: { filename: 'Explanation_MiguelTorres_NTE-2026-001.pdf', submittedDate: '2026-06-14', submittedBy: 'Miguel Torres' },
+    auditLog: [
+      { id: 'AL-001-1', action: 'NTE Issued', performedBy: 'Sofia Garcia', role: 'admin', timestamp: '2026-06-11 09:00', details: 'NTE issued for habitual tardiness in May 2026' },
+      { id: 'AL-001-2', action: 'Employee Acknowledged', performedBy: 'Miguel Torres', role: 'employee', timestamp: '2026-06-11 10:32', details: 'Employee confirmed receipt of NTE' },
+      { id: 'AL-001-3', action: 'Explanation Letter Submitted', performedBy: 'Miguel Torres', role: 'employee', timestamp: '2026-06-14 16:45', details: 'Uploaded: Explanation_MiguelTorres_NTE-2026-001.pdf' },
+      { id: 'AL-001-4', action: 'Status → Under Review', performedBy: 'Sofia Garcia', role: 'admin', timestamp: '2026-06-15 09:10', details: 'HR reviewing submitted explanation' },
+    ],
+  },
+  {
+    id: 'NTE-2026-002', employeeId: 'EMP008', employeeName: 'Rafael Cruz', department: 'Engineering',
+    issuedBy: 'Maria Santos', issuedByRole: 'manager', assignedTo: 'Sofia Garcia',
+    issuedDate: '2026-05-20', incidentDate: '2026-05-13', incidentType: 'Absenteeism Without Leave',
+    description: 'Employee absent without official leave for 3 consecutive days (May 13–15, 2026) without filing leave or notifying supervisor. No medical certificate upon return.',
+    responseDeadline: '2026-05-27', status: 'Decision Issued', escalationRequired: true,
+    escalationApprovedBy: 'Sofia Garcia', escalationApprovedDate: '2026-05-20',
+    managerRecommendation: 'Employee has prior verbal warning (March 2026). Recommend written warning as minimum sanction.',
+    acknowledgedAt: '2026-05-20',
+    explanationLetter: { filename: 'Explanation_RafaelCruz_NTE-2026-002.pdf', submittedDate: '2026-05-25', submittedBy: 'Rafael Cruz' },
+    auditLog: [
+      { id: 'AL-002-1', action: 'NTE Initiated by Manager', performedBy: 'Maria Santos', role: 'manager', timestamp: '2026-05-20 08:00', details: 'Manager submitted NTE for HR escalation review' },
+      { id: 'AL-002-2', action: 'Escalation Approved', performedBy: 'Sofia Garcia', role: 'admin', timestamp: '2026-05-20 09:30', details: 'HR reviewed and approved NTE issuance' },
+      { id: 'AL-002-3', action: 'NTE Issued to Employee', performedBy: 'Sofia Garcia', role: 'admin', timestamp: '2026-05-20 09:45' },
+      { id: 'AL-002-4', action: 'Employee Acknowledged', performedBy: 'Rafael Cruz', role: 'employee', timestamp: '2026-05-20 11:00' },
+      { id: 'AL-002-5', action: 'Explanation Letter Submitted', performedBy: 'Rafael Cruz', role: 'employee', timestamp: '2026-05-25 15:30', details: 'Uploaded: Explanation_RafaelCruz_NTE-2026-002.pdf' },
+      { id: 'AL-002-6', action: 'Status → Under Review', performedBy: 'Sofia Garcia', role: 'admin', timestamp: '2026-05-26 09:00' },
+      { id: 'AL-002-7', action: 'NOD Issued', performedBy: 'Sofia Garcia', role: 'admin', timestamp: '2026-06-03 10:00', details: 'Written Warning — NOD-2026-001' },
+    ],
+  },
+  {
+    id: 'NTE-2026-003', employeeId: 'EMP010', employeeName: 'Jerome Villanueva', department: 'Operations',
+    issuedBy: 'Maria Santos', issuedByRole: 'manager', assignedTo: 'Sofia Garcia',
+    issuedDate: '2026-06-16', incidentDate: '2026-06-14', incidentType: 'Insubordination',
+    description: 'Employee refused a direct instruction from the Operations Manager to complete and submit a client delivery report by end of day on June 14, 2026, causing client-facing delays.',
+    responseDeadline: '2026-06-23', status: 'Pending Explanation', escalationRequired: true,
+    escalationApprovedBy: 'Sofia Garcia', escalationApprovedDate: '2026-06-16',
+    auditLog: [
+      { id: 'AL-003-1', action: 'NTE Initiated by Manager', performedBy: 'Maria Santos', role: 'manager', timestamp: '2026-06-16 08:00', details: 'Manager submitted NTE for HR escalation' },
+      { id: 'AL-003-2', action: 'Escalation Approved', performedBy: 'Sofia Garcia', role: 'admin', timestamp: '2026-06-16 09:30' },
+      { id: 'AL-003-3', action: 'NTE Issued to Employee', performedBy: 'Sofia Garcia', role: 'admin', timestamp: '2026-06-16 09:45' },
+    ],
+  },
+];
+
+export const nodRecords: NODRecord[] = [
+  {
+    id: 'NOD-2026-001', nteId: 'NTE-2026-002', employeeId: 'EMP008', employeeName: 'Rafael Cruz', department: 'Engineering',
+    issuedBy: 'Sofia Garcia', issuedDate: '2026-06-03', decision: 'Written Warning', effectiveDate: '2026-06-03',
+    details: "After careful review of the NTE and the employee's written explanation, management finds the explanation insufficient to fully justify the 3-day unexcused absence. A formal Written Warning is hereby issued and shall be placed on the employee's 201 file. A repetition of this offense within 12 months shall result in a more severe sanction.",
+    managerRecommendation: 'Employee has prior verbal warning (March 2026). Recommend written warning as minimum sanction.',
+    acknowledgedAt: '2026-06-04',
+    auditLog: [
+      { id: 'AL-NOD-1', action: 'NOD Issued', performedBy: 'Sofia Garcia', role: 'admin', timestamp: '2026-06-03 10:00', details: 'Written Warning issued to Rafael Cruz' },
+      { id: 'AL-NOD-2', action: 'Employee Acknowledged', performedBy: 'Rafael Cruz', role: 'employee', timestamp: '2026-06-04 09:15' },
+    ],
+  },
 ];
