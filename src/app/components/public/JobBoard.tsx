@@ -24,6 +24,8 @@ export function JobBoard({ onBack }: { onBack?: () => void }) {
   const [showApply, setShowApply] = useState(false);
   const [applyJob, setApplyJob] = useState<JobPosting | null>(null);
   const [appForm, setAppForm] = useState({ name: '', email: '', phone: '', resume: '', coverLetter: '' });
+  const [appSuccess, setAppSuccess] = useState(false);
+  const [showAll, setShowAll] = useState(false);
   const [jobPostings, setJobPostings] = useState<JobPosting[]>([]);
 
   useEffect(() => {

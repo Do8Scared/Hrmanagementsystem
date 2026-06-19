@@ -29,6 +29,7 @@ const C = {
 export function LoginScreen({ onLogin, initialView = 'login', sessionEmail }: LoginScreenProps) {
   const { login } = useAuth();
   const [view, setView] = useState<AuthView>(initialView);
+  const [role, setRole] = useState<'admin' | 'employee'>('admin');
   const [email, setEmail] = useState(initialView === 'session-expired' ? (sessionEmail ?? '') : '');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
