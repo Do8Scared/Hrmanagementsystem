@@ -15,8 +15,7 @@ import { LeaveRequest } from './components/employee/LeaveRequest';
 import { MyPerformance } from './components/employee/MyPerformance';
 import { MyProfile } from './components/employee/MyProfile';
 import { MyHRCases } from './components/employee/MyHRCases';
-import { ManagerDashboard } from './components/manager/ManagerDashboard';
-import { ManpowerRequestPage } from './components/manager/ManpowerRequestPage';
+import { ManagerDashboard, ManpowerRequestPage } from './components/manager/ManpowerRequestPage';
 import { ManagerInterviewFeedback } from './components/manager/ManagerInterviewFeedback';
 import { AnnouncementsFeed } from './components/shared/AnnouncementsFeed';
 import { JobBoard } from './components/public/JobBoard';
@@ -104,13 +103,10 @@ export default function App() {
     if (currentPage === 'manager-announcements') return <AnnouncementsFeed role="manager" />;
 
     if (role === 'manager') {
-      switch (currentPage) {
-        case 'manager-dashboard': return <ManagerDashboard onNavigate={handleNavigate} />;
-        case 'manager-request': return <ManpowerRequestPage />;
-        case 'manager-feedback': return <ManagerInterviewFeedback />;
-        case 'hr-admin': return <HRAdminModule viewerRole="manager" />;
-        default: return <ManagerDashboard onNavigate={handleNavigate} />;
-      }
+      if (currentPage === 'manager-request') return <ManpowerRequestPage />;
+      if (currentPage === 'manager-feedback') return <ManagerInterviewFeedback />;
+      if (currentPage === 'hr-admin') return <HRAdminModule viewerRole="manager" />;
+      return <ManagerDashboard onNavigate={handleNavigate} />;
     }
 
     if (role === 'admin') {
