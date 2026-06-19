@@ -39,6 +39,7 @@ export function ChangePasswordModal({ onClose }: Props) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const strength = getStrength(newPass);
   const cfg = STRENGTH_CONFIG[strength];
@@ -53,11 +54,18 @@ export function ChangePasswordModal({ onClose }: Props) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!current) { setError('Please enter your current password.'); return; }
+    if (current !== 'HrmsDefault@2026') { setError('Current password is incorrect.'); return; }
     if (strength < 3) { setError('Please choose a stronger password.'); return; }
     if (newPass !== confirm) { setError('New passwords do not match.'); return; }
+    
     setError('');
-    setSuccess(true);
-    setTimeout(onClose, 2000);
+    setLoading(true);
+    
+    setTimeout(() => {
+      setLoading(false);
+      setSuccess(true);
+      setTimeout(onClose, 2000);
+    }, 1500);
   }
 
   const inputCls = 'w-full pl-10 pr-11 py-3 bg-input-background border border-border rounded-xl text-sm text-foreground outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all placeholder:text-muted-foreground';
@@ -146,10 +154,13 @@ export function ChangePasswordModal({ onClose }: Props) {
                     className="flex-1 py-3 rounded-xl border border-border text-sm font-bold text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors">
                     Cancel
                   </button>
-                  <button type="submit"
-                    className="flex-1 py-3 rounded-xl bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-all"
-                    style={{ boxShadow: '0 4px 14px rgba(110,18,22,0.35)' }}>
-                    Update Password
+                  <button
+                    type="submit"
+                    disabled={!current || !newPass || !confirm || strength < 3 || loading}
+                    className="flex-1 py-3 rounded-xl bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    style={{ boxShadow: '0 4px 14px rgba(110,18,22,0.35)' }}
+                  >
+                    {loading ? 'Updating...' : 'Update Password'}
                   </button>
                 </div>
               </form>

@@ -21,6 +21,7 @@ import { ManagerInterviewFeedback } from './components/manager/ManagerInterviewF
 import { AnnouncementsFeed } from './components/shared/AnnouncementsFeed';
 import { JobBoard } from './components/public/JobBoard';
 import { type Employee } from './data/mockData';
+import { useSessionTimeout } from '../lib/useSessionTimeout';
 
 type AppState = 'login' | 'authenticated' | 'session-expired' | 'job-board';
 type AppRole = 'admin' | 'employee' | 'manager';
@@ -43,6 +44,11 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>('admin-dashboard');
   const [profileEmployee, setProfileEmployee] = useState<Employee | null>(null);
   const [sessionEmail] = useState('juan.delacruz@hrms.ph');
+
+  useSessionTimeout(appState === 'authenticated', () => {
+    setAppState('session-expired');
+    setProfileEmployee(null);
+  });
 
   function handleLogin(selectedRole: 'admin' | 'employee') {
     setRole(selectedRole);

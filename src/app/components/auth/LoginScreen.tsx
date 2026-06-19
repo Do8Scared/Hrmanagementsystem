@@ -40,9 +40,18 @@ export function LoginScreen({ onLogin, initialView = 'login', sessionEmail }: Lo
   function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     if (!email || !password) { setError('Please enter both email and password.'); return; }
+    
     setError('');
     setLoading(true);
-    setTimeout(() => { setLoading(false); onLogin(role); }, 1200);
+    
+    setTimeout(() => { 
+      setLoading(false);
+      if (password === 'HrmsDefault@2026') {
+        onLogin(role); 
+      } else {
+        setError('Invalid email or password. Please try again.');
+      }
+    }, 1200);
   }
 
   function handleResetSubmit(e: React.FormEvent) {
