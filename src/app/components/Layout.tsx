@@ -192,7 +192,7 @@ export function Layout({ user, currentPage, onNavigate, onLogout, onSimulateExpi
           {sidebarOpen ? (
             <div className="space-y-2">
               <div className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-white/8 transition-colors">
-                <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0">
+                <div className="w-8 h-8 rounded-full bg-[#C8890A] flex items-center justify-center flex-shrink-0">
                   <span className="text-white text-xs font-semibold">{userInitials}</span>
                 </div>
                 <div className="flex-1 min-w-0">
@@ -210,7 +210,7 @@ export function Layout({ user, currentPage, onNavigate, onLogout, onSimulateExpi
             </div>
           ) : (
             <div className="flex flex-col items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-[#C8890A] flex items-center justify-center">
                 <span className="text-white text-xs font-semibold">{userInitials}</span>
               </div>
               <button onClick={() => setShowLogoutModal(true)} className="text-red-400/80 hover:text-red-400 transition-colors" title="Log Out">

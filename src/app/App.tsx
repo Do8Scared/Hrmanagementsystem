@@ -18,6 +18,7 @@ import { LeaveRequest } from './components/employee/LeaveRequest';
 import { MyPerformance } from './components/employee/MyPerformance';
 import { MyProfile } from './components/employee/MyProfile';
 import { MyHRCases } from './components/employee/MyHRCases';
+import { ManagerDashboard } from './components/manager/ManagerDashboard';
 import { ManpowerRequestPage } from './components/manager/ManpowerRequestPage';
 import { ManagerInterviewFeedback } from './components/manager/ManagerInterviewFeedback';
 import { AnnouncementsFeed } from './components/shared/AnnouncementsFeed';
@@ -29,7 +30,7 @@ import { useSessionTimeout } from '../lib/useSessionTimeout';
 const defaultPageForRole: Record<AppRole, Page> = {
   admin: 'admin-dashboard',
   employee: 'emp-dashboard',
-  manager: 'manager-request',
+  manager: 'manager-dashboard',
 };
 
 export default function App() {
@@ -103,12 +104,13 @@ export default function App() {
     if (currentPage === 'emp-announcements') return <AnnouncementsFeed role="employee" userId={user.id} />;
     if (currentPage === 'manager-announcements') return <AnnouncementsFeed role="manager" userId={user.id} />;
 
-    if (user.role === 'manager') {
+      if (user.role === 'manager') {
       switch (currentPage) {
+        case 'manager-dashboard': return <ManagerDashboard onNavigate={setCurrentPage} />;
         case 'manager-request': return <ManpowerRequestPage />;
         case 'manager-feedback': return <ManagerInterviewFeedback />;
         case 'hr-admin': return <HRAdminModule />;
-        default: return <ManpowerRequestPage />;
+        default: return <ManagerDashboard onNavigate={setCurrentPage} />;
       }
     }
 

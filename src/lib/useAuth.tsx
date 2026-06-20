@@ -54,8 +54,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const emp = data[0];
 
     let assignedRole: AppRole = 'employee';
-    if (emp.out_department === 'Human Resources' || emp.out_position?.toLowerCase().includes('manager') || emp.out_position?.toLowerCase().includes('head')) {
+    if (emp.out_department === 'Human Resources') {
       assignedRole = 'admin';
+    } else if (emp.out_position?.toLowerCase().includes('manager') || emp.out_position?.toLowerCase().includes('head')) {
+      assignedRole = 'manager';
     }
 
     const authUser: AuthUser = {

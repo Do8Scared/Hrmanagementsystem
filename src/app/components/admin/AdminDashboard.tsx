@@ -28,16 +28,25 @@ import { supabase } from '../../../lib/supabaseClient';
 export function AdminDashboard({ onNavigate }: Props) {
   const [employees, setEmployees] = useState<any[]>([]);
   const [attendanceRecords, setAttendanceRecords] = useState<any[]>([]);
+  const [payrollRecords, setPayrollRecords] = useState<any[]>([]);
+  const [leaveRequests, setLeaveRequests] = useState<any[]>([]);
+  const [performanceEvals, setPerformanceEvals] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
-      const [empRes, attRes] = await Promise.all([
+      const [empRes, attRes, payRes, leaveRes, perfRes] = await Promise.all([
         supabase.from('employees').select('*'),
-        supabase.from('attendance_records').select('*')
+        supabase.from('attendance_records').select('*'),
+        supabase.from('payroll_records').select('*'),
+        supabase.from('leave_requests').select('*'),
+        supabase.from('performance_evaluations').select('*')
       ]);
       if (empRes.data) setEmployees(empRes.data);
       if (attRes.data) setAttendanceRecords(attRes.data);
+      if (payRes.data) setPayrollRecords(payRes.data);
+      if (leaveRes.data) setLeaveRequests(leaveRes.data);
+      if (perfRes.data) setPerformanceEvals(perfRes.data);
       setLoading(false);
     }
     fetchData();
@@ -58,6 +67,9 @@ export function AdminDashboard({ onNavigate }: Props) {
     'Jun': { month: 'Jun', present: 0, late: 0, absent: 0, undertime: 0 },
   };
 
+  let totalPresentAndLate = 0;
+  let totalExpected = 0;
+
   attendanceRecords.forEach(r => {
     const m = new Date(r.date).toLocaleString('default', { month: 'short' });
     if (monthlyDataMap[m]) {
@@ -65,24 +77,75 @@ export function AdminDashboard({ onNavigate }: Props) {
       else if (r.status === 'Late') monthlyDataMap[m].late += 1;
       else if (r.status === 'Absent') monthlyDataMap[m].absent += 1;
       else if (r.status === 'Undertime') monthlyDataMap[m].undertime += 1;
+      
+      totalExpected++;
+      if (r.status === 'Present' || r.status === 'Late' || r.status === 'Undertime') {
+        totalPresentAndLate++;
+      }
     }
   });
   const computedMonthlyData = Object.values(monthlyDataMap);
+  const avgAttendanceRate = totalExpected > 0 ? ((totalPresentAndLate / totalExpected) * 100).toFixed(1) : '0.0';
 
-  const computedActivities = [...attendanceRecords]
-    .filter(r => r.time_in)
-    .sort((a, b) => new Date(`${b.date}T${b.time_in}`).getTime() - new Date(`${a.date}T${a.time_in}`).getTime())
-    .slice(0, 5)
-    .map(r => {
-      const emp = employees.find(e => e.id === r.employee_id);
-      return {
-        id: r.id.toString(),
-        type: 'employee',
-        action: r.time_out ? 'Timed Out' : 'Timed In',
-        subject: emp ? emp.name : 'Employee',
-        time: `${r.date} ${r.time_out ? r.time_out : r.time_in}`
-      };
+  const allActivities: any[] = [];
+
+  attendanceRecords.filter(r => r.time_in).forEach(r => {
+    const emp = employees.find(e => e.id === r.employee_id);
+    const timeVal = r.time_out ? r.time_out : r.time_in;
+    const dateObj = new Date(`${r.date}T${timeVal}`);
+    allActivities.push({
+      id: `att-${r.id}`,
+      type: 'employee',
+      action: r.time_out ? 'Timed Out' : 'Timed In',
+      subject: emp ? emp.name : 'Employee',
+      time: `${r.date} ${timeVal}`,
+      timestamp: isNaN(dateObj.getTime()) ? 0 : dateObj.getTime()
     });
+  });
+
+  leaveRequests.forEach(l => {
+    const dateObj = new Date(l.applied_date || l.start_date || '2026-06-01');
+    const emp = employees.find(e => e.id === l.employee_id);
+    allActivities.push({
+      id: `leave-${l.id}`,
+      type: 'leave',
+      action: `Filed ${l.leave_type || 'Leave'}`,
+      subject: emp ? emp.name : (l.employee_name || 'Employee'),
+      time: l.applied_date || l.start_date,
+      timestamp: isNaN(dateObj.getTime()) ? 0 : dateObj.getTime()
+    });
+  });
+
+  payrollRecords.forEach(p => {
+    // Attempt to parse 'period' e.g. "June 2026" or fallback
+    const dateObj = new Date(p.period || '2026-06-01');
+    const emp = employees.find(e => e.id === p.employee_id);
+    allActivities.push({
+      id: `pay-${p.id}`,
+      type: 'payroll',
+      action: `Payroll ${p.status || 'Processed'}`,
+      subject: emp ? emp.name : (p.employee_name || 'Employee'),
+      time: p.period,
+      timestamp: isNaN(dateObj.getTime()) ? 0 : dateObj.getTime()
+    });
+  });
+
+  performanceEvals.forEach(e => {
+    const dateObj = new Date(e.date || '2026-06-01');
+    const emp = employees.find(emp => emp.id === e.employee_id);
+    allActivities.push({
+      id: `perf-${e.id}`,
+      type: 'performance',
+      action: 'Evaluation Issued',
+      subject: emp ? emp.name : (e.employee_name || 'Employee'),
+      time: e.date,
+      timestamp: isNaN(dateObj.getTime()) ? 0 : dateObj.getTime()
+    });
+  });
+
+  const computedActivities = allActivities
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .slice(0, 5);
 
   const summaryCards = [
     {
@@ -114,14 +177,43 @@ export function AdminDashboard({ onNavigate }: Props) {
     },
     {
       label: 'Pending Payroll',
-      value: 9,
-      sub: 'June 2026 — ₱525,537.00',
+      value: payrollRecords.filter(p => p.status === 'Pending').length,
+      sub: `June 2026 — ₱${payrollRecords.filter(p => p.status === 'Pending').reduce((acc, p) => acc + (p.net_pay || 0), 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       icon: DollarSign,
       color: 'bg-violet-500',
       light: 'bg-violet-50',
       textColor: 'text-violet-600',
     },
   ];
+
+  const now = new Date();
+  const currentHour = now.getHours();
+  const currentMinutes = now.getMinutes();
+  const isPast9AM = currentHour > 9 || (currentHour === 9 && currentMinutes > 0);
+
+  const todayAttendanceSnapshot = employees
+    .filter(e => e.status !== 'Inactive')
+    .map(emp => {
+      const record = attendanceRecords.find(r => r.employee_id === emp.id && r.date === today);
+      let statusLabel = record?.status;
+      
+      if (emp.status === 'On Leave') {
+        statusLabel = 'On Leave';
+      } else if (!record) {
+        statusLabel = isPast9AM ? 'Absent' : 'Pending';
+      } else if (!statusLabel) {
+        statusLabel = 'Absent';
+      }
+      
+      return { emp, record, statusLabel };
+    })
+    .sort((a, b) => {
+      const timeA = a.record?.time_in ? new Date(`${today}T${a.record.time_in}`).getTime() : 0;
+      const timeB = b.record?.time_in ? new Date(`${today}T${b.record.time_in}`).getTime() : 0;
+      if (isNaN(timeA) || isNaN(timeB)) return 0;
+      return timeB - timeA;
+    })
+    .slice(0, 7);
 
   if (loading) {
     return <div className="p-8 text-center text-muted-foreground">Loading dashboard data...</div>;
@@ -159,7 +251,7 @@ export function AdminDashboard({ onNavigate }: Props) {
             </div>
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
               <TrendingUp size={14} className="text-emerald-500" />
-              <span className="text-emerald-600 font-medium">92.4%</span> avg rate
+              <span className="text-emerald-600 font-medium">{avgAttendanceRate}%</span> avg rate
             </div>
           </div>
           <ResponsiveContainer width="100%" height={240}>
@@ -239,15 +331,14 @@ export function AdminDashboard({ onNavigate }: Props) {
               </tr>
             </thead>
             <tbody>
-              {employees.filter(e => e.status !== 'Inactive').slice(0, 7).map((emp, i) => {
-                const record = attendanceRecords.find(r => r.employee_id === emp.id && r.date === new Date().toISOString().split('T')[0]);
-                const statusLabel = emp.status === 'On Leave' ? 'On Leave' : (record?.status ?? 'Absent');
+              {todayAttendanceSnapshot.map(({ emp, record, statusLabel }, i) => {
                 const statusColor: Record<string, string> = {
                   Present: 'text-emerald-600 bg-emerald-50',
                   Late: 'text-amber-700 bg-amber-50',
                   Absent: 'text-red-600 bg-red-50',
                   Undertime: 'text-orange-700 bg-orange-50',
                   'On Leave': 'text-blue-700 bg-blue-50',
+                  Pending: 'text-gray-600 bg-gray-100',
                 };
                 return (
                   <tr key={emp.id} className={`border-b border-border/50 ${i % 2 === 0 ? '' : 'bg-secondary/30'}`}>

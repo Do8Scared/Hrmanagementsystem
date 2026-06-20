@@ -652,7 +652,49 @@ function ApplyModal({ job, appForm, setAppForm, appSuccess, onSuccess, onClose }
   job: JobPosting; appForm: any; setAppForm: (f: any) => void;
   appSuccess: boolean; onSuccess: () => void; onClose: () => void;
 }) {
-  function handleSubmit(e: React.FormEvent) { e.preventDefault(); onSuccess(); }
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) { 
+    e.preventDefault(); 
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
+    try {
+      const newApp = {
+        name: appForm.name,
+        email: appForm.email,
+        phone: appForm.phone || null,
+        jobpostingid: job.id,
+        jobtitle: job.title,
+        applicationdate: new Date().toISOString().split('T')[0],
+        stage: 'Applied',
+        resumefile: appForm.resume || 'resume.pdf'
+      };
+
+      const { error } = await supabase.from('applicants').insert(newApp);
+      
+      if (error) {
+        console.error('Error applying:', error);
+        alert('Failed to submit application.');
+        setIsSubmitting(false);
+        return;
+      }
+      
+      // Update job_postings applicant count
+      const { data: jobData } = await supabase.from('job_postings').select('applicantcount').eq('id', job.id).single();
+      if (jobData) {
+        await supabase.from('job_postings').update({ applicantcount: (jobData.applicantcount || 0) + 1 }).eq('id', job.id);
+      }
+      
+      onSuccess();
+    } catch (err) {
+      console.error(err);
+      alert('An error occurred.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   const inp = 'w-full px-3 py-2.5 rounded-xl border text-sm outline-none transition-all';
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={onClose}>
@@ -698,8 +740,10 @@ function ApplyModal({ job, appForm, setAppForm, appSuccess, onSuccess, onClose }
                 style={{ borderColor: B.border, background: B.cream, color: B.text }}
                 onFocus={e => (e.target.style.borderColor = B.gold)} onBlur={e => (e.target.style.borderColor = B.border)} />
             </div>
-            <button type="submit" className="w-full py-3 rounded-xl text-white text-sm font-bold hover:opacity-90 transition-all"
-              style={{ background: B.crimson, boxShadow: `0 4px 14px ${B.crimson}55` }}>Submit Application</button>
+            <button type="submit" disabled={isSubmitting} className="w-full py-3 rounded-xl text-white text-sm font-bold hover:opacity-90 transition-all disabled:opacity-50"
+              style={{ background: B.crimson, boxShadow: `0 4px 14px ${B.crimson}55` }}>
+              {isSubmitting ? 'Submitting...' : 'Submit Application'}
+            </button>
           </form>
         )}
       </div>

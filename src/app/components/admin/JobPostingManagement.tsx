@@ -49,6 +49,7 @@ export function JobPostingManagement() {
   const [appList, setAppList] = useState<Applicant[]>([]);
   const [intList, setIntList] = useState<Interview[]>([]);
   const [fbList, setFbList] = useState<InterviewFeedback[]>([]);
+  const [scheduleFor, setScheduleFor] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -116,8 +117,8 @@ export function JobPostingManagement() {
         <div className="p-5">
           {tab === 'inbox' && <ManpowerRequestInbox mrList={mrList} setMrList={setMrList} jpList={jpList} setJpList={setJpList} />}
           {tab === 'postings' && <JobPostingsList jpList={jpList} setJpList={setJpList} />}
-          {tab === 'tracker' && <ApplicantTracker appList={appList} setAppList={setAppList} jpList={jpList} setTab={setTab} />}
-          {tab === 'scheduling' && <InterviewScheduling intList={intList} setIntList={setIntList} appList={appList} />}
+          {tab === 'tracker' && <ApplicantTracker appList={appList} setAppList={setAppList} jpList={jpList} setTab={setTab} setScheduleFor={setScheduleFor} />}
+          {tab === 'scheduling' && <InterviewScheduling intList={intList} setIntList={setIntList} appList={appList} setAppList={setAppList} scheduleFor={scheduleFor} setScheduleFor={setScheduleFor} />}
           {tab === 'feedback' && <FeedbackAdmin fbList={fbList} setFbList={setFbList} intList={intList} setIntList={setIntList} appList={appList} />}
         </div>
       </div>
@@ -292,35 +293,58 @@ function ManpowerRequestInbox({ mrList, setMrList, jpList, setJpList }: {
 
 // ─── Job Postings List ────────────────────────────────────────────────────
 function JobPostingsList({ jpList, setJpList }: { jpList: JobPosting[]; setJpList: React.Dispatch<React.SetStateAction<JobPosting[]>> }) {
-  const [showModal, setShowModal] = useState(false);
+  const [modalMode, setModalMode] = useState<'create' | 'edit' | 'view' | false>(false);
+  const [selectedJp, setSelectedJp] = useState<JobPosting | null>(null);
   const [form, setForm] = useState({ title: '', department: '', employmentType: 'Full Time' as EmploymentType, description: '', qualifications: '', slots: '1', deadline: '', publishToBoard: true });
 
-  async function handleAdd() {
+  function openModal(mode: 'create' | 'edit' | 'view', jp?: JobPosting) {
+    if (jp) {
+      setSelectedJp(jp);
+      setForm({
+        title: jp.title, department: jp.department, employmentType: jp.employmentType,
+        description: jp.description, qualifications: jp.qualifications, slots: jp.slots.toString(),
+        deadline: jp.deadline || '', publishToBoard: jp.status === 'Open' || jp.publishToBoard
+      });
+    } else {
+      setSelectedJp(null);
+      setForm({ title: '', department: '', employmentType: 'Full Time', description: '', qualifications: '', slots: '1', deadline: '', publishToBoard: true });
+    }
+    setModalMode(mode);
+  }
+
+  async function handleSave() {
     if (!form.title || !form.department) return;
-    // Map camelCase to DB lowercase
-    const newJp = {
+    const dbPayload = {
       title: form.title, department: form.department,
-      dateposted: form.publishToBoard ? '2026-06-16' : null,
-      deadline: form.deadline || null, applicantcount: 0,
+      deadline: form.deadline || null,
       status: form.publishToBoard ? 'Open' : 'Draft',
       description: form.description, qualifications: form.qualifications,
       slots: Number(form.slots), employmenttype: form.employmentType,
       publishtoboard: form.publishToBoard,
     };
-    const { data } = await supabase.from('job_postings').insert(newJp).select().single();
-    if (data) {
-      const mapped: JobPosting = {
-        id: data.id, title: data.title, department: data.department,
-        datePosted: data.dateposted, deadline: data.deadline,
-        applicantCount: data.applicantcount, status: data.status,
-        description: data.description, qualifications: data.qualifications,
-        slots: data.slots, employmentType: data.employmenttype,
-        publishToBoard: data.publishtoboard, manpowerRequestId: data.manpowerrequestid,
-      };
-      setJpList(prev => [mapped, ...prev]);
+
+    if (modalMode === 'edit' && selectedJp) {
+      const { data } = await supabase.from('job_postings').update(dbPayload).eq('id', selectedJp.id).select().single();
+      if (data) {
+        setJpList(prev => prev.map(j => j.id === selectedJp.id ? { ...j, ...form, status: dbPayload.status, slots: Number(form.slots) } : j));
+        setModalMode(false);
+      }
+    } else {
+      const newJp = { ...dbPayload, dateposted: form.publishToBoard ? new Date().toISOString().split('T')[0] : null, applicantcount: 0 };
+      const { data } = await supabase.from('job_postings').insert(newJp).select().single();
+      if (data) {
+        const mapped: JobPosting = {
+          id: data.id, title: data.title, department: data.department,
+          datePosted: data.dateposted, deadline: data.deadline,
+          applicantCount: data.applicantcount, status: data.status,
+          description: data.description, qualifications: data.qualifications,
+          slots: data.slots, employmentType: data.employmenttype,
+          publishToBoard: data.publishtoboard, manpowerRequestId: data.manpowerrequestid,
+        };
+        setJpList(prev => [mapped, ...prev]);
+        setModalMode(false);
+      }
     }
-    setShowModal(false);
-    setForm({ title: '', department: '', employmentType: 'Full Time', description: '', qualifications: '', slots: '1', deadline: '', publishToBoard: true });
   }
 
   const statusTag: Record<string, string> = { Open: 'bg-emerald-50 text-emerald-700', Closed: 'bg-gray-100 text-gray-600', Draft: 'bg-amber-50 text-amber-700' };
@@ -329,7 +353,7 @@ function JobPostingsList({ jpList, setJpList }: { jpList: JobPosting[]; setJpLis
     <div>
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-semibold text-foreground">Job Postings</h3>
-        <button onClick={() => setShowModal(true)} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors">
+        <button onClick={() => openModal('create')} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors">
           <Plus size={15} /> Add Job Posting
         </button>
       </div>
@@ -353,8 +377,8 @@ function JobPostingsList({ jpList, setJpList }: { jpList: JobPosting[]; setJpLis
               <td className="px-3 py-3"><span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${statusTag[jp.status]}`}>{jp.status}</span></td>
               <td className="px-3 py-3">
                 <div className="flex gap-1">
-                  <button className="px-2 py-1 rounded text-xs border border-border text-muted-foreground hover:bg-secondary">View</button>
-                  <button className="px-2 py-1 rounded text-xs border border-border text-muted-foreground hover:bg-secondary">Edit</button>
+                  <button onClick={() => openModal('view', jp)} className="px-2 py-1 rounded text-xs border border-border text-muted-foreground hover:bg-secondary">View</button>
+                  <button onClick={() => openModal('edit', jp)} className="px-2 py-1 rounded text-xs border border-border text-muted-foreground hover:bg-secondary">Edit</button>
                   {jp.status === 'Open' && <button onClick={async () => { await supabase.from('job_postings').update({ status: 'Closed' }).eq('id', jp.id); setJpList(p => p.map(j => j.id === jp.id ? { ...j, status: 'Closed' } : j)); }} className="px-2 py-1 rounded text-xs bg-red-50 text-red-600 border border-red-200 hover:bg-red-100">Close</button>}
                 </div>
               </td>
@@ -363,46 +387,54 @@ function JobPostingsList({ jpList, setJpList }: { jpList: JobPosting[]; setJpLis
         </tbody>
       </table>
 
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={() => setShowModal(false)}>
+      {modalMode && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={() => setModalMode(false)}>
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between px-6 py-5 border-b border-border">
-              <h3 className="font-semibold text-foreground">Add Job Posting</h3>
-              <button onClick={() => setShowModal(false)} className="p-1.5 rounded-lg hover:bg-secondary text-muted-foreground"><X size={18} /></button>
+              <h3 className="font-semibold text-foreground">
+                {modalMode === 'create' ? 'Add Job Posting' : modalMode === 'edit' ? 'Edit Job Posting' : 'View Job Posting'}
+              </h3>
+              <button onClick={() => setModalMode(false)} className="p-1.5 rounded-lg hover:bg-secondary text-muted-foreground"><X size={18} /></button>
             </div>
             <div className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <MField label="Job Title" value={form.title} onChange={v => setForm(f => ({ ...f, title: v }))} placeholder="e.g. Senior Developer" />
-                <MField label="Department" value={form.department} onChange={v => setForm(f => ({ ...f, department: v }))} placeholder="e.g. Engineering" />
+                <MField disabled={modalMode === 'view'} label="Job Title" value={form.title} onChange={v => setForm(f => ({ ...f, title: v }))} placeholder="e.g. Senior Developer" />
+                <MField disabled={modalMode === 'view'} label="Department" value={form.department} onChange={v => setForm(f => ({ ...f, department: v }))} placeholder="e.g. Engineering" />
               </div>
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <label className="block text-xs font-medium text-foreground mb-1.5">Employment Type</label>
-                  <select value={form.employmentType} onChange={e => setForm(f => ({ ...f, employmentType: e.target.value as EmploymentType }))} className="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none cursor-pointer text-foreground">
+                  <select disabled={modalMode === 'view'} value={form.employmentType} onChange={e => setForm(f => ({ ...f, employmentType: e.target.value as EmploymentType }))} className="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none cursor-pointer text-foreground disabled:opacity-70 disabled:cursor-not-allowed">
                     {(['Full Time', 'Part Time', 'Contractual', 'Internship'] as EmploymentType[]).map(t => <option key={t}>{t}</option>)}
                   </select>
                 </div>
-                <MField label="Number of Slots" value={form.slots} onChange={v => setForm(f => ({ ...f, slots: v }))} type="number" placeholder="1" />
-                <MField label="Application Deadline" value={form.deadline} onChange={v => setForm(f => ({ ...f, deadline: v }))} type="date" placeholder="" />
+                <MField disabled={modalMode === 'view'} label="Number of Slots" value={form.slots} onChange={v => setForm(f => ({ ...f, slots: v }))} type="number" placeholder="1" />
+                <MField disabled={modalMode === 'view'} label="Application Deadline" value={form.deadline} onChange={v => setForm(f => ({ ...f, deadline: v }))} type="date" placeholder="" />
               </div>
               <div>
                 <label className="block text-xs font-medium text-foreground mb-1.5">Job Description</label>
-                <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={4} placeholder="Describe the role, responsibilities, and expectations..." className="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none resize-none text-foreground placeholder:text-muted-foreground" />
+                <textarea disabled={modalMode === 'view'} value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={4} placeholder="Describe the role, responsibilities, and expectations..." className="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none resize-none text-foreground placeholder:text-muted-foreground disabled:opacity-70 disabled:cursor-not-allowed" />
               </div>
               <div>
                 <label className="block text-xs font-medium text-foreground mb-1.5">Qualifications</label>
-                <textarea value={form.qualifications} onChange={e => setForm(f => ({ ...f, qualifications: e.target.value }))} rows={3} placeholder="List required skills, experience, and certifications..." className="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none resize-none text-foreground placeholder:text-muted-foreground" />
+                <textarea disabled={modalMode === 'view'} value={form.qualifications} onChange={e => setForm(f => ({ ...f, qualifications: e.target.value }))} rows={3} placeholder="List required skills, experience, and certifications..." className="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none resize-none text-foreground placeholder:text-muted-foreground disabled:opacity-70 disabled:cursor-not-allowed" />
               </div>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <div onClick={() => setForm(f => ({ ...f, publishToBoard: !f.publishToBoard }))} className={`w-10 h-5 rounded-full transition-colors relative ${form.publishToBoard ? 'bg-primary' : 'bg-gray-300'}`}>
+              <label className={`flex items-center gap-3 ${modalMode === 'view' ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
+                <div onClick={() => modalMode !== 'view' && setForm(f => ({ ...f, publishToBoard: !f.publishToBoard }))} className={`w-10 h-5 rounded-full transition-colors relative ${form.publishToBoard ? 'bg-primary' : 'bg-gray-300'} ${modalMode === 'view' ? 'opacity-70' : ''}`}>
                   <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-all ${form.publishToBoard ? 'left-5' : 'left-0.5'}`} />
                 </div>
                 <span className="text-sm text-foreground">Publish to Public Job Board</span>
               </label>
             </div>
             <div className="flex justify-end gap-3 px-6 pb-5">
-              <button onClick={() => setShowModal(false)} className="px-4 py-2 rounded-lg border border-border text-sm text-muted-foreground hover:bg-secondary">Cancel</button>
-              <button onClick={handleAdd} className="px-5 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90">Save Posting</button>
+              <button onClick={() => setModalMode(false)} className="px-4 py-2 rounded-lg border border-border text-sm text-muted-foreground hover:bg-secondary">
+                {modalMode === 'view' ? 'Close' : 'Cancel'}
+              </button>
+              {modalMode !== 'view' && (
+                <button onClick={handleSave} className="px-5 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90">
+                  Save Posting
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -412,12 +444,14 @@ function JobPostingsList({ jpList, setJpList }: { jpList: JobPosting[]; setJpLis
 }
 
 // ─── Applicant Tracker (Kanban) ──────────────────────────────────────────
-function ApplicantTracker({ appList, setAppList, jpList, setTab }: {
+function ApplicantTracker({ appList, setAppList, jpList, setTab, setScheduleFor }: {
   appList: Applicant[]; setAppList: React.Dispatch<React.SetStateAction<Applicant[]>>;
   jpList: JobPosting[]; setTab: (t: Tab) => void;
+  setScheduleFor: React.Dispatch<React.SetStateAction<string | null>>;
 }) {
-  const [selectedJob, setSelectedJob] = useState(jpList.find(j => j.status === 'Open')?.id ?? jpList[0]?.id);
-  const jobApplicants = appList.filter(a => a.jobPostingId === selectedJob);
+  const openJobs = jpList.filter(j => j.status === 'Open');
+  const [expandedJobs, setExpandedJobs] = useState<string[]>(openJobs.length > 0 ? [openJobs[0].id] : []);
+  
   const kanbanStages: ApplicantStage[] = ['Applied', 'Shortlisted', 'Interview Scheduled', 'Interviewed', 'Job Offer', 'Hired', 'Rejected'];
 
   async function moveStage(applicantId: string, direction: 1 | -1) {
@@ -430,70 +464,111 @@ function ApplicantTracker({ appList, setAppList, jpList, setTab }: {
     setAppList(prev => prev.map(a => a.id === applicantId ? { ...a, stage: newStage } : a));
   }
 
+  function toggleJob(id: string) {
+    setExpandedJobs(prev => prev.includes(id) ? prev.filter(j => j !== id) : [...prev, id]);
+  }
+
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <div>
-          <h3 className="font-semibold text-foreground">Applicant Tracker</h3>
-          <p className="text-xs text-muted-foreground mt-0.5">Drag applicants across stages or use arrow buttons</p>
-        </div>
-        <select value={selectedJob} onChange={e => setSelectedJob(e.target.value)} className="px-3 py-2 bg-secondary rounded-lg text-sm border-0 outline-none text-foreground cursor-pointer">
-          {jpList.map(j => <option key={j.id} value={j.id}>{j.title} — {j.department}</option>)}
-        </select>
+      <div className="mb-6">
+        <h3 className="font-semibold text-foreground">Applicant Tracker</h3>
+        <p className="text-xs text-muted-foreground mt-0.5">Drag applicants across stages or use arrow buttons</p>
       </div>
 
-      <div className="flex gap-3 overflow-x-auto pb-3">
-        {kanbanStages.map(stage => {
-          const stageApps = jobApplicants.filter(a => a.stage === stage);
+      <div className="space-y-6">
+        {openJobs.map(job => {
+          const isExpanded = expandedJobs.includes(job.id);
+          const jobApplicants = appList.filter(a => a.jobPostingId === job.id);
+          
           return (
-            <div key={stage} className="flex-shrink-0 w-48">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-semibold text-muted-foreground truncate">{stage}</span>
-                <span className="w-5 h-5 rounded-full bg-secondary text-muted-foreground text-xs flex items-center justify-center font-medium">{stageApps.length}</span>
-              </div>
-              <div className="space-y-2 min-h-24">
-                {stageApps.map(app => (
-                  <div key={app.id} className="bg-card border border-border rounded-xl p-3 hover:shadow-sm transition-shadow">
-                    <div className="flex items-start justify-between gap-1 mb-1.5">
-                      <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-                        <span className="text-white text-xs font-semibold">{app.name.split(' ').map(n => n[0]).join('').slice(0, 2)}</span>
-                      </div>
-                      <Paperclip size={12} className="text-muted-foreground mt-1 flex-shrink-0" />
-                    </div>
-                    <div className="text-xs font-medium text-foreground leading-tight">{app.name}</div>
-                    <div className="text-xs text-muted-foreground mt-0.5">{app.applicationDate}</div>
-                    <span className={`inline-block mt-1.5 px-1.5 py-0.5 rounded text-xs font-medium ${stageColor[app.stage]}`}>{app.stage}</span>
-                    <div className="flex items-center gap-1 mt-2">
-                      <button onClick={() => moveStage(app.id, -1)} disabled={stage === kanbanStages[0]} className="flex-1 py-1 rounded bg-secondary text-xs text-muted-foreground hover:bg-border disabled:opacity-30 transition-colors">←</button>
-                      <button onClick={() => moveStage(app.id, 1)} disabled={stage === kanbanStages[kanbanStages.length - 1]} className="flex-1 py-1 rounded bg-secondary text-xs text-muted-foreground hover:bg-border disabled:opacity-30 transition-colors">→</button>
-                    </div>
-                    {(stage === 'Shortlisted' || stage === 'Applied') && (
-                      <button onClick={() => setTab('scheduling')} className="w-full mt-1.5 py-1 rounded bg-blue-50 text-blue-700 text-xs hover:bg-blue-100 transition-colors">Schedule Interview</button>
-                    )}
+            <div key={job.id} className="border border-border rounded-xl overflow-hidden bg-card">
+              <button onClick={() => toggleJob(job.id)} className="w-full flex items-center justify-between p-4 bg-secondary/30 hover:bg-secondary/50 transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className={`p-1.5 rounded-lg bg-white border border-border text-muted-foreground transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''}`}>
+                    <ChevronRight size={16} />
                   </div>
-                ))}
-                {stageApps.length === 0 && (
-                  <div className="h-20 border-2 border-dashed border-border rounded-xl flex items-center justify-center">
-                    <span className="text-xs text-muted-foreground">Empty</span>
+                  <div className="text-left">
+                    <h4 className="font-semibold text-sm text-foreground">{job.title}</h4>
+                    <span className="text-xs text-muted-foreground">{job.department} • {jobApplicants.length} Applicants</span>
                   </div>
-                )}
-              </div>
+                </div>
+              </button>
+              
+              {isExpanded && (
+                <div className="p-4 border-t border-border overflow-x-auto">
+                  <div className="flex gap-3 pb-3">
+                    {kanbanStages.map(stage => {
+                      const stageApps = jobApplicants.filter(a => a.stage === stage);
+                      return (
+                        <div key={stage} className="flex-shrink-0 w-48">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-xs font-semibold text-muted-foreground truncate">{stage}</span>
+                            <span className="w-5 h-5 rounded-full bg-secondary text-muted-foreground text-xs flex items-center justify-center font-medium">{stageApps.length}</span>
+                          </div>
+                          <div className="space-y-2 min-h-24">
+                            {stageApps.map(app => (
+                              <div key={app.id} className="bg-white border border-border rounded-xl p-3 shadow-sm hover:shadow-md transition-shadow relative">
+                                <div className="flex items-start justify-between gap-1 mb-1.5">
+                                  <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+                                    <span className="text-white text-xs font-semibold">{app.name.split(' ').map(n => n[0]).join('').slice(0, 2)}</span>
+                                  </div>
+                                  <Paperclip size={12} className="text-muted-foreground mt-1 flex-shrink-0" />
+                                </div>
+                                <div className="text-xs font-medium text-foreground leading-tight">{app.name}</div>
+                                <div className="text-xs text-muted-foreground mt-0.5">{app.applicationDate}</div>
+                                <span className={`inline-block mt-1.5 px-1.5 py-0.5 rounded text-xs font-medium ${stageColor[app.stage]}`}>{app.stage}</span>
+                                <div className="flex items-center gap-1 mt-2">
+                                  <button onClick={() => moveStage(app.id, -1)} disabled={stage === kanbanStages[0]} className="flex-1 py-1 rounded bg-secondary text-xs text-muted-foreground hover:bg-border disabled:opacity-30 transition-colors">←</button>
+                                  <button onClick={() => moveStage(app.id, 1)} disabled={stage === kanbanStages[kanbanStages.length - 1]} className="flex-1 py-1 rounded bg-secondary text-xs text-muted-foreground hover:bg-border disabled:opacity-30 transition-colors">→</button>
+                                </div>
+                                {(stage === 'Shortlisted' || stage === 'Applied') && (
+                                  <button onClick={() => { setScheduleFor(app.id); setTab('scheduling'); }} className="w-full mt-1.5 py-1 rounded bg-blue-50 text-blue-700 text-xs hover:bg-blue-100 transition-colors">Schedule Interview</button>
+                                )}
+                              </div>
+                            ))}
+                            {stageApps.length === 0 && (
+                              <div className="h-20 border-2 border-dashed border-border/60 rounded-xl flex items-center justify-center bg-secondary/10">
+                                <span className="text-xs text-muted-foreground">Empty</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           );
         })}
+        {openJobs.length === 0 && (
+          <div className="text-center py-10 bg-secondary/30 rounded-xl border border-border border-dashed">
+            <h4 className="text-sm font-semibold text-foreground mb-1">No Open Job Postings</h4>
+            <p className="text-xs text-muted-foreground">Publish a job to start tracking applicants.</p>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
 // ─── Interview Scheduling ────────────────────────────────────────────────
-function InterviewScheduling({ intList, setIntList, appList }: {
+function InterviewScheduling({ intList, setIntList, appList, setAppList, scheduleFor, setScheduleFor }: {
   intList: Interview[]; setIntList: React.Dispatch<React.SetStateAction<Interview[]>>;
-  appList: Applicant[];
+  appList: Applicant[]; setAppList: React.Dispatch<React.SetStateAction<Applicant[]>>;
+  scheduleFor: string | null; setScheduleFor: React.Dispatch<React.SetStateAction<string | null>>;
 }) {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ applicantId: '', date: '', time: '10:00', format: 'Virtual' as 'Virtual' | 'On-site', interviewer: '', notes: '' });
   const [showNotif, setShowNotif] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (scheduleFor) {
+      setShowForm(true);
+      setForm(prev => ({ ...prev, applicantId: scheduleFor }));
+      setScheduleFor(null);
+    }
+  }, [scheduleFor, setScheduleFor]);
 
   const WEEKDAYS = ['Mon Jun 16', 'Tue Jun 17', 'Wed Jun 18', 'Thu Jun 19', 'Fri Jun 20'];
 
@@ -515,6 +590,8 @@ function InterviewScheduling({ intList, setIntList, appList }: {
         interviewer: data.interviewer, notes: data.notes, status: data.status,
       };
       setIntList(prev => [mapped, ...prev]);
+      await supabase.from('applicants').update({ stage: 'Interview Scheduled' }).eq('id', form.applicantId);
+      setAppList(prev => prev.map(a => a.id === form.applicantId ? { ...a, stage: 'Interview Scheduled' } : a));
     }
     setShowNotif(app.name);
     setShowForm(false);
@@ -760,6 +837,6 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 function InfoBlock({ label, value }: { label: string; value: string }) {
   return <div><span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{label}</span><p className="text-sm text-foreground mt-1 leading-relaxed">{value}</p></div>;
 }
-function MField({ label, value, onChange, placeholder, type = 'text' }: { label: string; value: string; onChange: (v: string) => void; placeholder: string; type?: string }) {
-  return <div><label className="block text-xs font-medium text-foreground mb-1.5">{label}</label><input type={type} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} className="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none text-foreground placeholder:text-muted-foreground" /></div>;
+function MField({ label, value, onChange, placeholder, type = 'text', disabled }: { label: string; value: string; onChange: (v: string) => void; placeholder: string; type?: string; disabled?: boolean }) {
+  return <div><label className="block text-xs font-medium text-foreground mb-1.5">{label}</label><input type={type} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} disabled={disabled} className="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none text-foreground placeholder:text-muted-foreground disabled:opacity-70 disabled:cursor-not-allowed" /></div>;
 }

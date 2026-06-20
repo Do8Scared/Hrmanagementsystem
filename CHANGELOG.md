@@ -3,6 +3,19 @@
 All notable changes to the HR Management System will be documented in this file.
 
 ## [Unreleased] / Recent Updates
+- **Recruitment & Applicant Tracking**
+  - Replaced the job selector dropdown in the Applicant Tracker with an accordion view, allowing multiple Kanban boards to be viewed by scrolling.
+  - Added "View" and "Edit" functionality for Job Postings, saving changes directly to Supabase.
+  - Automated the applicant stage update: scheduling an interview now automatically moves the applicant to the "Interview Scheduled" stage.
+  - Fully integrated public `JobBoard.tsx` with Supabase to save new applicant submissions to the database.
+
+- **Admin & Manager Dashboards**
+  - Refined Admin Dashboard metrics to accurately calculate the average attendance rate.
+  - Updated Today's Attendance list to automatically mark employees as "Absent" if they have not timed in by 9:00 AM.
+  - Ordered Today's Attendance list logically.
+  - Implemented the Manager Portal (`ManagerDashboard.tsx`) with role-based routing restrict manager views to manager-specific tabs.
+  - Updated the Layout sidebar to reflect correct navigation items for Managers.
+
 - **Security & Authentication**
   - Implemented secure password authentication using `pgcrypto` (bcrypt hashing).
   - Added backend password verification through Supabase RPC (`verify_password`).
@@ -40,3 +53,4 @@ All notable changes to the HR Management System will be documented in this file.
   - Scaffolding generated from Figma UI designs.
   - Configured Vite, React, and Tailwind CSS.
   - Added essential UI components (Layout, Navigation).
+
