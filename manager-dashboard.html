@@ -323,12 +323,103 @@
 
     <!-- Page Content (Admin Dashboard) -->
     <main class="flex-1 overflow-y-auto p-6 bg-background relative z-10">
-      <!-- Content for Manager Dashboard goes here -->
+      <div class="space-y-6 max-w-6xl mx-auto">
+        <!-- Welcome banner -->
+        <div class="rounded-2xl px-8 py-6 flex items-center justify-between relative overflow-hidden"
+          style="background: linear-gradient(135deg, var(--sidebar) 0%, #5A0D10 100%)">
+          <div class="absolute right-0 top-0 w-64 h-64 rounded-full bg-white/5 -translate-y-1/3 translate-x-1/4 pointer-events-none"></div>
+          <div class="absolute top-0 left-0 right-0 h-1" style="background: var(--sidebar-primary)"></div>
+          <div>
+            <p class="text-white/60 text-sm">Good morning,</p>
+            <h2 class="text-white font-bold text-2xl" id="mgr-name">Maria Santos</h2>
+            <p class="text-white/50 text-sm mt-0.5" id="mgr-role">Operations Manager · Operations Department</p>
+            <p class="text-white/30 text-xs mt-2" id="current-date"></p>
+          </div>
+          <div class="flex items-center gap-3 z-10">
+            <div class="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
+              style="background: var(--sidebar-primary)">
+              <span class="font-bold text-2xl" style="color: var(--sidebar-primary-foreground)" id="mgr-initials">MS</span>
+            </div>
+          </div>
+        </div>
 
+        <!-- Stat cards -->
+        <div class="grid grid-cols-4 gap-4" id="mgr-stats">
+          <!-- JS populated -->
+        </div>
+
+        <!-- Module quick-access -->
+        <div>
+          <h2 class="font-bold text-foreground mb-3">My Modules</h2>
+          <div class="grid grid-cols-3 gap-3" id="mgr-modules">
+            <!-- JS populated -->
+          </div>
+        </div>
+
+        <!-- Two-column lower section -->
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Team attendance today -->
+          <div class="bg-card rounded-xl border border-border overflow-hidden">
+            <div class="flex items-center justify-between px-5 py-4 border-b border-border">
+              <div>
+                <h3 class="font-bold text-foreground text-sm">Team Attendance Today</h3>
+                <p class="text-xs text-muted-foreground mt-0.5" id="team-att-subtitle"></p>
+              </div>
+              <div class="flex items-center gap-1 text-xs text-emerald-700 font-semibold" id="team-att-percent">
+              </div>
+            </div>
+            <div class="divide-y divide-border/50" id="team-att-list">
+              <!-- JS populated -->
+            </div>
+          </div>
+
+          <!-- Right column: pending leaves + upcoming interviews -->
+          <div class="space-y-4">
+            <!-- Pending leaves -->
+            <div class="bg-card rounded-xl border border-border overflow-hidden">
+              <div class="flex items-center justify-between px-5 py-4 border-b border-border">
+                <h3 class="font-bold text-foreground text-sm">Pending Leave Requests</h3>
+                <span id="pending-leaves-badge" class="hidden text-xs bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full"></span>
+              </div>
+              <div id="pending-leaves-list" class="divide-y divide-border/50">
+                <!-- JS populated -->
+              </div>
+            </div>
+
+            <!-- Upcoming interviews -->
+            <div class="bg-card rounded-xl border border-border overflow-hidden">
+              <div class="flex items-center justify-between px-5 py-4 border-b border-border">
+                <h3 class="font-bold text-foreground text-sm">Upcoming Interviews</h3>
+                <a href="manager-interviews.html" class="text-xs text-accent hover:underline font-semibold flex items-center gap-0.5">
+                  View all <i data-lucide="chevron-right" style="width: 12px; height: 12px;"></i>
+                </a>
+              </div>
+              <div id="upcoming-interviews-list" class="divide-y divide-border/50">
+                <!-- JS populated -->
+              </div>
+            </div>
+
+            <!-- Active ER cases -->
+            <div id="active-er-cases" class="hidden bg-card rounded-xl border border-red-200 overflow-hidden">
+              <div class="flex items-center justify-between px-5 py-4 border-b border-red-100 bg-red-50/50">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="alert-circle" style="width: 15px; height: 15px;" class="text-primary"></i>
+                  <h3 class="font-bold text-foreground text-sm">Active ER Cases</h3>
+                </div>
+                <a href="#" class="text-xs text-primary hover:underline font-semibold flex items-center gap-0.5">
+                  View <i data-lucide="chevron-right" style="width: 12px; height: 12px;"></i>
+                </a>
+              </div>
+              <div id="active-er-list" class="divide-y divide-border/50">
+                <!-- JS populated -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
-  </div>
-
+  <!-- Script -->
   <script src="js/shared.js"></script>
-  <script src="js/manager-dashboard.js"></script>
+  <script type="module" src="js/manager-dashboard.js"></script>
 </body>
 </html>

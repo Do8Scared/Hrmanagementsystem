@@ -323,12 +323,126 @@
 
     <!-- Page Content (Admin Dashboard) -->
     <main class="flex-1 overflow-y-auto p-6 bg-background relative z-10">
-      <!-- Content for Manpower Requests goes here -->
+      <div class="space-y-6 max-w-6xl mx-auto">
+        <!-- Form -->
+        <div class="bg-card rounded-xl border border-border overflow-hidden">
+          <div class="px-6 py-5 border-b border-border">
+            <h2 class="font-semibold text-foreground">Request Additional Manpower</h2>
+            <p class="text-xs text-muted-foreground mt-0.5">Fill in the details below and submit for HR review.</p>
+          </div>
+          <form id="mr-form" class="p-6 space-y-5">
+            <div id="submit-success" class="hidden flex items-center gap-3 px-4 py-3 bg-emerald-50 border border-emerald-200 rounded-xl text-sm text-emerald-700">
+              <i data-lucide="check" style="width: 16px; height: 16px;" class="flex-shrink-0"></i> Request submitted successfully! HR will review and respond shortly.
+            </div>
+            <div id="draft-success" class="hidden flex items-center gap-3 px-4 py-3 bg-secondary border border-border rounded-xl text-sm text-accent">
+              <i data-lucide="save" style="width: 16px; height: 16px;" class="flex-shrink-0"></i> Draft saved successfully.
+            </div>
 
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-medium text-foreground mb-1.5">Department</label>
+                <input value="Operations" readonly class="w-full px-3 py-2.5 bg-gray-50 border border-border rounded-xl text-sm text-muted-foreground cursor-not-allowed">
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-foreground mb-1.5">Position / Role Title <span class="text-red-500">*</span></label>
+                <input id="mr-position" placeholder="e.g. Senior React Developer" required class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/20 placeholder:text-muted-foreground">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs font-medium text-foreground mb-1.5">Employment Type</label>
+                <select id="mr-type" class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer">
+                  <option>Full Time</option><option>Part Time</option><option>Contractual</option><option>Internship</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-foreground mb-1.5">Number of Headcount Needed</label>
+                <input type="number" id="mr-headcount" min="1" value="1" class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/20">
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-foreground mb-1.5">Preferred Start Date</label>
+                <input type="date" id="mr-start" class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/20">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-foreground mb-1.5">Job Description</label>
+              <textarea id="mr-desc" rows="4" placeholder="Describe the role, key responsibilities, and day-to-day tasks..." class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/20 resize-none placeholder:text-muted-foreground"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-foreground mb-1.5">Required Qualifications</label>
+              <textarea id="mr-qual" rows="3" placeholder="List required education, skills, certifications, and experience..." class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/20 resize-none placeholder:text-muted-foreground"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-foreground mb-1.5">Justification / Reason for Request</label>
+              <textarea id="mr-just" rows="3" placeholder="Explain why this position is needed at this time..." class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/20 resize-none placeholder:text-muted-foreground"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-foreground mb-2">Urgency Level</label>
+              <div class="flex gap-2" id="urgency-group">
+                <button type="button" data-val="Low" class="urgency-btn flex-1 py-2 rounded-xl text-sm font-medium border transition-all border-border bg-secondary text-muted-foreground hover:border-primary/40">Low</button>
+                <button type="button" data-val="Medium" class="urgency-btn flex-1 py-2 rounded-xl text-sm font-medium border transition-all border-primary bg-primary text-white">Medium <span class="ml-2 inline-block w-2 h-2 rounded-full bg-amber-300"></span></button>
+                <button type="button" data-val="High" class="urgency-btn flex-1 py-2 rounded-xl text-sm font-medium border transition-all border-border bg-secondary text-muted-foreground hover:border-primary/40">High</button>
+                <button type="button" data-val="Critical" class="urgency-btn flex-1 py-2 rounded-xl text-sm font-medium border transition-all border-border bg-secondary text-muted-foreground hover:border-primary/40">Critical</button>
+              </div>
+            </div>
+
+            <div class="flex gap-3 pt-2">
+              <button type="button" id="draft-btn" class="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-border text-sm font-medium text-foreground hover:bg-secondary transition-colors">
+                <i data-lucide="save" style="width: 15px; height: 15px;"></i> Save as Draft
+              </button>
+              <button type="submit" class="flex items-center gap-2 px-6 py-2.5 rounded-xl text-white text-sm font-medium transition-all hover:opacity-90 shadow-[0_4px_14px_rgba(110,18,22,0.35)]" style="background: var(--primary);">
+                <i data-lucide="send" style="width: 15px; height: 15px;"></i> Submit Request
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- My Requests History -->
+        <div class="bg-card rounded-xl border border-border overflow-hidden">
+          <div class="px-6 py-4 border-b border-border">
+            <h3 class="font-semibold text-foreground">My Request History</h3>
+          </div>
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-border bg-secondary/40">
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Request ID</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Position</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Headcount</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Date Submitted</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Status</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="mr-tbody">
+              <!-- JS populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- View Request Modal -->
+      <div id="view-mr-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+          <div class="flex items-center justify-between px-6 py-5 border-b border-border">
+            <div>
+              <span class="text-xs font-mono text-primary" id="view-mr-id"></span>
+              <h3 class="font-semibold text-foreground mt-0.5" id="view-mr-title"></h3>
+            </div>
+            <button class="close-modal-btn p-1.5 rounded-lg hover:bg-secondary text-muted-foreground"><i data-lucide="x" style="width: 18px; height: 18px;"></i></button>
+          </div>
+          <div class="p-6 space-y-5" id="view-mr-content">
+            <!-- JS populated -->
+          </div>
+        </div>
+      </div>
     </main>
-  </div>
-
+  <!-- Script -->
   <script src="js/shared.js"></script>
-  <script src="js/manager-manpower.js"></script>
+  <script type="module" src="js/manager-manpower.js"></script>
 </body>
 </html>

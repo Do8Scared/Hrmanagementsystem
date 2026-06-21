@@ -135,65 +135,64 @@
     <!-- Role indicator -->
     <div id="sidebar-role" class="px-4 pt-3 pb-1.5">
       <div class="text-xs uppercase tracking-wider font-bold" style="color: var(--sidebar-primary); opacity: 0.85;">
-        Admin / HR
+        Employee Portal
       </div>
     </div>
 
     <!-- Nav -->
     <nav class="flex-1 px-2 py-2 space-y-0.5 overflow-y-auto sidebar-scroll">
       <!-- Active Item -->
-      <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 text-white font-bold nav-item" style="background: rgba(232,168,0,0.18); color: #FFF5E9;">
+      <a href="employee-dashboard.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 text-white font-bold nav-item" style="background: rgba(232,168,0,0.18); color: #FFF5E9;">
         <div class="relative flex-shrink-0">
           <i data-lucide="layout-dashboard" style="width: 18px; height: 18px; color: var(--sidebar-primary);"></i>
         </div>
         <span class="truncate nav-label">Dashboard</span>
         <span class="ml-auto w-1.5 h-1.5 rounded-full nav-indicator" style="background: var(--sidebar-primary)"></span>
-      </button>
+      </a>
 
       <!-- Inactive Items -->
-      <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
+      <a href="employee-profile.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
         <div class="relative flex-shrink-0">
-          <i data-lucide="users" style="width: 18px; height: 18px;"></i>
+          <i data-lucide="user" style="width: 18px; height: 18px;"></i>
         </div>
-        <span class="truncate nav-label">Employee Management</span>
-      </button>
+        <span class="truncate nav-label">My Profile</span>
+      </a>
 
-      <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
+      <a href="employee-attendance.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
         <div class="relative flex-shrink-0">
-          <i data-lucide="dollar-sign" style="width: 18px; height: 18px;"></i>
+          <i data-lucide="clock" style="width: 18px; height: 18px;"></i>
         </div>
-        <span class="truncate nav-label">Payroll & Attendance</span>
-      </button>
+        <span class="truncate nav-label">My Attendance</span>
+      </a>
 
-      <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
+      <a href="employee-leave.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
         <div class="relative flex-shrink-0">
           <i data-lucide="calendar-days" style="width: 18px; height: 18px;"></i>
         </div>
-        <span class="truncate nav-label">Leave Management</span>
-      </button>
+        <span class="truncate nav-label">My Leaves</span>
+      </a>
 
-      <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
+      <a href="employee-payslips.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
         <div class="relative flex-shrink-0">
-          <i data-lucide="briefcase" style="width: 18px; height: 18px;"></i>
+          <i data-lucide="dollar-sign" style="width: 18px; height: 18px;"></i>
         </div>
-        <span class="truncate nav-label">Recruitment</span>
-      </button>
+        <span class="truncate nav-label">My Payslips</span>
+      </a>
+      
+      <a href="employee-performance.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
+        <div class="relative flex-shrink-0">
+          <i data-lucide="trending-up" style="width: 18px; height: 18px;"></i>
+        </div>
+        <span class="truncate nav-label">My Performance</span>
+      </a>
 
-      <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
+      <a href="employee-hrcases.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
         <div class="relative flex-shrink-0">
           <i data-lucide="shield-alert" style="width: 18px; height: 18px;"></i>
-          <span class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-amber-400 rounded-full"></span>
+          <span class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-amber-400 rounded-full hidden" id="er-badge"></span>
         </div>
-        <span class="truncate nav-label">HR Admin / ER</span>
-      </button>
-
-      <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
-        <div class="relative flex-shrink-0">
-          <i data-lucide="megaphone" style="width: 18px; height: 18px;"></i>
-          <span class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-amber-400 rounded-full"></span>
-        </div>
-        <span class="truncate nav-label">Announcements</span>
-      </button>
+        <span class="truncate nav-label">HR Admin / ER Cases</span>
+      </a>
     </nav>
 
     <!-- User & Role Switch -->
@@ -201,18 +200,14 @@
       <div id="sidebar-user-full" class="space-y-2">
         <div class="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer">
           <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background: var(--sidebar-primary)">
-            <span class="text-xs font-bold" style="color: var(--sidebar-primary-foreground)">SG</span>
+            <span class="text-xs font-bold" style="color: var(--sidebar-primary-foreground)" id="sidebar-initials">AD</span>
           </div>
           <div class="flex-1 min-w-0">
-            <div class="text-xs font-bold truncate" style="color: var(--sidebar-foreground)">Sofia Garcia</div>
-            <div class="text-xs truncate" style="color: rgba(255,245,233,0.45)">HR Specialist</div>
+            <div class="text-xs font-bold truncate" style="color: var(--sidebar-foreground)" id="sidebar-name">Alex Diaz</div>
+            <div class="text-xs truncate" style="color: rgba(255,245,233,0.45)" id="sidebar-role-text">Senior Backend Developer</div>
           </div>
         </div>
-        <button class="w-full flex items-center gap-2 px-2 py-2 rounded-lg text-white/60 hover:text-white hover:bg-white/10 text-xs transition-all">
-          <i data-lucide="users" style="width: 14px; height: 14px;"></i>
-          <span>Switch to Manager View</span>
-        </button>
-        <button class="w-full flex items-center gap-2 px-2 py-2 rounded-lg text-red-400/80 hover:text-red-400 hover:bg-red-500/10 text-xs transition-all">
+        <button onclick="window.location.href='index.html'" class="w-full flex items-center gap-2 px-2 py-2 rounded-lg text-red-400/80 hover:text-red-400 hover:bg-red-500/10 text-xs transition-all">
           <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
           <span>Log Out</span>
         </button>
@@ -220,9 +215,9 @@
 
       <div id="sidebar-user-mini" class="flex flex-col items-center gap-2 hidden">
         <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: var(--sidebar-primary)">
-          <span class="text-xs font-bold" style="color: var(--sidebar-primary-foreground)">SG</span>
+          <span class="text-xs font-bold" style="color: var(--sidebar-primary-foreground)">AD</span>
         </div>
-        <button class="text-red-400/80 hover:text-red-400 transition-colors" title="Log Out">
+        <button onclick="window.location.href='index.html'" class="text-red-400/80 hover:text-red-400 transition-colors" title="Log Out">
           <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
         </button>
       </div>
@@ -238,8 +233,8 @@
           <i data-lucide="menu" style="width: 18px; height: 18px;" id="menu-icon"></i>
         </button>
         <div>
-          <h1 class="text-foreground font-semibold">Employee Dashboard</h1>
-          <p class="text-muted-foreground text-xs">Tuesday, June 16, 2026</p>
+          <h1 class="text-foreground font-semibold">Dashboard</h1>
+          <p class="text-muted-foreground text-xs" id="header-date">Tuesday, June 16, 2026</p>
         </div>
       </div>
 
@@ -279,11 +274,11 @@
         <div class="relative">
           <button id="profile-btn" class="flex items-center gap-2 pl-3 border-l border-border hover:bg-secondary/60 rounded-lg pr-2 py-1 transition-colors">
             <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-              <span class="text-white text-xs font-semibold">SG</span>
+              <span class="text-white text-xs font-semibold">AD</span>
             </div>
             <div class="hidden sm:block text-left">
-              <div class="text-sm font-medium text-foreground leading-tight">Sofia Garcia</div>
-              <div class="text-xs text-muted-foreground">HR Specialist</div>
+              <div class="text-sm font-medium text-foreground leading-tight">Alex Diaz</div>
+              <div class="text-xs text-muted-foreground">Employee</div>
             </div>
             <i data-lucide="chevron-down" id="profile-chevron" style="width: 14px; height: 14px;" class="text-muted-foreground transition-transform duration-200"></i>
           </button>
@@ -292,26 +287,22 @@
             <div class="px-4 py-3 border-b border-border bg-secondary/40">
               <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-                  <span class="text-white text-xs font-semibold">SG</span>
+                  <span class="text-white text-xs font-semibold">AD</span>
                 </div>
                 <div class="min-w-0">
-                  <div class="text-sm font-semibold text-foreground truncate">Sofia Garcia</div>
-                  <div class="text-xs text-muted-foreground truncate">HR Specialist</div>
+                  <div class="text-sm font-semibold text-foreground truncate">Alex Diaz</div>
+                  <div class="text-xs text-muted-foreground truncate">Senior Backend Developer</div>
                 </div>
               </div>
             </div>
             <div class="py-1">
-              <button class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-foreground hover:bg-secondary transition-colors text-left">
+              <button class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-foreground hover:bg-secondary transition-colors text-left" onclick="window.location.href='employee-profile.html'">
                 <i data-lucide="user" style="width: 15px; height: 15px;" class="text-muted-foreground flex-shrink-0"></i>
                 My Profile
               </button>
-              <button class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-foreground hover:bg-secondary transition-colors text-left">
-                <i data-lucide="lock" style="width: 15px; height: 15px;" class="text-muted-foreground flex-shrink-0"></i>
-                Change Password
-              </button>
             </div>
             <div class="border-t border-border py-1">
-              <button class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors text-left">
+              <button onclick="window.location.href='index.html'" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors text-left">
                 <i data-lucide="log-out" style="width: 15px; height: 15px;" class="flex-shrink-0"></i>
                 Log Out
               </button>
@@ -321,14 +312,184 @@
       </div>
     </header>
 
-    <!-- Page Content (Admin Dashboard) -->
+    <!-- Page Content -->
     <main class="flex-1 overflow-y-auto p-6 bg-background relative z-10">
-      <!-- Content for Employee Dashboard goes here -->
+      <div class="space-y-6 max-w-6xl mx-auto">
+        <!-- Greeting Header -->
+        <div class="bg-primary rounded-2xl p-6 flex items-center justify-between overflow-hidden relative">
+          <div class="absolute right-0 top-0 w-64 h-64 rounded-full bg-white/5 -translate-y-1/3 translate-x-1/4"></div>
+          <div class="absolute right-24 bottom-0 w-40 h-40 rounded-full bg-white/5 translate-y-1/2"></div>
+          <div>
+            <p class="text-white/60 text-sm" id="greeting-text">Good morning,</p>
+            <h2 class="text-white font-bold text-2xl" id="emp-name">Alex Diaz</h2>
+            <p class="text-white/60 text-sm mt-1" id="emp-role">Senior Backend Developer · Engineering</p>
+            <p class="text-white/40 text-xs mt-3" id="emp-date"></p>
+          </div>
+          <div class="flex items-center gap-3 z-10">
+            <div class="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center">
+              <span class="text-white text-2xl font-bold" id="emp-initials">AD</span>
+            </div>
+          </div>
+        </div>
 
+        <!-- Quick Cards -->
+        <div class="grid grid-cols-3 gap-4">
+          <!-- Today's Attendance -->
+          <div class="bg-card rounded-xl border border-border p-5">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center">
+                  <i data-lucide="clock" style="width: 16px; height: 16px;" class="text-accent"></i>
+                </div>
+                <span class="text-sm font-medium text-foreground">Today's Attendance</span>
+              </div>
+              <span id="active-pulse" class="hidden flex items-center gap-1 text-xs text-emerald-600 font-medium">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Active
+              </span>
+            </div>
+            <div class="space-y-2">
+              <div class="flex justify-between text-xs">
+                <span class="text-muted-foreground">Time In</span>
+                <span class="font-medium text-foreground" id="time-in-val">—</span>
+              </div>
+              <div class="flex justify-between text-xs">
+                <span class="text-muted-foreground">Time Out</span>
+                <span class="font-medium text-foreground" id="time-out-val">—</span>
+              </div>
+              <div class="flex justify-between text-xs">
+                <span class="text-muted-foreground">Status</span>
+                <span class="font-medium text-red-500" id="att-status-val">Not Yet In</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Leave Balance -->
+          <div class="bg-card rounded-xl border border-border p-5">
+            <div class="flex items-center gap-2 mb-3">
+              <div class="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center">
+                <i data-lucide="calendar-days" style="width: 16px; height: 16px;" class="text-purple-600"></i>
+              </div>
+              <span class="text-sm font-medium text-foreground">Leave Balance</span>
+            </div>
+            <div class="space-y-2">
+              <div class="flex justify-between text-xs">
+                <span class="text-muted-foreground">Vacation Leave</span>
+                <span class="font-medium text-foreground" id="vl-bal">-- days left</span>
+              </div>
+              <div class="flex justify-between text-xs">
+                <span class="text-muted-foreground">Sick Leave</span>
+                <span class="font-medium text-foreground" id="sl-bal">-- days left</span>
+              </div>
+              <div class="flex justify-between text-xs">
+                <span class="text-muted-foreground">Emergency Leave</span>
+                <span class="font-medium text-foreground" id="el-bal">-- days left</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Latest Payslip -->
+          <div class="bg-card rounded-xl border border-border p-5">
+            <div class="flex items-center gap-2 mb-3">
+              <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
+                <i data-lucide="dollar-sign" style="width: 16px; height: 16px;" class="text-emerald-600"></i>
+              </div>
+              <span class="text-sm font-medium text-foreground">Latest Payslip</span>
+            </div>
+            <div class="space-y-2">
+              <div class="flex justify-between text-xs">
+                <span class="text-muted-foreground">Period</span>
+                <span class="font-medium text-foreground" id="ps-period">--</span>
+              </div>
+              <div class="flex justify-between text-xs">
+                <span class="text-muted-foreground">Gross Pay</span>
+                <span class="font-medium text-foreground" id="ps-gross">--</span>
+              </div>
+              <div class="flex justify-between text-xs">
+                <span class="text-muted-foreground">Net Pay</span>
+                <span class="font-bold text-primary" id="ps-net">--</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Time In / Out CTAs -->
+        <div class="bg-card rounded-xl border border-border p-5">
+          <h3 class="font-semibold text-foreground mb-4">Quick Actions</h3>
+          <div class="flex items-center gap-4">
+            
+            <div id="btn-container-timein" class="">
+              <button id="btn-timein" class="flex items-center gap-3 px-6 py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition-all shadow-sm hover:shadow-md">
+                <i data-lucide="log-in" style="width: 18px; height: 18px;"></i>
+                <div class="text-left">
+                  <div class="text-sm font-semibold">Time In</div>
+                  <div class="text-xs text-white/70">Record your arrival</div>
+                </div>
+              </button>
+            </div>
+            <div id="status-timein" class="hidden flex items-center gap-3 px-6 py-3 rounded-xl bg-emerald-50 border border-emerald-200">
+              <i data-lucide="check-circle-2" style="width: 18px; height: 18px;" class="text-emerald-600"></i>
+              <div>
+                <div class="text-sm font-semibold text-emerald-700" id="status-timein-text">Timed In</div>
+                <div class="text-xs text-emerald-600">You're clocked in today</div>
+              </div>
+            </div>
+
+            <div id="btn-container-timeout" class="hidden">
+              <button id="btn-timeout" class="flex items-center gap-3 px-6 py-3 rounded-xl bg-foreground text-white font-medium hover:bg-foreground/90 transition-all shadow-sm hover:shadow-md">
+                <i data-lucide="log-out" style="width: 18px; height: 18px;"></i>
+                <div class="text-left">
+                  <div class="text-sm font-semibold">Time Out</div>
+                  <div class="text-xs text-white/70">End your shift</div>
+                </div>
+              </button>
+            </div>
+            <div id="status-timeout" class="hidden flex items-center gap-3 px-6 py-3 rounded-xl bg-gray-50 border border-gray-200">
+              <i data-lucide="check-circle-2" style="width: 18px; height: 18px;" class="text-gray-500"></i>
+              <div>
+                <div class="text-sm font-semibold text-gray-700">Timed Out</div>
+                <div class="text-xs text-gray-500">Shift complete</div>
+              </div>
+            </div>
+
+            <div class="ml-auto flex gap-2">
+              <a href="employee-leave.html" class="px-4 py-2 rounded-lg border border-border text-sm text-foreground hover:bg-secondary transition-colors">
+                File Leave
+              </a>
+              <a href="employee-payslips.html" class="px-4 py-2 rounded-lg border border-border text-sm text-foreground hover:bg-secondary transition-colors">
+                View Payslips
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- This Month Summary -->
+        <div class="bg-card rounded-xl border border-border p-5">
+          <h3 class="font-semibold text-foreground mb-4">June 2026 Attendance Summary</h3>
+          <div class="grid grid-cols-4 gap-4">
+            <div class="rounded-xl p-4 bg-emerald-50 text-center">
+              <div class="text-2xl font-bold text-emerald-600" id="sum-present">0</div>
+              <div class="text-xs font-medium text-emerald-600 mt-0.5">Present</div>
+            </div>
+            <div class="rounded-xl p-4 bg-amber-50 text-center">
+              <div class="text-2xl font-bold text-amber-600" id="sum-late">0</div>
+              <div class="text-xs font-medium text-amber-600 mt-0.5">Late</div>
+            </div>
+            <div class="rounded-xl p-4 bg-red-50 text-center">
+              <div class="text-2xl font-bold text-red-600" id="sum-absent">0</div>
+              <div class="text-xs font-medium text-red-600 mt-0.5">Absent</div>
+            </div>
+            <div class="rounded-xl p-4 bg-orange-50 text-center">
+              <div class="text-2xl font-bold text-orange-600" id="sum-undertime">0</div>
+              <div class="text-xs font-medium text-orange-600 mt-0.5">Undertime</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
 
+  <!-- Script -->
   <script src="js/shared.js"></script>
-  <script src="js/employee-dashboard.js"></script>
+  <script type="module" src="js/employee-dashboard.js"></script>
 </body>
 </html>
