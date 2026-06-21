@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HR Management System - Employee Relations</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-background text-foreground flex h-screen overflow-hidden antialiased selection:bg-primary/20 selection:text-primary">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-sidebar border-r border-border flex flex-col transition-all duration-300 relative z-20">
+    <div class="h-16 flex items-center px-6 border-b border-border/50">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
+          <i data-lucide="shield" class="text-white w-4 h-4"></i>
+        </div>
+        <span class="font-bold text-lg tracking-tight text-sidebar-foreground">HRMS</span>
+      </div>
+    </div>
+    
+    <div class="flex-1 overflow-y-auto py-4 px-3 space-y-6 scrollbar-hide">
+      <!-- MAIN MENU -->
+      <div>
+        <div class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">Main Menu</div>
+        <nav class="space-y-1">
+          <a href="admin-dashboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
+            <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i> Dashboard
+          </a>
+          <a href="admin-employees.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
+            <i data-lucide="users" style="width: 18px; height: 18px;"></i> Employee Hub
+          </a>
+          <a href="admin-attendance.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
+            <i data-lucide="clock" style="width: 18px; height: 18px;"></i> Attendance
+          </a>
+          <a href="admin-leave.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
+            <i data-lucide="calendar-off" style="width: 18px; height: 18px;"></i> Leave Mgmt
+          </a>
+          <a href="admin-payroll.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
+            <i data-lucide="banknote" style="width: 18px; height: 18px;"></i> Payroll
+          </a>
+          <a href="admin-performance.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
+            <i data-lucide="line-chart" style="width: 18px; height: 18px;"></i> Performance
+          </a>
+        </nav>
+      </div>
+
+      <!-- RECRUITMENT -->
+      <div>
+        <div class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">Recruitment</div>
+        <nav class="space-y-1">
+          <a href="admin-recruitment.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
+            <i data-lucide="briefcase" style="width: 18px; height: 18px;"></i> Recruitment
+          </a>
+        </nav>
+      </div>
+
+      <!-- ADMINISTRATION -->
+      <div>
+        <div class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">Administration</div>
+        <nav class="space-y-1">
+          <a href="admin-hr.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-sidebar-accent text-sidebar-accent-foreground transition-all">
+            <i data-lucide="gavel" style="width: 18px; height: 18px;"></i> Employee Relations
+          </a>
+          <a href="admin-announcements.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
+            <i data-lucide="megaphone" style="width: 18px; height: 18px;"></i> Announcements
+          </a>
+        </nav>
+      </div>
+    </div>
+    
+    <div class="p-4 border-t border-border/50">
+      <button class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 transition-colors" onclick="window.location.href='login.html'">
+        <i data-lucide="log-out" style="width: 16px; height: 16px;"></i> Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-secondary/30 relative">
+    
+    <!-- Top Header -->
+    <header class="h-16 bg-white/80 backdrop-blur-md border-b border-border flex items-center justify-between px-6 sticky top-0 z-20">
+      <div class="flex items-center gap-4">
+        <h2 class="text-xl font-bold text-foreground tracking-tight">Employee Relations (HR Admin)</h2>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center shadow-md">
+          <span class="text-white text-sm font-bold">AD</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="flex-1 overflow-y-auto p-6 bg-background relative z-10" id="main-content">
+      <div class="space-y-5">
+        
+        <!-- Header & Tabs -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="bg-card rounded-xl border border-border p-1 inline-flex overflow-x-auto">
+            <button class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition-colors bg-primary text-white" data-target="view-cases">Active Cases</button>
+            <button class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition-colors text-muted-foreground hover:text-foreground hover:bg-secondary" data-target="view-reports">Reports</button>
+            <button class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition-colors text-muted-foreground hover:text-foreground hover:bg-secondary" data-target="view-templates">Templates</button>
+          </div>
+          <div class="flex items-center gap-3">
+            <button id="issue-nte-btn" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors shadow-sm">
+              <i data-lucide="plus" style="width: 16px; height: 16px;"></i> Issue NTE
+            </button>
+          </div>
+        </div>
+
+        <div class="p-5 bg-card rounded-xl border border-border relative min-h-[500px]">
+          
+          <!-- 1. Active Cases View -->
+          <div id="view-cases" class="tab-content relative">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-5">
+              <div class="relative flex-1 max-w-sm">
+                <i data-lucide="search" style="width: 14px; height: 14px;" class="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"></i>
+                <input type="text" id="search-cases" placeholder="Search by employee or ID..." class="w-full pl-8 pr-4 py-2 bg-secondary rounded-lg text-sm border-0 outline-none text-foreground placeholder:text-muted-foreground">
+              </div>
+              <div class="flex items-center gap-2">
+                <i data-lucide="filter" style="width: 14px; height: 14px;" class="text-muted-foreground"></i>
+                <select id="filter-status" class="px-3 py-2 bg-secondary rounded-lg text-sm border-0 outline-none text-foreground cursor-pointer">
+                  <option value="All">All Statuses</option>
+                  <option value="Pending Explanation">Pending Explanation</option>
+                  <option value="Explanation Submitted">Explanation Submitted</option>
+                  <option value="Under Review">Under Review</option>
+                  <option value="Decision Issued">Decision Issued</option>
+                  <option value="Closed">Closed</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr class="border-b border-border bg-secondary/40">
+                    <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Case ID</th>
+                    <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Employee</th>
+                    <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Incident</th>
+                    <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Date Issued</th>
+                    <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Status</th>
+                    <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Assigned To</th>
+                    <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="cases-tbody">
+                  <!-- JS Populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 2. Reports View -->
+          <div id="view-reports" class="tab-content hidden">
+            <!-- Simple Report Dashboard in JS -->
+            <div id="reports-container" class="space-y-6"></div>
+          </div>
+
+          <!-- 3. Templates View -->
+          <div id="view-templates" class="tab-content hidden">
+            <div id="templates-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+    <!-- Modals -->
+    <!-- Detail Modal -->
+    <div id="detail-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto mx-4" id="detail-modal-content">
+        <!-- JS Populated -->
+      </div>
+    </div>
+
+    <!-- Issue NTE Modal -->
+    <div id="issue-nte-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto mx-4">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-border sticky top-0 bg-white">
+          <h3 class="font-bold text-foreground">Issue Notice To Explain</h3>
+          <button class="close-modal-btn p-1.5 rounded-lg hover:bg-secondary text-muted-foreground"><i data-lucide="x" style="width: 18px; height: 18px;"></i></button>
+        </div>
+        <form id="issue-nte-form" class="p-6 space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="col-span-2">
+              <label class="block text-sm font-semibold text-foreground mb-1.5">Employee</label>
+              <select id="nte-employee" required class="w-full px-3 py-2.5 rounded-xl border border-border bg-secondary text-sm outline-none text-foreground"></select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-foreground mb-1.5">Incident Type</label>
+              <select id="nte-type" required class="w-full px-3 py-2.5 rounded-xl border border-border bg-secondary text-sm outline-none text-foreground"></select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-foreground mb-1.5">Incident Date</label>
+              <input type="date" id="nte-date" required class="w-full px-3 py-2.5 rounded-xl border border-border bg-secondary text-sm outline-none text-foreground">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-foreground mb-1.5">Description</label>
+            <textarea id="nte-desc" rows="4" required class="w-full px-3 py-2.5 rounded-xl border border-border bg-secondary text-sm outline-none resize-none text-foreground"></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-foreground mb-1.5">Response Deadline (min 5 days)</label>
+            <input type="date" id="nte-deadline" required class="w-full px-3 py-2.5 rounded-xl border border-border bg-secondary text-sm outline-none text-foreground">
+          </div>
+          <div class="flex justify-end gap-3 pt-3">
+            <button type="button" class="close-modal-btn px-4 py-2.5 rounded-xl border border-border text-sm font-semibold hover:bg-secondary text-foreground">Cancel</button>
+            <button type="submit" class="px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-bold hover:bg-primary/90">Issue NTE</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Issue NOD Modal -->
+    <div id="issue-nod-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto mx-4">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-border sticky top-0 bg-white">
+          <h3 class="font-bold text-foreground">Issue Notice of Decision</h3>
+          <button class="close-modal-btn p-1.5 rounded-lg hover:bg-secondary text-muted-foreground"><i data-lucide="x" style="width: 18px; height: 18px;"></i></button>
+        </div>
+        <form id="issue-nod-form" class="p-6 space-y-4">
+          <input type="hidden" id="nod-nte-id" />
+          <div>
+            <label class="block text-sm font-semibold text-foreground mb-2">Decision</label>
+            <div class="grid grid-cols-2 gap-2" id="nod-decision-btns">
+              <button type="button" class="decision-btn px-3 py-2.5 rounded-xl border text-sm font-semibold text-left border-border hover:bg-secondary text-foreground" data-val="Written Warning">Written Warning</button>
+              <button type="button" class="decision-btn px-3 py-2.5 rounded-xl border text-sm font-semibold text-left border-border hover:bg-secondary text-foreground" data-val="Suspension">Suspension</button>
+              <button type="button" class="decision-btn px-3 py-2.5 rounded-xl border text-sm font-semibold text-left border-border hover:bg-secondary text-foreground" data-val="Dismissal">Dismissal</button>
+              <button type="button" class="decision-btn px-3 py-2.5 rounded-xl border text-sm font-semibold text-left border-border hover:bg-secondary text-foreground" data-val="Exonerated">Exonerated</button>
+            </div>
+            <input type="hidden" id="nod-decision" required />
+          </div>
+          <div id="suspension-days-div" class="hidden">
+            <label class="block text-sm font-semibold text-foreground mb-1.5">Suspension Days</label>
+            <input type="number" id="nod-days" min="1" class="w-full px-3 py-2.5 rounded-xl border border-border bg-secondary text-sm outline-none text-foreground">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-foreground mb-1.5">Effective Date</label>
+            <input type="date" id="nod-effective" required class="w-full px-3 py-2.5 rounded-xl border border-border bg-secondary text-sm outline-none text-foreground">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-foreground mb-1.5">Decision Rationale</label>
+            <textarea id="nod-details" rows="4" required class="w-full px-3 py-2.5 rounded-xl border border-border bg-secondary text-sm outline-none resize-none text-foreground"></textarea>
+          </div>
+          <div class="flex justify-end gap-3 pt-3">
+            <button type="button" class="close-modal-btn px-4 py-2.5 rounded-xl border border-border text-sm font-semibold hover:bg-secondary text-foreground">Cancel</button>
+            <button type="submit" class="px-5 py-2.5 rounded-xl bg-purple-700 text-white text-sm font-bold hover:bg-purple-800">Issue NOD</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/shared.js"></script>
+  <script src="js/admin-hr.js"></script>
+</body>
+</html>

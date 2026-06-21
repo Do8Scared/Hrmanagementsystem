@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HR Management System - Announcements</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-background text-foreground flex h-screen overflow-hidden antialiased selection:bg-primary/20 selection:text-primary">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-sidebar border-r border-border flex flex-col transition-all duration-300 relative z-20">
+    <div class="h-16 flex items-center px-6 border-b border-border/50">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
+          <i data-lucide="megaphone" class="text-white w-4 h-4"></i>
+        </div>
+        <span class="font-bold text-lg tracking-tight text-sidebar-foreground">HRMS</span>
+      </div>
+    </div>
+    
+    <div class="flex-1 overflow-y-auto py-4 px-3 space-y-6 scrollbar-hide">
+      <!-- MAIN MENU -->
+      <div>
+        <div class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">Main Menu</div>
+        <nav class="space-y-1">
+          <a href="admin-dashboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
+            <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i> Dashboard
+          </a>
+          <a href="admin-employees.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
+            <i data-lucide="users" style="width: 18px; height: 18px;"></i> Employee Hub
+          </a>
+          <a href="admin-attendance.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
+            <i data-lucide="clock" style="width: 18px; height: 18px;"></i> Attendance
+          </a>
+          <a href="admin-leave.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
+            <i data-lucide="calendar-off" style="width: 18px; height: 18px;"></i> Leave Mgmt
+          </a>
+          <a href="admin-payroll.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
+            <i data-lucide="banknote" style="width: 18px; height: 18px;"></i> Payroll
+          </a>
+          <a href="admin-performance.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
+            <i data-lucide="line-chart" style="width: 18px; height: 18px;"></i> Performance
+          </a>
+        </nav>
+      </div>
+
+      <!-- RECRUITMENT -->
+      <div>
+        <div class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">Recruitment</div>
+        <nav class="space-y-1">
+          <a href="admin-recruitment.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
+            <i data-lucide="briefcase" style="width: 18px; height: 18px;"></i> Recruitment
+          </a>
+        </nav>
+      </div>
+
+      <!-- ADMINISTRATION -->
+      <div>
+        <div class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">Administration</div>
+        <nav class="space-y-1">
+          <a href="admin-hr.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
+            <i data-lucide="gavel" style="width: 18px; height: 18px;"></i> Employee Relations
+          </a>
+          <a href="admin-announcements.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-sidebar-accent text-sidebar-accent-foreground transition-all">
+            <i data-lucide="megaphone" style="width: 18px; height: 18px;"></i> Announcements
+          </a>
+        </nav>
+      </div>
+    </div>
+    
+    <div class="p-4 border-t border-border/50">
+      <button class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 transition-colors" onclick="window.location.href='login.html'">
+        <i data-lucide="log-out" style="width: 16px; height: 16px;"></i> Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-secondary/30 relative">
+    
+    <!-- Top Header -->
+    <header class="h-16 bg-white/80 backdrop-blur-md border-b border-border flex items-center justify-between px-6 sticky top-0 z-20">
+      <div class="flex items-center gap-4">
+        <h2 class="text-xl font-bold text-foreground tracking-tight">Announcements Hub</h2>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center shadow-md">
+          <span class="text-white text-sm font-bold">AD</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="flex-1 overflow-y-auto p-6 bg-background relative z-10" id="main-content">
+      
+      <!-- List View -->
+      <div id="view-list" class="space-y-5 block">
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="font-semibold text-foreground text-lg">Announcements & Policies</h2>
+            <p class="text-xs text-muted-foreground mt-0.5" id="docs-summary">0 published · 0 drafts</p>
+          </div>
+          <div class="relative">
+            <button id="create-menu-btn" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm">
+              <i data-lucide="plus" style="width: 15px; height: 15px;"></i> Create New <i data-lucide="chevron-down" style="width: 14px; height: 14px;"></i>
+            </button>
+            <div id="create-dropdown" class="absolute right-0 top-11 w-48 bg-white rounded-xl shadow-xl border border-border z-50 overflow-hidden hidden">
+              <button class="create-option w-full flex items-center gap-3 px-4 py-3 hover:bg-secondary transition-colors text-left" data-type="Advisory">
+                <div class="w-7 h-7 rounded-lg bg-secondary flex items-center justify-center"><i data-lucide="megaphone" style="width: 14px; height: 14px;" class="text-accent"></i></div>
+                <span class="text-sm text-foreground">Advisory</span>
+              </button>
+              <button class="create-option w-full flex items-center gap-3 px-4 py-3 hover:bg-secondary transition-colors text-left" data-type="Memorandum">
+                <div class="w-7 h-7 rounded-lg bg-purple-50 flex items-center justify-center"><i data-lucide="file-text" style="width: 14px; height: 14px;" class="text-purple-700"></i></div>
+                <span class="text-sm text-foreground">Memorandum</span>
+              </button>
+              <button class="create-option w-full flex items-center gap-3 px-4 py-3 hover:bg-secondary transition-colors text-left" data-type="Policy">
+                <div class="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center"><i data-lucide="book-open" style="width: 14px; height: 14px;" class="text-emerald-700"></i></div>
+                <span class="text-sm text-foreground">Policy</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex border-b border-border overflow-x-auto" id="docs-tabs">
+          <button class="doc-tab-btn px-5 py-3 text-sm font-medium transition-colors border-b-2 -mb-px border-primary text-primary" data-tab="All">All <span class="ml-2 text-xs px-1.5 py-0.5 rounded-full bg-primary/10 text-primary" id="count-All">0</span></button>
+          <button class="doc-tab-btn px-5 py-3 text-sm font-medium transition-colors border-b-2 -mb-px border-transparent text-muted-foreground hover:text-foreground" data-tab="Advisory">Advisory <span class="ml-2 text-xs px-1.5 py-0.5 rounded-full bg-secondary text-muted-foreground" id="count-Advisory">0</span></button>
+          <button class="doc-tab-btn px-5 py-3 text-sm font-medium transition-colors border-b-2 -mb-px border-transparent text-muted-foreground hover:text-foreground" data-tab="Memorandum">Memorandum <span class="ml-2 text-xs px-1.5 py-0.5 rounded-full bg-secondary text-muted-foreground" id="count-Memorandum">0</span></button>
+          <button class="doc-tab-btn px-5 py-3 text-sm font-medium transition-colors border-b-2 -mb-px border-transparent text-muted-foreground hover:text-foreground" data-tab="Policy">Policy <span class="ml-2 text-xs px-1.5 py-0.5 rounded-full bg-secondary text-muted-foreground" id="count-Policy">0</span></button>
+        </div>
+
+        <!-- Table -->
+        <div class="bg-card rounded-xl border border-border overflow-x-auto">
+          <table class="w-full min-w-[800px]">
+            <thead>
+              <tr class="border-b border-border bg-secondary/40">
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Title</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Type</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Date Published</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Target</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Status</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Read Rate</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="docs-tbody">
+              <!-- JS Populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tracker View -->
+      <div id="view-tracker" class="space-y-5 hidden">
+        <div class="flex items-center gap-3">
+          <button id="tracker-back-btn" class="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            &larr; Back to Announcements
+          </button>
+        </div>
+        
+        <div class="bg-card rounded-xl border border-border p-5">
+          <div class="flex items-start justify-between">
+            <div class="flex items-start gap-3">
+              <div id="tracker-icon-container" class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"></div>
+              <div>
+                <span id="tracker-doc-type" class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold mb-1"></span>
+                <h2 id="tracker-doc-title" class="font-bold text-foreground text-lg"></h2>
+                <p id="tracker-doc-meta" class="text-xs text-muted-foreground mt-0.5"></p>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <button id="tracker-remind-all" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors">
+                <i data-lucide="bell" style="width: 15px; height: 15px;"></i> <span id="tracker-remind-text">Send Bulk Reminder</span>
+              </button>
+              <button class="flex items-center gap-2 px-3 py-2 rounded-lg border border-border text-sm text-muted-foreground hover:bg-secondary transition-colors">
+                <i data-lucide="download" style="width: 15px; height: 15px;"></i> Export CSV
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-4 gap-4" id="tracker-stats">
+          <!-- JS Populated -->
+        </div>
+
+        <div class="bg-card rounded-xl border border-border overflow-hidden">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-border bg-secondary/40">
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Employee Name</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Department</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Role</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Date Read</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Status</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Action</th>
+              </tr>
+            </thead>
+            <tbody id="tracker-tbody">
+              <!-- JS Populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Slide-over Form -->
+    <div id="slide-over" class="fixed inset-0 z-50 flex hidden">
+      <div class="flex-1 bg-black/40 backdrop-blur-sm" id="slide-over-bg"></div>
+      <div class="w-full max-w-2xl bg-white h-full overflow-y-auto shadow-2xl flex flex-col transform transition-transform duration-300 translate-x-full" id="slide-over-panel">
+        
+        <div id="form-header" class="px-6 py-5 border-b border-border flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div id="form-icon"></div>
+            <div>
+              <h3 id="form-title-h3" class="font-bold">Create Document</h3>
+              <p id="form-ref-p" class="text-xs text-muted-foreground">REF-XXX</p>
+            </div>
+          </div>
+          <button id="close-form-btn" class="p-1.5 rounded-lg hover:bg-white/50 text-muted-foreground"><i data-lucide="x" style="width: 18px; height: 18px;"></i></button>
+        </div>
+
+        <div class="p-6 space-y-5 flex-1">
+          <div>
+            <label class="block text-xs font-medium text-foreground mb-2">Document Type</label>
+            <div class="flex gap-2">
+              <button class="doc-type-btn flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 text-sm font-medium" data-val="Advisory"><i data-lucide="megaphone" style="width:15px; height:15px;"></i> Advisory</button>
+              <button class="doc-type-btn flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 text-sm font-medium" data-val="Memorandum"><i data-lucide="file-text" style="width:15px; height:15px;"></i> Memorandum</button>
+              <button class="doc-type-btn flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 text-sm font-medium" data-val="Policy"><i data-lucide="book-open" style="width:15px; height:15px;"></i> Policy</button>
+            </div>
+          </div>
+          
+          <input type="hidden" id="form-doc-id" />
+          
+          <div>
+            <label class="block text-xs font-medium text-foreground mb-1.5">Title <span class="text-red-500">*</span></label>
+            <input type="text" id="form-title" class="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none text-foreground" placeholder="Enter document title">
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-foreground mb-1.5">Reference Number</label>
+              <input type="text" id="form-ref" class="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none text-foreground font-mono">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-foreground mb-1.5">Effectivity Date</label>
+              <input type="date" id="form-date" class="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none text-foreground">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-foreground mb-1.5">Target Audience</label>
+            <select id="form-audience" class="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none text-foreground cursor-pointer">
+              <option value="All Employees">All Employees</option>
+              <option value="Managers Only">Managers Only</option>
+              <option value="Specific Department">Specific Department</option>
+            </select>
+            <div id="form-depts-div" class="mt-2 flex flex-wrap gap-2 hidden">
+              <!-- JS Populated -->
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between p-3 bg-secondary rounded-xl">
+            <div>
+              <div class="text-sm font-medium text-foreground">Requires Acknowledgement</div>
+              <div class="text-xs text-muted-foreground">Employees must confirm they've read this</div>
+            </div>
+            <div id="form-ack-toggle" class="w-11 h-6 rounded-full bg-gray-300 transition-colors cursor-pointer relative">
+              <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-all"></span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-foreground mb-1.5">Content</label>
+            <div class="border border-border rounded-xl overflow-hidden">
+              <div class="flex items-center gap-1 px-3 py-2 bg-secondary/50 border-b border-border">
+                <button class="p-1.5 rounded hover:bg-border text-muted-foreground"><i data-lucide="bold" style="width:14px; height:14px;"></i></button>
+                <button class="p-1.5 rounded hover:bg-border text-muted-foreground"><i data-lucide="italic" style="width:14px; height:14px;"></i></button>
+                <button class="p-1.5 rounded hover:bg-border text-muted-foreground"><i data-lucide="list" style="width:14px; height:14px;"></i></button>
+              </div>
+              <textarea id="form-content" rows="8" class="w-full px-4 py-3 text-sm text-foreground bg-white outline-none resize-none placeholder:text-muted-foreground" placeholder="Write content..."></textarea>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="sticky bottom-0 bg-white border-t border-border px-6 py-4 flex gap-3 z-10 mt-auto">
+          <button id="cancel-form-btn" class="px-4 py-2 rounded-lg border border-border text-sm text-muted-foreground hover:bg-secondary">Cancel</button>
+          <button id="save-draft-btn" class="px-5 py-2 rounded-lg border border-border text-sm text-foreground font-medium hover:bg-secondary">Save as Draft</button>
+          <button id="publish-btn" class="flex-1 px-5 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90">Publish</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/shared.js"></script>
+  <script src="js/admin-announcements.js"></script>
+</body>
+</html>
