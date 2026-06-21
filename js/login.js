@@ -122,9 +122,9 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       // Direct routing based on role (mock implementation)
       if (currentRole === 'admin') {
-        window.location.href = 'admin-dashboard.html';
+        window.location.href = 'admin/admin-dashboard.html';
       } else {
-        window.location.href = 'employee-dashboard.html';
+        window.location.href = 'employee/employee-dashboard.html';
       }
     }, 1200);
   });

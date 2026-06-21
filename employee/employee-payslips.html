@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My HR Cases - Corazon Travel and Tours</title>
+  <title>My Payslips - Corazon Travel and Tours</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="../css/styles.css">
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -47,9 +47,9 @@
   <!-- Sidebar -->
   <aside id="sidebar" class="flex flex-col flex-shrink-0 transition-all duration-300 w-64" style="background: var(--sidebar)">
     <div id="sidebar-logo-container" class="flex items-center border-b border-white/10 px-3 py-3">
-      <img id="sidebar-logo-full" src="assets/corazon_logo.png" alt="Corazon Travel and Tours" class="h-12 w-auto object-contain">
+      <img id="sidebar-logo-full" src="../assets/corazon_logo.png" alt="Corazon Travel and Tours" class="h-12 w-auto object-contain">
       <div id="sidebar-logo-mini" class="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0 hidden">
-        <img src="assets/corazon_logo.png" alt="Corazon" class="w-full h-full object-cover">
+        <img src="../assets/corazon_logo.png" alt="Corazon" class="w-full h-full object-cover">
       </div>
     </div>
 
@@ -80,9 +80,10 @@
         <span class="truncate nav-label">My Leaves</span>
       </a>
 
-      <a href="employee-payslips.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
-        <div class="relative flex-shrink-0"><i data-lucide="dollar-sign" style="width: 18px; height: 18px;"></i></div>
+      <a href="employee-payslips.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 text-white font-bold nav-item" style="background: rgba(232,168,0,0.18); color: #FFF5E9;">
+        <div class="relative flex-shrink-0"><i data-lucide="dollar-sign" style="width: 18px; height: 18px; color: var(--sidebar-primary);"></i></div>
         <span class="truncate nav-label">My Payslips</span>
+        <span class="ml-auto w-1.5 h-1.5 rounded-full nav-indicator" style="background: var(--sidebar-primary)"></span>
       </a>
       
       <a href="employee-performance.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
@@ -90,13 +91,12 @@
         <span class="truncate nav-label">My Performance</span>
       </a>
 
-      <a href="employee-hrcases.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 text-white font-bold nav-item" style="background: rgba(232,168,0,0.18); color: #FFF5E9;">
+      <a href="employee-hrcases.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
         <div class="relative flex-shrink-0">
-          <i data-lucide="shield-alert" style="width: 18px; height: 18px; color: var(--sidebar-primary);"></i>
+          <i data-lucide="shield-alert" style="width: 18px; height: 18px;"></i>
           <span class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-amber-400 rounded-full hidden" id="er-badge"></span>
         </div>
         <span class="truncate nav-label">HR Admin / ER Cases</span>
-        <span class="ml-auto w-1.5 h-1.5 rounded-full nav-indicator" style="background: var(--sidebar-primary)"></span>
       </a>
     </nav>
 
@@ -111,7 +111,7 @@
             <div class="text-xs truncate" style="color: rgba(255,245,233,0.45)" id="sidebar-role-text">Senior Backend Developer</div>
           </div>
         </div>
-        <button onclick="window.location.href='index.html'" class="w-full flex items-center gap-2 px-2 py-2 rounded-lg text-red-400/80 hover:text-red-400 hover:bg-red-500/10 text-xs transition-all">
+        <button onclick="window.location.href='../index.html'" class="w-full flex items-center gap-2 px-2 py-2 rounded-lg text-red-400/80 hover:text-red-400 hover:bg-red-500/10 text-xs transition-all">
           <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
           <span>Log Out</span>
         </button>
@@ -120,7 +120,7 @@
         <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: var(--sidebar-primary)">
           <span class="text-xs font-bold" style="color: var(--sidebar-primary-foreground)">AD</span>
         </div>
-        <button onclick="window.location.href='index.html'" class="text-red-400/80 hover:text-red-400 transition-colors" title="Log Out">
+        <button onclick="window.location.href='../index.html'" class="text-red-400/80 hover:text-red-400 transition-colors" title="Log Out">
           <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
         </button>
       </div>
@@ -136,7 +136,7 @@
           <i data-lucide="menu" style="width: 18px; height: 18px;" id="menu-icon"></i>
         </button>
         <div>
-          <h1 class="text-foreground font-semibold">HR Admin / ER Cases</h1>
+          <h1 class="text-foreground font-semibold">My Payslips</h1>
           <p class="text-muted-foreground text-xs" id="header-date">Tuesday, June 16, 2026</p>
         </div>
       </div>
@@ -197,7 +197,7 @@
               </button>
             </div>
             <div class="border-t border-border py-1">
-              <button onclick="window.location.href='index.html'" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors text-left">
+              <button onclick="window.location.href='../index.html'" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors text-left">
                 <i data-lucide="log-out" style="width: 15px; height: 15px;" class="flex-shrink-0"></i>
                 Log Out
               </button>
@@ -209,83 +209,112 @@
 
     <!-- Page Content -->
     <main class="flex-1 overflow-y-auto p-6 bg-background relative z-10">
-      <div class="space-y-5 max-w-3xl mx-auto">
-        <div class="flex items-start gap-3 px-4 py-3.5 bg-secondary border border-border rounded-xl">
-          <i data-lucide="shield" style="width: 15px; height: 15px;" class="text-accent mt-0.5 flex-shrink-0"></i>
-          <div class="text-sm text-primary">
-            All records shown here are <strong>confidential</strong> — visible only to you, your manager, and HR.
-            Questions? Contact HR at <strong>hr@corazontraveltours.ph</strong>
+      <div class="space-y-5 max-w-6xl mx-auto">
+        <div class="grid grid-cols-3 gap-4">
+          <div class="bg-card rounded-xl border border-border p-5">
+            <div class="text-xs text-muted-foreground mb-1">Latest Net Pay</div>
+            <div class="text-2xl font-bold text-foreground" id="latest-net">--</div>
+            <div class="text-xs text-muted-foreground mt-1" id="latest-period">--</div>
+          </div>
+          <div class="bg-card rounded-xl border border-border p-5">
+            <div class="text-xs text-muted-foreground mb-1">Basic Salary</div>
+            <div class="text-2xl font-bold text-foreground" id="basic-salary">--</div>
+            <div class="text-xs text-muted-foreground mt-1">Senior Backend Developer</div>
+          </div>
+          <div class="bg-card rounded-xl border border-border p-5">
+            <div class="text-xs text-muted-foreground mb-1">Total Deductions</div>
+            <div class="text-2xl font-bold text-red-500" id="latest-deductions">--</div>
+            <div class="text-xs text-muted-foreground mt-1">SSS · PhilHealth · Pag-IBIG · Tax</div>
           </div>
         </div>
 
-        <div id="cases-container" class="space-y-4">
-          <!-- JS populated -->
-        </div>
-        
-        <div id="empty-state" class="hidden flex-col items-center gap-4 py-20">
-          <div class="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center">
-            <i data-lucide="check-circle-2" style="width: 32px; height: 32px;" class="text-emerald-600"></i>
+        <div class="bg-card rounded-xl border border-border overflow-hidden">
+          <div class="px-5 py-4 border-b border-border">
+            <h3 class="font-semibold text-foreground">Payslip History</h3>
+            <p class="text-xs text-muted-foreground mt-0.5">Click a row to view detailed payslip</p>
           </div>
-          <div class="text-center">
-            <div class="font-bold text-foreground">No Active HR Cases</div>
-            <div class="text-sm text-muted-foreground mt-1">You have no disciplinary cases on record.</div>
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-border bg-secondary/40">
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Pay Period</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Basic Salary</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Overtime</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Gross Pay</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Deductions</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Net Pay</th>
+                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Status</th>
+                <th class="px-5 py-3"></th>
+              </tr>
+            </thead>
+            <tbody id="payslips-tbody">
+              <!-- JS populated -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Payslip Modal -->
+        <div id="payslip-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
+          <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4" id="payslip-modal-content">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-border">
+              <span class="text-sm text-muted-foreground font-medium">Payslip Detail</span>
+              <button class="close-payslip p-1.5 rounded-lg hover:bg-secondary text-muted-foreground"><i data-lucide="x" style="width: 18px; height: 18px;"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
+              <!-- Header -->
+              <div class="text-center pb-4 border-b border-border">
+                <div class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center mx-auto mb-2">
+                  <span class="text-white font-bold text-lg">C</span>
+                </div>
+                <h3 class="font-bold text-foreground text-lg">Corazon Travel and Tours</h3>
+                <p class="text-xs text-muted-foreground">BGC Corporate Center, Taguig City, Philippines</p>
+              </div>
+              <div class="flex justify-between items-center pb-4 border-b border-border">
+                <div>
+                  <div class="text-xs text-muted-foreground">Employee</div>
+                  <div class="text-sm font-semibold text-foreground">Alex Diaz</div>
+                  <div class="text-xs text-muted-foreground">Engineering · EMP002</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs text-muted-foreground">Pay Period</div>
+                  <div class="text-sm font-semibold text-foreground" id="m-period"></div>
+                  <div id="m-status"></div>
+                </div>
+              </div>
+              <div class="space-y-1.5 pb-4 border-b border-border">
+                <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Earnings</div>
+                <div class="flex justify-between text-xs"><span class="text-muted-foreground">Basic Salary</span><span class="font-medium text-foreground" id="m-basic"></span></div>
+                <div class="flex justify-between text-xs" id="m-overtime-row"><span class="text-muted-foreground">Overtime Pay</span><span class="font-medium text-emerald-600" id="m-overtime"></span></div>
+                <div class="flex justify-between text-xs"><span class="text-muted-foreground">Gross Pay</span><span class="font-semibold text-foreground" id="m-gross"></span></div>
+              </div>
+              <div class="space-y-1.5 pb-4 border-b border-border">
+                <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Deductions</div>
+                <div class="flex justify-between text-xs"><span class="text-muted-foreground">SSS Contribution</span><span class="font-medium text-red-500" id="m-sss"></span></div>
+                <div class="flex justify-between text-xs"><span class="text-muted-foreground">PhilHealth Contribution</span><span class="font-medium text-red-500" id="m-philhealth"></span></div>
+                <div class="flex justify-between text-xs"><span class="text-muted-foreground">Pag-IBIG Contribution</span><span class="font-medium text-red-500" id="m-pagibig"></span></div>
+                <div class="flex justify-between text-xs"><span class="text-muted-foreground">Withholding Tax</span><span class="font-medium text-red-500" id="m-tax"></span></div>
+                <div class="flex justify-between text-xs"><span class="text-muted-foreground">Total Deductions</span><span class="font-semibold text-red-600" id="m-deductions"></span></div>
+              </div>
+              <div class="flex justify-between items-center py-3 px-4 bg-primary rounded-xl">
+                <span class="text-sm font-bold text-white">NET PAY</span>
+                <span class="text-xl font-bold text-white" id="m-net"></span>
+              </div>
+              <p class="text-center text-xs text-muted-foreground">This is a computer-generated document.</p>
+            </div>
+            <div class="flex gap-3 px-6 pb-5">
+              <button class="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg border border-border text-sm text-muted-foreground hover:bg-secondary transition-colors">
+                <i data-lucide="download" style="width: 15px; height: 15px;"></i> Download
+              </button>
+              <button class="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg border border-border text-sm text-muted-foreground hover:bg-secondary transition-colors">
+                <i data-lucide="printer" style="width: 15px; height: 15px;"></i> Print
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </main>
   </div>
 
-  <!-- Upload Modal -->
-  <div id="upload-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden" style="background: rgba(0,0,0,0.5)">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg" id="upload-modal-content">
-      <div class="flex items-center justify-between px-6 py-4 border-b border-border">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-secondary flex items-center justify-center">
-            <i data-lucide="upload" style="width: 18px; height: 18px;" class="text-accent"></i>
-          </div>
-          <div>
-            <div class="font-bold text-foreground">Submit Explanation Letter</div>
-            <div class="text-xs text-muted-foreground" id="upload-meta"></div>
-          </div>
-        </div>
-        <button id="close-upload" class="p-1.5 rounded-lg hover:bg-secondary text-muted-foreground"><i data-lucide="x" style="width: 18px; height: 18px;"></i></button>
-      </div>
-
-      <div id="upload-success" class="hidden py-12 flex-col items-center gap-3 text-center">
-        <div class="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center">
-          <i data-lucide="check-circle-2" style="width: 28px; height: 28px;" class="text-emerald-600"></i>
-        </div>
-        <div class="font-bold text-foreground">Explanation Submitted</div>
-        <div class="text-sm text-muted-foreground">Your letter has been securely delivered to HR.</div>
-      </div>
-
-      <form id="upload-form" class="p-6 space-y-4">
-        <div class="flex items-start gap-2 px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600">
-          <i data-lucide="lock" style="width: 12px; height: 12px;" class="mt-0.5 flex-shrink-0 text-slate-500"></i>
-          Your letter is <strong class="mx-1">confidential</strong> — visible only to you, your manager, and HR.
-        </div>
-        <label class="flex flex-col items-center gap-2 px-4 py-6 border-2 border-dashed border-border rounded-xl cursor-pointer hover:border-accent hover:bg-secondary/40 transition-all">
-          <i data-lucide="upload" style="width: 22px; height: 22px;" class="text-muted-foreground"></i>
-          <div class="text-sm text-center text-muted-foreground" id="file-label">
-            <strong>Click to upload</strong> or drag file here<br /><span class="text-xs">PDF, DOCX, JPG — max 10 MB</span>
-          </div>
-          <input type="file" id="file-input" class="hidden" accept=".pdf,.docx,.jpg,.png" />
-        </label>
-        <div>
-          <label class="block text-sm font-semibold text-foreground mb-1.5">Or type your explanation</label>
-          <textarea id="text-input" rows="5" placeholder="Be factual and concise — include dates, circumstances, and supporting details…" class="w-full px-3 py-2.5 rounded-xl border border-border bg-input-background text-sm focus:outline-none focus:ring-2 focus:ring-ring resize-none"></textarea>
-        </div>
-        <div class="flex gap-3 pt-1">
-          <button type="button" id="cancel-upload" class="flex-1 px-4 py-2.5 rounded-xl border border-border text-sm font-semibold hover:bg-secondary transition-colors">Cancel</button>
-          <button type="submit" id="submit-upload" disabled class="flex-1 px-4 py-2.5 rounded-xl bg-primary text-white text-sm font-bold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
-            Submit Explanation
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <script src="js/shared.js"></script>
-  <script type="module" src="js/employee-hrcases.js"></script>
+  <script src="../js/shared.js"></script>
+  <script type="module" src="../js/employee-payslips.js"></script>
 </body>
 </html>

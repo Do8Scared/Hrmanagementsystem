@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Leaves - Corazon Travel and Tours</title>
+  <title>My HR Cases - Corazon Travel and Tours</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="../css/styles.css">
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -47,9 +47,9 @@
   <!-- Sidebar -->
   <aside id="sidebar" class="flex flex-col flex-shrink-0 transition-all duration-300 w-64" style="background: var(--sidebar)">
     <div id="sidebar-logo-container" class="flex items-center border-b border-white/10 px-3 py-3">
-      <img id="sidebar-logo-full" src="assets/corazon_logo.png" alt="Corazon Travel and Tours" class="h-12 w-auto object-contain">
+      <img id="sidebar-logo-full" src="../assets/corazon_logo.png" alt="Corazon Travel and Tours" class="h-12 w-auto object-contain">
       <div id="sidebar-logo-mini" class="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0 hidden">
-        <img src="assets/corazon_logo.png" alt="Corazon" class="w-full h-full object-cover">
+        <img src="../assets/corazon_logo.png" alt="Corazon" class="w-full h-full object-cover">
       </div>
     </div>
 
@@ -75,10 +75,9 @@
         <span class="truncate nav-label">My Attendance</span>
       </a>
 
-      <a href="employee-leave.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 text-white font-bold nav-item" style="background: rgba(232,168,0,0.18); color: #FFF5E9;">
-        <div class="relative flex-shrink-0"><i data-lucide="calendar-days" style="width: 18px; height: 18px; color: var(--sidebar-primary);"></i></div>
+      <a href="employee-leave.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
+        <div class="relative flex-shrink-0"><i data-lucide="calendar-days" style="width: 18px; height: 18px;"></i></div>
         <span class="truncate nav-label">My Leaves</span>
-        <span class="ml-auto w-1.5 h-1.5 rounded-full nav-indicator" style="background: var(--sidebar-primary)"></span>
       </a>
 
       <a href="employee-payslips.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
@@ -91,12 +90,13 @@
         <span class="truncate nav-label">My Performance</span>
       </a>
 
-      <a href="employee-hrcases.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
+      <a href="employee-hrcases.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 text-white font-bold nav-item" style="background: rgba(232,168,0,0.18); color: #FFF5E9;">
         <div class="relative flex-shrink-0">
-          <i data-lucide="shield-alert" style="width: 18px; height: 18px;"></i>
+          <i data-lucide="shield-alert" style="width: 18px; height: 18px; color: var(--sidebar-primary);"></i>
           <span class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-amber-400 rounded-full hidden" id="er-badge"></span>
         </div>
         <span class="truncate nav-label">HR Admin / ER Cases</span>
+        <span class="ml-auto w-1.5 h-1.5 rounded-full nav-indicator" style="background: var(--sidebar-primary)"></span>
       </a>
     </nav>
 
@@ -111,7 +111,7 @@
             <div class="text-xs truncate" style="color: rgba(255,245,233,0.45)" id="sidebar-role-text">Senior Backend Developer</div>
           </div>
         </div>
-        <button onclick="window.location.href='index.html'" class="w-full flex items-center gap-2 px-2 py-2 rounded-lg text-red-400/80 hover:text-red-400 hover:bg-red-500/10 text-xs transition-all">
+        <button onclick="window.location.href='../index.html'" class="w-full flex items-center gap-2 px-2 py-2 rounded-lg text-red-400/80 hover:text-red-400 hover:bg-red-500/10 text-xs transition-all">
           <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
           <span>Log Out</span>
         </button>
@@ -120,7 +120,7 @@
         <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: var(--sidebar-primary)">
           <span class="text-xs font-bold" style="color: var(--sidebar-primary-foreground)">AD</span>
         </div>
-        <button onclick="window.location.href='index.html'" class="text-red-400/80 hover:text-red-400 transition-colors" title="Log Out">
+        <button onclick="window.location.href='../index.html'" class="text-red-400/80 hover:text-red-400 transition-colors" title="Log Out">
           <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
         </button>
       </div>
@@ -136,7 +136,7 @@
           <i data-lucide="menu" style="width: 18px; height: 18px;" id="menu-icon"></i>
         </button>
         <div>
-          <h1 class="text-foreground font-semibold">My Leaves</h1>
+          <h1 class="text-foreground font-semibold">HR Admin / ER Cases</h1>
           <p class="text-muted-foreground text-xs" id="header-date">Tuesday, June 16, 2026</p>
         </div>
       </div>
@@ -197,7 +197,7 @@
               </button>
             </div>
             <div class="border-t border-border py-1">
-              <button onclick="window.location.href='index.html'" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors text-left">
+              <button onclick="window.location.href='../index.html'" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors text-left">
                 <i data-lucide="log-out" style="width: 15px; height: 15px;" class="flex-shrink-0"></i>
                 Log Out
               </button>
@@ -209,94 +209,83 @@
 
     <!-- Page Content -->
     <main class="flex-1 overflow-y-auto p-6 bg-background relative z-10">
-      <div class="space-y-5 max-w-6xl mx-auto">
-        <!-- Leave Balance Overview -->
-        <div class="grid grid-cols-3 gap-4" id="leave-balances-container">
-          <!-- JS populated -->
+      <div class="space-y-5 max-w-3xl mx-auto">
+        <div class="flex items-start gap-3 px-4 py-3.5 bg-secondary border border-border rounded-xl">
+          <i data-lucide="shield" style="width: 15px; height: 15px;" class="text-accent mt-0.5 flex-shrink-0"></i>
+          <div class="text-sm text-primary">
+            All records shown here are <strong>confidential</strong> — visible only to you, your manager, and HR.
+            Questions? Contact HR at <strong>hr@corazontraveltours.ph</strong>
+          </div>
         </div>
 
-        <div class="grid grid-cols-5 gap-4">
-          <!-- Request Form -->
-          <div class="col-span-2 bg-card rounded-xl border border-border p-5 self-start">
-            <div class="flex items-center gap-2 mb-5">
-              <i data-lucide="calendar-days" style="width: 18px; height: 18px;" class="text-accent"></i>
-              <h3 class="font-semibold text-foreground">File a Leave Request</h3>
-            </div>
-
-            <div id="submit-msg" class="hidden mb-4 p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-700 flex items-center gap-2">
-              <i data-lucide="info" style="width: 14px; height: 14px;"></i> Leave request submitted! Awaiting HR approval.
-            </div>
-
-            <form id="leave-form" class="space-y-4">
-              <div>
-                <label class="block text-xs font-medium text-foreground mb-1.5">Leave Type</label>
-                <select id="lv-type" class="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none text-foreground cursor-pointer focus:ring-2 focus:ring-accent/30">
-                  <option>Vacation Leave</option>
-                  <option>Sick Leave</option>
-                  <option>Emergency Leave</option>
-                  <option>Bereavement Leave</option>
-                  <option>Paternity Leave</option>
-                </select>
-                <p class="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-                  <i data-lucide="info" style="width: 11px; height: 11px;"></i>
-                  Available balance: <strong id="lv-avail">-- days</strong>
-                </p>
-              </div>
-
-              <div class="grid grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-xs font-medium text-foreground mb-1.5">Start Date</label>
-                  <input type="date" id="lv-start" min="2026-06-17" required class="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none text-foreground focus:ring-2 focus:ring-accent/30" />
-                </div>
-                <div>
-                  <label class="block text-xs font-medium text-foreground mb-1.5">End Date</label>
-                  <input type="date" id="lv-end" min="2026-06-17" required class="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none text-foreground focus:ring-2 focus:ring-accent/30" />
-                </div>
-              </div>
-
-              <div id="lv-duration" class="hidden px-3 py-2 bg-secondary rounded-lg text-xs text-accent">
-                Duration: <strong id="lv-duration-text">-- working days</strong>
-              </div>
-
-              <div>
-                <label class="block text-xs font-medium text-foreground mb-1.5">Reason</label>
-                <textarea id="lv-reason" placeholder="Please provide a brief reason for your leave request..." rows="4" required class="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none resize-none text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-accent/30"></textarea>
-              </div>
-
-              <button type="submit" class="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors">
-                <i data-lucide="send" style="width: 15px; height: 15px;"></i> Submit Leave Request
-              </button>
-            </form>
+        <div id="cases-container" class="space-y-4">
+          <!-- JS populated -->
+        </div>
+        
+        <div id="empty-state" class="hidden flex-col items-center gap-4 py-20">
+          <div class="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center">
+            <i data-lucide="check-circle-2" style="width: 32px; height: 32px;" class="text-emerald-600"></i>
           </div>
-
-          <!-- Leave History -->
-          <div class="col-span-3 bg-card rounded-xl border border-border overflow-hidden self-start">
-            <div class="px-5 py-4 border-b border-border">
-              <h3 class="font-semibold text-foreground">My Leave History</h3>
-              <p class="text-xs text-muted-foreground mt-0.5" id="history-count">0 total requests</p>
-            </div>
-            <table class="w-full">
-              <thead>
-                <tr class="border-b border-border bg-secondary/40">
-                  <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Leave Type</th>
-                  <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Duration</th>
-                  <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Days</th>
-                  <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Reason</th>
-                  <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Applied</th>
-                  <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Status</th>
-                </tr>
-              </thead>
-              <tbody id="leave-history-tbody">
-                <!-- JS populated -->
-              </tbody>
-            </table>
+          <div class="text-center">
+            <div class="font-bold text-foreground">No Active HR Cases</div>
+            <div class="text-sm text-muted-foreground mt-1">You have no disciplinary cases on record.</div>
           </div>
         </div>
       </div>
     </main>
   </div>
 
-  <script src="js/shared.js"></script>
-  <script type="module" src="js/employee-leave.js"></script>
+  <!-- Upload Modal -->
+  <div id="upload-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden" style="background: rgba(0,0,0,0.5)">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg" id="upload-modal-content">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-border">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-secondary flex items-center justify-center">
+            <i data-lucide="upload" style="width: 18px; height: 18px;" class="text-accent"></i>
+          </div>
+          <div>
+            <div class="font-bold text-foreground">Submit Explanation Letter</div>
+            <div class="text-xs text-muted-foreground" id="upload-meta"></div>
+          </div>
+        </div>
+        <button id="close-upload" class="p-1.5 rounded-lg hover:bg-secondary text-muted-foreground"><i data-lucide="x" style="width: 18px; height: 18px;"></i></button>
+      </div>
+
+      <div id="upload-success" class="hidden py-12 flex-col items-center gap-3 text-center">
+        <div class="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center">
+          <i data-lucide="check-circle-2" style="width: 28px; height: 28px;" class="text-emerald-600"></i>
+        </div>
+        <div class="font-bold text-foreground">Explanation Submitted</div>
+        <div class="text-sm text-muted-foreground">Your letter has been securely delivered to HR.</div>
+      </div>
+
+      <form id="upload-form" class="p-6 space-y-4">
+        <div class="flex items-start gap-2 px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600">
+          <i data-lucide="lock" style="width: 12px; height: 12px;" class="mt-0.5 flex-shrink-0 text-slate-500"></i>
+          Your letter is <strong class="mx-1">confidential</strong> — visible only to you, your manager, and HR.
+        </div>
+        <label class="flex flex-col items-center gap-2 px-4 py-6 border-2 border-dashed border-border rounded-xl cursor-pointer hover:border-accent hover:bg-secondary/40 transition-all">
+          <i data-lucide="upload" style="width: 22px; height: 22px;" class="text-muted-foreground"></i>
+          <div class="text-sm text-center text-muted-foreground" id="file-label">
+            <strong>Click to upload</strong> or drag file here<br /><span class="text-xs">PDF, DOCX, JPG — max 10 MB</span>
+          </div>
+          <input type="file" id="file-input" class="hidden" accept=".pdf,.docx,.jpg,.png" />
+        </label>
+        <div>
+          <label class="block text-sm font-semibold text-foreground mb-1.5">Or type your explanation</label>
+          <textarea id="text-input" rows="5" placeholder="Be factual and concise — include dates, circumstances, and supporting details…" class="w-full px-3 py-2.5 rounded-xl border border-border bg-input-background text-sm focus:outline-none focus:ring-2 focus:ring-ring resize-none"></textarea>
+        </div>
+        <div class="flex gap-3 pt-1">
+          <button type="button" id="cancel-upload" class="flex-1 px-4 py-2.5 rounded-xl border border-border text-sm font-semibold hover:bg-secondary transition-colors">Cancel</button>
+          <button type="submit" id="submit-upload" disabled class="flex-1 px-4 py-2.5 rounded-xl bg-primary text-white text-sm font-bold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+            Submit Explanation
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/shared.js"></script>
+  <script type="module" src="../js/employee-hrcases.js"></script>
 </body>
 </html>

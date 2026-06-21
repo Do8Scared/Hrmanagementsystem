@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Leave Management - Corazon Travel and Tours</title>
+  <title>Manager Dashboard - Corazon Travel and Tours</title>
   
   <!-- Custom Fonts (Nunito) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="../css/styles.css">
   
   <!-- Tailwind CSS (CDN) -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -126,9 +126,9 @@
   <aside id="sidebar" class="flex flex-col flex-shrink-0 transition-all duration-300 w-64" style="background: var(--sidebar)">
     <!-- Logo -->
     <div id="sidebar-logo-container" class="flex items-center border-b border-white/10 px-3 py-3">
-      <img id="sidebar-logo-full" src="assets/corazon_logo.png" alt="Corazon Travel and Tours" class="h-12 w-auto object-contain">
+      <img id="sidebar-logo-full" src="../assets/corazon_logo.png" alt="Corazon Travel and Tours" class="h-12 w-auto object-contain">
       <div id="sidebar-logo-mini" class="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0 hidden">
-        <img src="assets/corazon_logo.png" alt="Corazon" class="w-full h-full object-cover">
+        <img src="../assets/corazon_logo.png" alt="Corazon" class="w-full h-full object-cover">
       </div>
     </div>
 
@@ -238,7 +238,7 @@
           <i data-lucide="menu" style="width: 18px; height: 18px;" id="menu-icon"></i>
         </button>
         <div>
-          <h1 class="text-foreground font-semibold">Leave Management</h1>
+          <h1 class="text-foreground font-semibold">Manager Dashboard</h1>
           <p class="text-muted-foreground text-xs">Tuesday, June 16, 2026</p>
         </div>
       </div>
@@ -321,112 +321,105 @@
       </div>
     </header>
 
-    <!-- Page Content (Leave Management) -->
-    <main class="flex-1 overflow-y-auto p-6 bg-background relative z-10" id="main-content">
-      <div class="space-y-5">
-        
-        <!-- Tabs -->
-        <div class="flex border-b border-border">
-          <button id="tab-requests" class="px-5 py-3 text-sm font-medium capitalize transition-colors border-b-2 -mb-px border-primary text-primary">Leave Requests</button>
-          <button id="tab-balances" class="px-5 py-3 text-sm font-medium capitalize transition-colors border-b-2 -mb-px border-transparent text-muted-foreground hover:text-foreground">Leave Balances</button>
-          <div class="ml-auto flex items-center gap-1 pb-2">
-            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-            <span class="text-xs text-muted-foreground"><span id="pending-count">0</span> pending</span>
+    <!-- Page Content (Admin Dashboard) -->
+    <main class="flex-1 overflow-y-auto p-6 bg-background relative z-10">
+      <div class="space-y-6 max-w-6xl mx-auto">
+        <!-- Welcome banner -->
+        <div class="rounded-2xl px-8 py-6 flex items-center justify-between relative overflow-hidden"
+          style="background: linear-gradient(135deg, var(--sidebar) 0%, #5A0D10 100%)">
+          <div class="absolute right-0 top-0 w-64 h-64 rounded-full bg-white/5 -translate-y-1/3 translate-x-1/4 pointer-events-none"></div>
+          <div class="absolute top-0 left-0 right-0 h-1" style="background: var(--sidebar-primary)"></div>
+          <div>
+            <p class="text-white/60 text-sm">Good morning,</p>
+            <h2 class="text-white font-bold text-2xl" id="mgr-name">Maria Santos</h2>
+            <p class="text-white/50 text-sm mt-0.5" id="mgr-role">Operations Manager · Operations Department</p>
+            <p class="text-white/30 text-xs mt-2" id="current-date"></p>
+          </div>
+          <div class="flex items-center gap-3 z-10">
+            <div class="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
+              style="background: var(--sidebar-primary)">
+              <span class="font-bold text-2xl" style="color: var(--sidebar-primary-foreground)" id="mgr-initials">MS</span>
+            </div>
           </div>
         </div>
 
-        <!-- Requests View -->
-        <div id="view-requests" class="space-y-5">
-          <!-- Filters -->
-          <div class="bg-card rounded-xl border border-border p-4 flex items-center gap-3 flex-wrap">
-            <div class="relative flex-1 min-w-44">
-              <i data-lucide="search" style="width: 14px; height: 14px;" class="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"></i>
-              <input type="text" id="search-input" placeholder="Search by employee name..." class="w-full pl-8 pr-4 py-2 bg-secondary rounded-lg text-sm border-0 outline-none text-foreground placeholder:text-muted-foreground">
-            </div>
-            <div class="flex items-center gap-2">
-              <i data-lucide="filter" style="width: 14px; height: 14px;" class="text-muted-foreground"></i>
-              <select id="type-filter" class="px-3 py-2 bg-secondary rounded-lg text-sm border-0 outline-none text-foreground cursor-pointer">
-                <option value="All">All</option>
-                <option value="Vacation Leave">Vacation Leave</option>
-                <option value="Sick Leave">Sick Leave</option>
-                <option value="Emergency Leave">Emergency Leave</option>
-                <option value="Maternity Leave">Maternity Leave</option>
-                <option value="Paternity Leave">Paternity Leave</option>
-                <option value="Bereavement Leave">Bereavement Leave</option>
-              </select>
-              <select id="status-filter" class="px-3 py-2 bg-secondary rounded-lg text-sm border-0 outline-none text-foreground cursor-pointer">
-                <option value="All">All</option>
-                <option value="Pending">Pending</option>
-                <option value="Approved">Approved</option>
-                <option value="Rejected">Rejected</option>
-              </select>
-            </div>
-          </div>
+        <!-- Stat cards -->
+        <div class="grid grid-cols-4 gap-4" id="mgr-stats">
+          <!-- JS populated -->
+        </div>
 
-          <!-- Requests Table -->
+        <!-- Module quick-access -->
+        <div>
+          <h2 class="font-bold text-foreground mb-3">My Modules</h2>
+          <div class="grid grid-cols-3 gap-3" id="mgr-modules">
+            <!-- JS populated -->
+          </div>
+        </div>
+
+        <!-- Two-column lower section -->
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Team attendance today -->
           <div class="bg-card rounded-xl border border-border overflow-hidden">
-            <div class="overflow-x-auto">
-              <table class="w-full">
-                <thead>
-                  <tr class="border-b border-border bg-secondary/40">
-                    <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3 whitespace-nowrap">Employee</th>
-                    <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3 whitespace-nowrap">Leave Type</th>
-                    <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3 whitespace-nowrap">Duration</th>
-                    <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3 whitespace-nowrap">Days</th>
-                    <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3 whitespace-nowrap">Reason</th>
-                    <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3 whitespace-nowrap">Applied</th>
-                    <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3 whitespace-nowrap">Status</th>
-                    <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3 whitespace-nowrap">Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="requests-tbody">
-                  <!-- JS Populated -->
-                </tbody>
-              </table>
+            <div class="flex items-center justify-between px-5 py-4 border-b border-border">
+              <div>
+                <h3 class="font-bold text-foreground text-sm">Team Attendance Today</h3>
+                <p class="text-xs text-muted-foreground mt-0.5" id="team-att-subtitle"></p>
+              </div>
+              <div class="flex items-center gap-1 text-xs text-emerald-700 font-semibold" id="team-att-percent">
+              </div>
+            </div>
+            <div class="divide-y divide-border/50" id="team-att-list">
+              <!-- JS populated -->
+            </div>
+          </div>
+
+          <!-- Right column: pending leaves + upcoming interviews -->
+          <div class="space-y-4">
+            <!-- Pending leaves -->
+            <div class="bg-card rounded-xl border border-border overflow-hidden">
+              <div class="flex items-center justify-between px-5 py-4 border-b border-border">
+                <h3 class="font-bold text-foreground text-sm">Pending Leave Requests</h3>
+                <span id="pending-leaves-badge" class="hidden text-xs bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full"></span>
+              </div>
+              <div id="pending-leaves-list" class="divide-y divide-border/50">
+                <!-- JS populated -->
+              </div>
+            </div>
+
+            <!-- Upcoming interviews -->
+            <div class="bg-card rounded-xl border border-border overflow-hidden">
+              <div class="flex items-center justify-between px-5 py-4 border-b border-border">
+                <h3 class="font-bold text-foreground text-sm">Upcoming Interviews</h3>
+                <a href="manager-interviews.html" class="text-xs text-accent hover:underline font-semibold flex items-center gap-0.5">
+                  View all <i data-lucide="chevron-right" style="width: 12px; height: 12px;"></i>
+                </a>
+              </div>
+              <div id="upcoming-interviews-list" class="divide-y divide-border/50">
+                <!-- JS populated -->
+              </div>
+            </div>
+
+            <!-- Active ER cases -->
+            <div id="active-er-cases" class="hidden bg-card rounded-xl border border-red-200 overflow-hidden">
+              <div class="flex items-center justify-between px-5 py-4 border-b border-red-100 bg-red-50/50">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="alert-circle" style="width: 15px; height: 15px;" class="text-primary"></i>
+                  <h3 class="font-bold text-foreground text-sm">Active ER Cases</h3>
+                </div>
+                <a href="#" class="text-xs text-primary hover:underline font-semibold flex items-center gap-0.5">
+                  View <i data-lucide="chevron-right" style="width: 12px; height: 12px;"></i>
+                </a>
+              </div>
+              <div id="active-er-list" class="divide-y divide-border/50">
+                <!-- JS populated -->
+              </div>
             </div>
           </div>
         </div>
-
-        <!-- Balances View -->
-        <div id="view-balances" class="hidden">
-          <div class="bg-card rounded-xl border border-border overflow-hidden">
-            <div class="overflow-x-auto">
-              <table class="w-full">
-                <thead>
-                  <tr class="border-b border-border bg-secondary/40">
-                    <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3 whitespace-nowrap">Employee</th>
-                    <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3 whitespace-nowrap w-48">Vacation Leave</th>
-                    <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3 whitespace-nowrap w-48">Sick Leave</th>
-                    <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3 whitespace-nowrap w-48">Emergency Leave</th>
-                  </tr>
-                </thead>
-                <tbody id="balances-tbody">
-                  <!-- JS Populated -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
       </div>
     </main>
-
-    <!-- Confirm Dialog Modal -->
-    <div id="confirm-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
-      <div class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4">
-        <h3 class="font-semibold text-foreground mb-2" id="confirm-title">Approve Leave Request?</h3>
-        <p class="text-sm text-muted-foreground mb-5" id="confirm-desc">The employee will be notified that their leave has been approved.</p>
-        <div class="flex gap-3">
-          <button id="cancel-confirm-btn" class="flex-1 py-2 rounded-lg border border-border text-sm text-foreground hover:bg-secondary">Cancel</button>
-          <button id="action-confirm-btn" class="flex-1 py-2 rounded-lg text-white text-sm font-medium transition-colors bg-emerald-600 hover:bg-emerald-700">Approve</button>
-        </div>
-      </div>
-    </div>
-
-    </main>
-  </div>
-
-  <script src="js/shared.js"></script>
-  <script src="js/admin-leave.js"></script>
+  <!-- Script -->
+  <script src="../js/shared.js"></script>
+  <script type="module" src="../js/manager-dashboard.js"></script>
 </body>
 </html>
