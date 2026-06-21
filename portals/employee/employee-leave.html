@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Attendance - Corazon Travel and Tours</title>
+  <title>My Leaves - Corazon Travel and Tours</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../../css/styles.css">
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -47,9 +47,9 @@
   <!-- Sidebar -->
   <aside id="sidebar" class="flex flex-col flex-shrink-0 transition-all duration-300 w-64" style="background: var(--sidebar)">
     <div id="sidebar-logo-container" class="flex items-center border-b border-white/10 px-3 py-3">
-      <img id="sidebar-logo-full" src="../assets/corazon_logo.png" alt="Corazon Travel and Tours" class="h-12 w-auto object-contain">
+      <img id="sidebar-logo-full" src="../../assets/corazon_logo.png" alt="Corazon Travel and Tours" class="h-12 w-auto object-contain">
       <div id="sidebar-logo-mini" class="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0 hidden">
-        <img src="../assets/corazon_logo.png" alt="Corazon" class="w-full h-full object-cover">
+        <img src="../../assets/corazon_logo.png" alt="Corazon" class="w-full h-full object-cover">
       </div>
     </div>
 
@@ -70,15 +70,15 @@
         <span class="truncate nav-label">My Profile</span>
       </a>
 
-      <a href="employee-attendance.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 text-white font-bold nav-item" style="background: rgba(232,168,0,0.18); color: #FFF5E9;">
-        <div class="relative flex-shrink-0"><i data-lucide="clock" style="width: 18px; height: 18px; color: var(--sidebar-primary);"></i></div>
+      <a href="employee-attendance.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
+        <div class="relative flex-shrink-0"><i data-lucide="clock" style="width: 18px; height: 18px;"></i></div>
         <span class="truncate nav-label">My Attendance</span>
-        <span class="ml-auto w-1.5 h-1.5 rounded-full nav-indicator" style="background: var(--sidebar-primary)"></span>
       </a>
 
-      <a href="employee-leave.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
-        <div class="relative flex-shrink-0"><i data-lucide="calendar-days" style="width: 18px; height: 18px;"></i></div>
+      <a href="employee-leave.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 text-white font-bold nav-item" style="background: rgba(232,168,0,0.18); color: #FFF5E9;">
+        <div class="relative flex-shrink-0"><i data-lucide="calendar-days" style="width: 18px; height: 18px; color: var(--sidebar-primary);"></i></div>
         <span class="truncate nav-label">My Leaves</span>
+        <span class="ml-auto w-1.5 h-1.5 rounded-full nav-indicator" style="background: var(--sidebar-primary)"></span>
       </a>
 
       <a href="employee-payslips.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:text-white/90 nav-item" style="color: rgba(255,245,233,0.55);">
@@ -111,7 +111,7 @@
             <div class="text-xs truncate" style="color: rgba(255,245,233,0.45)" id="sidebar-role-text">Senior Backend Developer</div>
           </div>
         </div>
-        <button onclick="window.location.href='../index.html'" class="w-full flex items-center gap-2 px-2 py-2 rounded-lg text-red-400/80 hover:text-red-400 hover:bg-red-500/10 text-xs transition-all">
+        <button onclick="window.location.href='../../index.html'" class="w-full flex items-center gap-2 px-2 py-2 rounded-lg text-red-400/80 hover:text-red-400 hover:bg-red-500/10 text-xs transition-all">
           <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
           <span>Log Out</span>
         </button>
@@ -120,7 +120,7 @@
         <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: var(--sidebar-primary)">
           <span class="text-xs font-bold" style="color: var(--sidebar-primary-foreground)">AD</span>
         </div>
-        <button onclick="window.location.href='../index.html'" class="text-red-400/80 hover:text-red-400 transition-colors" title="Log Out">
+        <button onclick="window.location.href='../../index.html'" class="text-red-400/80 hover:text-red-400 transition-colors" title="Log Out">
           <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
         </button>
       </div>
@@ -136,7 +136,7 @@
           <i data-lucide="menu" style="width: 18px; height: 18px;" id="menu-icon"></i>
         </button>
         <div>
-          <h1 class="text-foreground font-semibold">My Attendance</h1>
+          <h1 class="text-foreground font-semibold">My Leaves</h1>
           <p class="text-muted-foreground text-xs" id="header-date">Tuesday, June 16, 2026</p>
         </div>
       </div>
@@ -197,7 +197,7 @@
               </button>
             </div>
             <div class="border-t border-border py-1">
-              <button onclick="window.location.href='../index.html'" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors text-left">
+              <button onclick="window.location.href='../../index.html'" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors text-left">
                 <i data-lucide="log-out" style="width: 15px; height: 15px;" class="flex-shrink-0"></i>
                 Log Out
               </button>
@@ -210,66 +210,93 @@
     <!-- Page Content -->
     <main class="flex-1 overflow-y-auto p-6 bg-background relative z-10">
       <div class="space-y-5 max-w-6xl mx-auto">
-        <!-- Header -->
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3 bg-card rounded-xl border border-border px-4 py-2">
-            <button id="prev-month-btn" class="text-muted-foreground hover:text-foreground transition-colors p-1"><i data-lucide="chevron-left" style="width: 16px; height: 16px;"></i></button>
-            <span class="font-semibold text-foreground w-40 text-center" id="month-year-disp">June 2026</span>
-            <button id="next-month-btn" class="text-muted-foreground hover:text-foreground transition-colors p-1"><i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i></button>
-          </div>
-          <button class="flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-sm text-muted-foreground hover:bg-secondary transition-colors">
-            <i data-lucide="download" style="width: 15px; height: 15px;"></i> Download Report
-          </button>
+        <!-- Leave Balance Overview -->
+        <div class="grid grid-cols-3 gap-4" id="leave-balances-container">
+          <!-- JS populated -->
         </div>
 
-        <!-- Summary -->
-        <div class="grid grid-cols-5 gap-3">
-          <div class="rounded-xl border p-4 bg-card">
-            <div class="text-xl font-bold text-foreground" id="sum-workdays">0</div>
-            <div class="text-xs text-muted-foreground mt-0.5">Work Days</div>
-          </div>
-          <div class="rounded-xl border p-4 bg-emerald-50 border-emerald-100">
-            <div class="text-xl font-bold text-emerald-700" id="sum-present">0</div>
-            <div class="text-xs text-muted-foreground mt-0.5">Present</div>
-          </div>
-          <div class="rounded-xl border p-4 bg-amber-50 border-amber-100">
-            <div class="text-xl font-bold text-amber-700" id="sum-late">0</div>
-            <div class="text-xs text-muted-foreground mt-0.5">Late</div>
-          </div>
-          <div class="rounded-xl border p-4 bg-red-50 border-red-100">
-            <div class="text-xl font-bold text-red-700" id="sum-absent">0</div>
-            <div class="text-xs text-muted-foreground mt-0.5">Absent</div>
-          </div>
-          <div class="rounded-xl border p-4 bg-secondary border-border">
-            <div class="text-xl font-bold text-primary" id="sum-hours">0h</div>
-            <div class="text-xs text-muted-foreground mt-0.5">Total Hours</div>
-          </div>
-        </div>
+        <div class="grid grid-cols-5 gap-4">
+          <!-- Request Form -->
+          <div class="col-span-2 bg-card rounded-xl border border-border p-5 self-start">
+            <div class="flex items-center gap-2 mb-5">
+              <i data-lucide="calendar-days" style="width: 18px; height: 18px;" class="text-accent"></i>
+              <h3 class="font-semibold text-foreground">File a Leave Request</h3>
+            </div>
 
-        <!-- Table -->
-        <div class="bg-card rounded-xl border border-border overflow-hidden">
-          <table class="w-full">
-            <thead>
-              <tr class="border-b border-border bg-secondary/40">
-                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Date</th>
-                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Day</th>
-                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Time In</th>
-                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Time Out</th>
-                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Total Hours</th>
-                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Status</th>
-                <th class="text-left text-xs font-semibold text-muted-foreground px-5 py-3">Remarks</th>
-              </tr>
-            </thead>
-            <tbody id="attendance-tbody">
-              <!-- JS populated -->
-            </tbody>
-          </table>
+            <div id="submit-msg" class="hidden mb-4 p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-700 flex items-center gap-2">
+              <i data-lucide="info" style="width: 14px; height: 14px;"></i> Leave request submitted! Awaiting HR approval.
+            </div>
+
+            <form id="leave-form" class="space-y-4">
+              <div>
+                <label class="block text-xs font-medium text-foreground mb-1.5">Leave Type</label>
+                <select id="lv-type" class="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none text-foreground cursor-pointer focus:ring-2 focus:ring-accent/30">
+                  <option>Vacation Leave</option>
+                  <option>Sick Leave</option>
+                  <option>Emergency Leave</option>
+                  <option>Bereavement Leave</option>
+                  <option>Paternity Leave</option>
+                </select>
+                <p class="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                  <i data-lucide="info" style="width: 11px; height: 11px;"></i>
+                  Available balance: <strong id="lv-avail">-- days</strong>
+                </p>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-medium text-foreground mb-1.5">Start Date</label>
+                  <input type="date" id="lv-start" min="2026-06-17" required class="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none text-foreground focus:ring-2 focus:ring-accent/30" />
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-foreground mb-1.5">End Date</label>
+                  <input type="date" id="lv-end" min="2026-06-17" required class="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none text-foreground focus:ring-2 focus:ring-accent/30" />
+                </div>
+              </div>
+
+              <div id="lv-duration" class="hidden px-3 py-2 bg-secondary rounded-lg text-xs text-accent">
+                Duration: <strong id="lv-duration-text">-- working days</strong>
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-foreground mb-1.5">Reason</label>
+                <textarea id="lv-reason" placeholder="Please provide a brief reason for your leave request..." rows="4" required class="w-full px-3 py-2.5 bg-secondary rounded-lg text-sm border-0 outline-none resize-none text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-accent/30"></textarea>
+              </div>
+
+              <button type="submit" class="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors">
+                <i data-lucide="send" style="width: 15px; height: 15px;"></i> Submit Leave Request
+              </button>
+            </form>
+          </div>
+
+          <!-- Leave History -->
+          <div class="col-span-3 bg-card rounded-xl border border-border overflow-hidden self-start">
+            <div class="px-5 py-4 border-b border-border">
+              <h3 class="font-semibold text-foreground">My Leave History</h3>
+              <p class="text-xs text-muted-foreground mt-0.5" id="history-count">0 total requests</p>
+            </div>
+            <table class="w-full">
+              <thead>
+                <tr class="border-b border-border bg-secondary/40">
+                  <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Leave Type</th>
+                  <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Duration</th>
+                  <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Days</th>
+                  <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Reason</th>
+                  <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Applied</th>
+                  <th class="text-left text-xs font-semibold text-muted-foreground px-4 py-3">Status</th>
+                </tr>
+              </thead>
+              <tbody id="leave-history-tbody">
+                <!-- JS populated -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </main>
   </div>
 
-  <script src="../js/shared.js"></script>
-  <script type="module" src="../js/employee-attendance.js"></script>
+  <script src="../../js/shared.js"></script>
+  <script type="module" src="../../js/employee-leave.js"></script>
 </body>
 </html>
