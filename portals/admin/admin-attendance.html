@@ -12,113 +12,19 @@
   
   <!-- Custom CSS -->
   <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../css/tailwind-bundle.css">
   
   <!-- Tailwind CSS (CDN) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Nunito', 'system-ui', 'sans-serif'],
-          },
-          colors: {
-            border: "var(--border)",
-            input: "var(--input)",
-            ring: "var(--ring)",
-            background: "var(--background)",
-            foreground: "var(--foreground)",
-            primary: {
-              DEFAULT: "var(--primary)",
-              foreground: "var(--primary-foreground)",
-            },
-            secondary: {
-              DEFAULT: "var(--secondary)",
-              foreground: "var(--secondary-foreground)",
-            },
-            destructive: {
-              DEFAULT: "var(--destructive)",
-              foreground: "var(--destructive-foreground)",
-            },
-            muted: {
-              DEFAULT: "var(--muted)",
-              foreground: "var(--muted-foreground)",
-            },
-            accent: {
-              DEFAULT: "var(--accent)",
-              foreground: "var(--accent-foreground)",
-            },
-            popover: {
-              DEFAULT: "var(--popover)",
-              foreground: "var(--popover-foreground)",
-            },
-            card: {
-              DEFAULT: "var(--card)",
-              foreground: "var(--card-foreground)",
-            },
-          },
-          borderRadius: {
-            lg: "var(--radius)",
-            md: "calc(var(--radius) - 2px)",
-            sm: "calc(var(--radius) - 4px)",
-          },
-        }
-      }
-    }
-  </script>
+  
+  
   
   <!-- Chart.js for graphs -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
   <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../../js/lucide.min.js"></script>
 
-  <style type="text/tailwindcss">
-    @layer base {
-      * {
-        @apply border-border outline-ring/50;
-      }
-      body {
-        @apply bg-background text-foreground;
-        font-family: var(--font-family);
-      }
-      h1 {
-        font-size: 1.5rem;
-        font-weight: var(--font-weight-medium);
-        line-height: 1.4;
-      }
-      h2 {
-        font-size: 1.25rem;
-        font-weight: var(--font-weight-medium);
-        line-height: 1.4;
-      }
-      h3 {
-        font-size: 1.125rem;
-        font-weight: var(--font-weight-medium);
-        line-height: 1.4;
-      }
-      h4 {
-        font-size: 1rem;
-        font-weight: var(--font-weight-medium);
-        line-height: 1.5;
-      }
-      label {
-        font-size: 1rem;
-        font-weight: var(--font-weight-medium);
-        line-height: 1.5;
-      }
-      button {
-        font-size: 1rem;
-        font-weight: var(--font-weight-medium);
-        line-height: 1.5;
-      }
-      input {
-        font-size: 1rem;
-        font-weight: var(--font-weight-normal);
-        line-height: 1.5;
-      }
-    }
-  </style>
+  
 </head>
 <body class="bg-background text-foreground h-screen overflow-hidden flex">
 

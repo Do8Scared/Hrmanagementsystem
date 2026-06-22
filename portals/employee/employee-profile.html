@@ -10,40 +10,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../css/tailwind-bundle.css">
   
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['Nunito', 'system-ui', 'sans-serif'] },
-          colors: {
-            border: "var(--border)",
-            input: "var(--input)",
-            ring: "var(--ring)",
-            background: "var(--background)",
-            foreground: "var(--foreground)",
-            primary: { DEFAULT: "var(--primary)", foreground: "var(--primary-foreground)" },
-            secondary: { DEFAULT: "var(--secondary)", foreground: "var(--secondary-foreground)" },
-            accent: { DEFAULT: "var(--accent)", foreground: "var(--accent-foreground)" },
-            card: { DEFAULT: "var(--card)", foreground: "var(--card-foreground)" },
-          }
-        }
-      }
-    }
-  </script>
   
-  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  
+  <script src="../../js/lucide.min.js"></script>
 
-  <style type="text/tailwindcss">
-    @layer base {
-      * { @apply border-border outline-ring/50; }
-      body { @apply bg-background text-foreground; font-family: var(--font-family); }
-    }
-    .field-cls {
-      @apply w-full px-3 py-2 bg-input border border-border rounded-lg text-sm text-foreground outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all;
-    }
-  </style>
+  
 </head>
 <body class="bg-background text-foreground h-screen overflow-hidden flex">
 
