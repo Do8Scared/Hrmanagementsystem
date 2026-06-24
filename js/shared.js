@@ -254,3 +254,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+
+// --- Global Badge Helper ---
+window.getStatusBadge = function(status) {
+  if (!status) return '';
+  const s = status.toLowerCase();
+  if (s === 'approved' || s === 'present' || s === 'paid' || s === 'resolved') {
+    return `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-emerald-600 bg-emerald-50 border border-emerald-100">${status}</span>`;
+  } else if (s === 'rejected' || s === 'absent' || s === 'unpaid' || s === 'open') {
+    return `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-red-600 bg-red-50 border border-red-100">${status}</span>`;
+  } else {
+    return `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-amber-600 bg-amber-50 border border-amber-100">${status}</span>`;
+  }
+};
+

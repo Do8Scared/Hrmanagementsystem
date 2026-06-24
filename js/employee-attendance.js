@@ -1,5 +1,5 @@
 import { db } from './db.js';
-import { getStatusBadge } from './shared.js';
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const EMP_ID = 'EMP002';
