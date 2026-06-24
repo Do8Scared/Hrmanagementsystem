@@ -315,6 +315,27 @@
             <button type="button" class="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground pw-toggle"><i data-lucide="eye" style="width: 14px; height: 14px;"></i></button>
           </div>
         </div>
+        <div>
+          <label class="block text-xs font-medium text-foreground mb-1.5">New Password</label>
+          <div class="relative">
+            <input type="password" id="pw-new" required class="field-cls">
+            <button type="button" class="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground pw-toggle"><i data-lucide="eye" style="width: 14px; height: 14px;"></i></button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-foreground mb-1.5">Confirm New Password</label>
+          <div class="relative">
+            <input type="password" id="pw-confirm" required class="field-cls">
+            <button type="button" class="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground pw-toggle"><i data-lucide="eye" style="width: 14px; height: 14px;"></i></button>
+          </div>
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="button" class="close-pw-modal flex-1 py-2.5 rounded-xl border border-border text-sm font-medium text-foreground hover:bg-secondary transition-colors">Cancel</button>
+          <button type="submit" class="flex-1 py-2.5 rounded-xl text-white text-sm font-medium transition-all hover:opacity-90 shadow-sm" style="background: var(--primary)">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <script src="../../js/shared.js"></script>
   <script type="module" src="../../js/manager-profile.js"></script>
