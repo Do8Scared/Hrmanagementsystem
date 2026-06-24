@@ -296,6 +296,26 @@
       </div>
     </main>
   <!-- Script -->
+  <!-- Password Modal -->
+  <div id="pw-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4" id="pw-modal-content">
+      <div class="flex items-center justify-between px-6 py-5 border-b border-border">
+        <div>
+          <h3 class="font-semibold text-foreground">Change Password</h3>
+          <p class="text-xs text-muted-foreground mt-0.5">Update your account security</p>
+        </div>
+        <button class="close-pw-modal p-1.5 rounded-lg hover:bg-secondary text-muted-foreground"><i data-lucide="x" style="width: 18px; height: 18px;"></i></button>
+      </div>
+      <form id="pw-form" class="p-6 space-y-4">
+        <div id="pw-error" class="hidden text-xs font-semibold text-red-600 bg-red-50 p-2.5 rounded-lg border border-red-200"></div>
+        <div>
+          <label class="block text-xs font-medium text-foreground mb-1.5">Current Password</label>
+          <div class="relative">
+            <input type="password" id="pw-current" required class="field-cls">
+            <button type="button" class="absolute right-3 top-2.5 text-muted-foreground hover:text-foreground pw-toggle"><i data-lucide="eye" style="width: 14px; height: 14px;"></i></button>
+          </div>
+        </div>
+
   <script src="../../js/shared.js"></script>
   <script type="module" src="../../js/manager-profile.js"></script>
 </body>
