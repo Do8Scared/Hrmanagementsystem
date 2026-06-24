@@ -43,8 +43,8 @@ export const db = {
 
   // Mocks for employee/manager portals
   employees: [
-    { id: 'EMP001', name: 'Maria Santos', department: 'Human Resources', role: 'HR Manager' },
-    { id: 'EMP002', name: 'Juan dela Cruz', department: 'Engineering', role: 'Software Engineer' }
+    { id: 'EMP001', name: 'Sofia Garcia', department: 'Human Resources', role: 'HR Specialist', birthDate: '1992-03-15', gender: 'Female', civilStatus: 'Single', phone: '+63 912 345 6789', email: 'sofia.garcia@corazon.com', employmentType: 'Regular', supervisor: 'Ana Reyes', workEmail: 's.garcia@corazon.com', dateHired: '2019-06-01' },
+    { id: 'EMP002', name: 'Juan dela Cruz', department: 'Engineering', role: 'Software Engineer', birthDate: '1995-07-22', gender: 'Male', civilStatus: 'Single', phone: '+63 917 654 3210', email: 'juan.delacruz@example.com', employmentType: 'Regular', supervisor: 'Sofia Garcia', workEmail: 'j.delacruz@corazon.com', dateHired: '2021-03-15' }
   ],
   attendanceRecords: [],
   leaveRequests: [],
@@ -53,8 +53,8 @@ export const db = {
   ],
   manpowerRequests: [],
   interviews: [
-    { id: 'INT-001', applicantId: 'APP001', applicantName: 'Alfonso Dela Cruz', jobTitle: 'Senior React Developer', date: '2026-06-25', time: '10:00', format: 'Virtual', interviewer: 'Maria Santos', status: 'Upcoming' },
-    { id: 'INT-002', applicantId: 'APP002', applicantName: 'Maria Santos', jobTitle: 'Finance Analyst', date: '2026-06-20', time: '14:00', format: 'In-Person', interviewer: 'Maria Santos', status: 'Done' }
+    { id: 'INT-001', applicantId: 'APP001', applicantName: 'Alfonso Dela Cruz', jobTitle: 'Senior React Developer', date: '2026-06-25', time: '10:00', format: 'Virtual', interviewer: 'Sofia Garcia', status: 'Upcoming' },
+    { id: 'INT-002', applicantId: 'APP002', applicantName: 'Maria Santos', jobTitle: 'Finance Analyst', date: '2026-06-20', time: '14:00', format: 'In-Person', interviewer: 'Sofia Garcia', status: 'Done' }
   ],
   interviewFeedbacks: [],
   nteRecords: [],
