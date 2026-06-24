@@ -6,75 +6,115 @@
   <title>HR Management System - Announcements</title>
   
   <link rel="stylesheet" href="../../css/styles.css" />
+  <link rel="stylesheet" href="../../css/tailwind-bundle.css" />
   <script src="../../js/lucide.min.js"></script>
 </head>
 <body class="bg-background text-foreground flex h-screen overflow-hidden antialiased selection:bg-primary/20 selection:text-primary">
 
   <!-- Sidebar -->
-  <aside class="w-64 bg-sidebar border-r border-border flex flex-col transition-all duration-300 relative z-20">
-    <div class="h-16 flex items-center px-6 border-b border-border/50">
-      <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
-          <i data-lucide="megaphone" class="text-white w-4 h-4"></i>
+  <aside id="sidebar" class="flex flex-col flex-shrink-0 transition-all duration-300 w-64" style="background: var(--sidebar)">
+    <!-- Logo -->
+    <div id="sidebar-logo-container" class="flex items-center border-b border-white/10 px-3 py-3">
+      <img id="sidebar-logo-full" src="../../assets/corazon_logo.png" alt="Corazon Travel and Tours" class="h-12 w-auto object-contain">
+      <div id="sidebar-logo-mini" class="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0 hidden">
+        <img src="../../assets/corazon_logo.png" alt="Corazon" class="w-full h-full object-cover">
+      </div>
+    </div>
+
+    <!-- Role indicator -->
+    <div id="sidebar-role" class="px-4 pt-3 pb-1.5">
+      <div class="text-xs uppercase tracking-wider font-bold" style=" opacity: 0.85;">
+        Admin / HR
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="flex-1 px-2 py-2 space-y-0.5 overflow-y-auto sidebar-scroll">
+      <!-- Active Item -->
+      <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 nav-item">
+        <div class="relative flex-shrink-0">
+          <i data-lucide="layout-dashboard" style="width: 18px; height: 18px; "></i>
         </div>
-        <span class="font-bold text-lg tracking-tight text-sidebar-foreground">HRMS</span>
-      </div>
-    </div>
-    
-    <div class="flex-1 overflow-y-auto py-4 px-3 space-y-6 scrollbar-hide">
-      <!-- MAIN MENU -->
-      <div>
-        <div class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">Main Menu</div>
-        <nav class="space-y-1">
-          <a href="admin-dashboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
-            <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i> Dashboard
-          </a>
-          <a href="admin-employees.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
-            <i data-lucide="users" style="width: 18px; height: 18px;"></i> Employee Hub
-          </a>
-          <a href="admin-attendance.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
-            <i data-lucide="clock" style="width: 18px; height: 18px;"></i> Attendance
-          </a>
-          <a href="admin-leave.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
-            <i data-lucide="calendar-off" style="width: 18px; height: 18px;"></i> Leave Mgmt
-          </a>
-          <a href="admin-payroll.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
-            <i data-lucide="banknote" style="width: 18px; height: 18px;"></i> Payroll
-          </a>
-          <a href="admin-performance.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
-            <i data-lucide="line-chart" style="width: 18px; height: 18px;"></i> Performance
-          </a>
-        </nav>
-      </div>
-
-      <!-- RECRUITMENT -->
-      <div>
-        <div class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">Recruitment</div>
-        <nav class="space-y-1">
-          <a href="admin-recruitment.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
-            <i data-lucide="briefcase" style="width: 18px; height: 18px;"></i> Recruitment
-          </a>
-        </nav>
-      </div>
-
-      <!-- ADMINISTRATION -->
-      <div>
-        <div class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">Administration</div>
-        <nav class="space-y-1">
-          <a href="admin-hr.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all">
-            <i data-lucide="gavel" style="width: 18px; height: 18px;"></i> Employee Relations
-          </a>
-          <a href="admin-announcements.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-sidebar-accent text-sidebar-accent-foreground transition-all">
-            <i data-lucide="megaphone" style="width: 18px; height: 18px;"></i> Announcements
-          </a>
-        </nav>
-      </div>
-    </div>
-    
-    <div class="p-4 border-t border-border/50">
-      <button class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 transition-colors" onclick="window.location.href='login.html'">
-        <i data-lucide="log-out" style="width: 16px; height: 16px;"></i> Logout
+        <span class="truncate nav-label">Dashboard</span>
+        
       </button>
+
+      <!-- Inactive Items -->
+      <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:/90 nav-item">
+        <div class="relative flex-shrink-0">
+          <i data-lucide="users" style="width: 18px; height: 18px;"></i>
+        </div>
+        <span class="truncate nav-label">Employee Management</span>
+      </button>
+
+      <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:/90 nav-item">
+        <div class="relative flex-shrink-0">
+          <i data-lucide="dollar-sign" style="width: 18px; height: 18px;"></i>
+        </div>
+        <span class="truncate nav-label">Payroll & Attendance</span>
+      </button>
+
+      <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:/90 nav-item">
+        <div class="relative flex-shrink-0">
+          <i data-lucide="calendar-days" style="width: 18px; height: 18px;"></i>
+        </div>
+        <span class="truncate nav-label">Leave Management</span>
+      </button>
+
+      <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:/90 nav-item">
+        <div class="relative flex-shrink-0">
+          <i data-lucide="briefcase" style="width: 18px; height: 18px;"></i>
+        </div>
+        <span class="truncate nav-label">Recruitment</span>
+      </button>
+
+      <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:/90 nav-item">
+        <div class="relative flex-shrink-0">
+          <i data-lucide="shield-alert" style="width: 18px; height: 18px;"></i>
+          <span class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-amber-400 rounded-full"></span>
+        </div>
+        <span class="truncate nav-label">HR Admin / ER</span>
+      </button>
+
+      <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150 hover:/90 nav-item">
+        <div class="relative flex-shrink-0">
+          <i data-lucide="megaphone" style="width: 18px; height: 18px;"></i>
+          <span class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-amber-400 rounded-full"></span>
+        </div>
+        <span class="truncate nav-label">Announcements</span>
+      </button>
+    </nav>
+
+    <!-- User & Role Switch -->
+    <div class="border-t border-white/10 p-3">
+      <div id="sidebar-user-full" class="space-y-2">
+        <div class="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background: var(--sidebar-primary)">
+            <span class="text-xs font-bold" style="color: var(--sidebar-primary-foreground)">SG</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-xs font-bold truncate" style="color: var(--sidebar-foreground)">Sofia Garcia</div>
+            <div class="text-xs truncate" style="color: rgba(255,245,233,0.45)">HR Specialist</div>
+          </div>
+        </div>
+        <button class="w-full flex items-center gap-2 px-2 py-2 rounded-lg text-white/60 hover:text-white hover:bg-white/10 text-xs transition-all">
+          <i data-lucide="users" style="width: 14px; height: 14px;"></i>
+          <span>Switch to Manager View</span>
+        </button>
+        <button class="w-full flex items-center gap-2 px-2 py-2 rounded-lg text-red-400/80 hover:text-red-400 hover:bg-red-500/10 text-xs transition-all">
+          <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
+          <span>Log Out</span>
+        </button>
+      </div>
+
+      <div id="sidebar-user-mini" class="flex flex-col items-center gap-2 hidden">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: var(--sidebar-primary)">
+          <span class="text-xs font-bold" style="color: var(--sidebar-primary-foreground)">SG</span>
+        </div>
+        <button class="text-red-400/80 hover:text-red-400 transition-colors" title="Log Out">
+          <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
+        </button>
+      </div>
     </div>
   </aside>
 
@@ -82,13 +122,91 @@
   <div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-secondary/30 relative">
     
     <!-- Top Header -->
-    <header class="h-16 bg-white/80 backdrop-blur-md border-b border-border flex items-center justify-between px-6 sticky top-0 z-20">
+    <header class="flex items-center justify-between px-6 h-16 bg-white border-b border-border flex-shrink-0 relative z-20">
       <div class="flex items-center gap-4">
-        <h2 class="text-xl font-bold text-foreground tracking-tight">Announcements Hub</h2>
+        <button id="sidebar-toggle" class="p-1.5 rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors">
+          <i data-lucide="menu" style="width: 18px; height: 18px;" id="menu-icon"></i>
+        </button>
+        <div>
+          <h1 class="text-foreground font-semibold">Dashboard</h1>
+          <p class="text-muted-foreground text-xs">Tuesday, June 16, 2026</p>
+        </div>
       </div>
-      <div class="flex items-center gap-4">
-        <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center shadow-md">
-          <span class="text-white text-sm font-bold">AD</span>
+
+      <div class="flex items-center gap-3">
+        <!-- Notification Dropdown -->
+        <div class="relative">
+          <button id="notif-btn" class="relative p-2 rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors">
+            <i data-lucide="bell" style="width: 18px; height: 18px;"></i>
+            <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+          
+          <div id="notif-dropdown" class="hidden absolute right-0 top-10 w-80 bg-white rounded-xl shadow-xl border border-border z-50 overflow-hidden">
+            <div class="flex items-center justify-between px-4 py-3 border-b border-border">
+              <span class="font-semibold text-sm text-foreground">Notifications</span>
+              <span class="text-xs text-muted-foreground">2 new</span>
+            </div>
+            <button class="w-full flex items-start gap-3 px-4 py-3 hover:bg-secondary transition-colors border-b border-border text-left">
+              <span class="w-2 h-2 rounded-full mt-1.5 flex-shrink-0 bg-primary"></span>
+              <div class="flex-1 min-w-0">
+                <span class="text-xs font-semibold text-muted-foreground">Advisory · </span>
+                <span class="text-xs text-foreground leading-snug">Q2 2026 Company Performance Update</span>
+                <p class="text-xs text-muted-foreground mt-0.5">2 hrs ago</p>
+              </div>
+            </button>
+            <button class="w-full flex items-start gap-3 px-4 py-3 hover:bg-secondary transition-colors text-left">
+              <span class="w-2 h-2 rounded-full mt-1.5 flex-shrink-0 bg-emerald-500"></span>
+              <div class="flex-1 min-w-0">
+                <span class="text-xs font-semibold text-muted-foreground">Policy · </span>
+                <span class="text-xs text-foreground leading-snug">Updated Flexible Work Arrangement</span>
+                <p class="text-xs text-muted-foreground mt-0.5">4 hrs ago</p>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Profile Dropdown -->
+        <div class="relative">
+          <button id="profile-btn" class="flex items-center gap-2 pl-3 border-l border-border hover:bg-secondary/60 rounded-lg pr-2 py-1 transition-colors">
+            <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+              <span class="text-white text-xs font-semibold">SG</span>
+            </div>
+            <div class="hidden sm:block text-left">
+              <div class="text-sm font-medium text-foreground leading-tight">Sofia Garcia</div>
+              <div class="text-xs text-muted-foreground">HR Specialist</div>
+            </div>
+            <i data-lucide="chevron-down" id="profile-chevron" style="width: 14px; height: 14px;" class="text-muted-foreground transition-transform duration-200"></i>
+          </button>
+
+          <div id="profile-dropdown" class="hidden absolute right-0 top-12 w-56 bg-white rounded-xl shadow-xl border border-border z-50 overflow-hidden" style="box-shadow: 0 8px 30px rgba(0,0,0,0.12)">
+            <div class="px-4 py-3 border-b border-border bg-secondary/40">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+                  <span class="text-white text-xs font-semibold">SG</span>
+                </div>
+                <div class="min-w-0">
+                  <div class="text-sm font-semibold text-foreground truncate">Sofia Garcia</div>
+                  <div class="text-xs text-muted-foreground truncate">HR Specialist</div>
+                </div>
+              </div>
+            </div>
+            <div class="py-1">
+              <button class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-foreground hover:bg-secondary transition-colors text-left">
+                <i data-lucide="user" style="width: 15px; height: 15px;" class="text-muted-foreground flex-shrink-0"></i>
+                My Profile
+              </button>
+              <button class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-foreground hover:bg-secondary transition-colors text-left">
+                <i data-lucide="lock" style="width: 15px; height: 15px;" class="text-muted-foreground flex-shrink-0"></i>
+                Change Password
+              </button>
+            </div>
+            <div class="border-t border-border py-1">
+              <button class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors text-left">
+                <i data-lucide="log-out" style="width: 15px; height: 15px;" class="flex-shrink-0"></i>
+                Log Out
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </header>
