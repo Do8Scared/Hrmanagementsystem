@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize Lucide icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
+
   // Views
   const loginView = document.getElementById('login-view');
   const forgotPwView = document.getElementById('forgot-pw-view');
@@ -6,43 +11,69 @@ document.addEventListener('DOMContentLoaded', () => {
   const forgotPwSuccess = document.getElementById('forgot-pw-success');
 
   // Role switching
-  let currentRole = 'admin'; // 'admin' or 'employee'
+  let currentRole = 'admin'; // 'admin', 'manager', or 'employee'
   const roleAdminBtn = document.getElementById('role-admin-btn');
+  const roleManagerBtn = document.getElementById('role-manager-btn');
   const roleEmployeeBtn = document.getElementById('role-employee-btn');
   const emailInput = document.getElementById('email-input');
 
+  function resetRoleButtons() {
+    [roleAdminBtn, roleManagerBtn, roleEmployeeBtn].forEach(btn => {
+      btn.style.background = 'transparent';
+      btn.style.color = 'var(--text-muted)';
+      btn.style.boxShadow = 'none';
+    });
+  }
+
   function updateRoleUI() {
+    resetRoleButtons();
     if (currentRole === 'admin') {
       roleAdminBtn.style.background = 'var(--crimson)';
       roleAdminBtn.style.color = '#FFF5E9';
       roleAdminBtn.style.boxShadow = '0 2px 10px rgba(110,18,22,0.33)';
-      
-      roleEmployeeBtn.style.background = 'transparent';
-      roleEmployeeBtn.style.color = 'var(--text-muted)';
-      roleEmployeeBtn.style.boxShadow = 'none';
-      
       emailInput.placeholder = 'admin@corazontraveltours.ph';
+    } else if (currentRole === 'manager') {
+      roleManagerBtn.style.background = 'var(--crimson)';
+      roleManagerBtn.style.color = '#FFF5E9';
+      roleManagerBtn.style.boxShadow = '0 2px 10px rgba(110,18,22,0.33)';
+      emailInput.placeholder = 'manager@corazontraveltours.ph';
     } else {
       roleEmployeeBtn.style.background = 'var(--crimson)';
       roleEmployeeBtn.style.color = '#FFF5E9';
       roleEmployeeBtn.style.boxShadow = '0 2px 10px rgba(110,18,22,0.33)';
-      
-      roleAdminBtn.style.background = 'transparent';
-      roleAdminBtn.style.color = 'var(--text-muted)';
-      roleAdminBtn.style.boxShadow = 'none';
-      
       emailInput.placeholder = 'employee@corazontraveltours.ph';
     }
   }
 
-  roleAdminBtn.addEventListener('click', () => { currentRole = 'admin'; updateRoleUI(); });
-  roleEmployeeBtn.addEventListener('click', () => { currentRole = 'employee'; updateRoleUI(); });
+  roleAdminBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    currentRole = 'admin';
+    updateRoleUI();
+  });
+
+  roleManagerBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    currentRole = 'manager';
+    updateRoleUI();
+  });
+
+  roleEmployeeBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    currentRole = 'employee';
+    updateRoleUI();
+  });
 
   // Input focus effects
   const inputs = document.querySelectorAll('input');
   inputs.forEach(input => {
-    input.addEventListener('focus', () => input.style.borderColor = 'var(--gold)');
-    input.addEventListener('blur', () => input.style.borderColor = 'var(--border)');
+    input.addEventListener('focus', () => {
+      input.style.borderColor = 'var(--gold)';
+      input.style.boxShadow = '0 0 0 3px rgba(200, 137, 10, 0.15)';
+    });
+    input.addEventListener('blur', () => {
+      input.style.borderColor = 'var(--border)';
+      input.style.boxShadow = 'none';
+    });
   });
 
   // Password toggle
@@ -51,11 +82,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const passwordIcon = document.getElementById('password-icon');
   let showPassword = false;
 
-  togglePasswordBtn.addEventListener('click', () => {
+  togglePasswordBtn.addEventListener('click', (e) => {
+    e.preventDefault();
     showPassword = !showPassword;
     passwordInput.type = showPassword ? 'text' : 'password';
     passwordIcon.setAttribute('data-lucide', showPassword ? 'eye-off' : 'eye');
-    lucide.createIcons();
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
   });
 
   // Remember me toggle
@@ -63,7 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const rememberMeCheck = document.getElementById('remember-me-check');
   let rememberMe = false;
 
-  rememberMeBox.addEventListener('click', () => {
+  rememberMeBox.addEventListener('click', (e) => {
+    e.preventDefault();
     rememberMe = !rememberMe;
     if (rememberMe) {
       rememberMeBox.style.background = 'var(--gold)';
@@ -93,9 +128,20 @@ document.addEventListener('DOMContentLoaded', () => {
     forgotPwSuccess.classList.add('hidden');
   }
 
-  forgotPwLink.addEventListener('click', showForgotPwView);
-  backToLoginBtn.addEventListener('click', showLoginView);
-  backToLoginSuccessBtn.addEventListener('click', showLoginView);
+  forgotPwLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showForgotPwView();
+  });
+
+  backToLoginBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    showLoginView();
+  });
+
+  backToLoginSuccessBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    showLoginView();
+  });
 
   // Login form submission
   const loginForm = document.getElementById('login-form');
@@ -103,10 +149,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const submitBtn = document.getElementById('submit-btn');
   const submitText = document.getElementById('submit-text');
   const submitSpinner = document.getElementById('submit-spinner');
+  const passwordInput2 = document.getElementById('password-input');
 
   loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    if (!emailInput.value || !passwordInput.value) {
+    if (!emailInput.value || !passwordInput2.value) {
       loginError.classList.remove('hidden');
       return;
     }
@@ -115,14 +162,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Simulate loading
     submitText.classList.add('hidden');
     submitSpinner.classList.remove('hidden');
-    submitBtn.style.background = 'var(--text-muted)';
-    submitBtn.style.boxShadow = 'none';
+    submitBtn.style.opacity = '0.7';
     submitBtn.disabled = true;
 
     setTimeout(() => {
       // Direct routing based on role (mock implementation)
       if (currentRole === 'admin') {
         window.location.href = 'portals/admin/admin-dashboard.html';
+      } else if (currentRole === 'manager') {
+        window.location.href = 'portals/manager/manager-dashboard.html';
       } else {
         window.location.href = 'portals/employee/employee-dashboard.html';
       }
@@ -146,8 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
     resetText.classList.add('hidden');
     resetIcon.classList.add('hidden');
     resetSpinner.classList.remove('hidden');
-    resetBtn.style.background = 'var(--text-muted)';
-    resetBtn.style.boxShadow = 'none';
+    resetBtn.style.opacity = '0.7';
     resetBtn.disabled = true;
 
     setTimeout(() => {
@@ -155,8 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
       resetText.classList.remove('hidden');
       resetIcon.classList.remove('hidden');
       resetSpinner.classList.add('hidden');
-      resetBtn.style.background = 'linear-gradient(135deg, var(--crimson), var(--crimson-dark))';
-      resetBtn.style.boxShadow = '0 6px 20px rgba(110,18,22,0.33)';
+      resetBtn.style.opacity = '1';
       resetBtn.disabled = false;
 
       // Show success
@@ -166,4 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
       resetEmailInput.value = '';
     }, 1000);
   });
+
+  // Initialize
+  updateRoleUI();
 });
