@@ -66,39 +66,15 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
       `;
-    
-  if (window.location.search.includes('action=change-password')) {
-    setTimeout(() => {
-      const btn = document.getElementById('change-pw-btn');
-      if (btn) btn.click();
-    }, 100);
-  }
-
-});
+    });
 
     document.querySelectorAll('.toggle-id-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const key = e.currentTarget.dataset.key;
         visibleIds[key] = !visibleIds[key];
         renderGovtIds();
-      
-  if (window.location.search.includes('action=change-password')) {
-    setTimeout(() => {
-      const btn = document.getElementById('change-pw-btn');
-      if (btn) btn.click();
-    }, 100);
-  }
-
-});
-    
-  if (window.location.search.includes('action=change-password')) {
-    setTimeout(() => {
-      const btn = document.getElementById('change-pw-btn');
-      if (btn) btn.click();
-    }, 100);
-  }
-
-});
+      });
+    });
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
   }
@@ -160,30 +136,14 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('cancel-edit-btn').addEventListener('click', () => {
     draft = { ...personal };
     setEditMode(false);
-  
-  if (window.location.search.includes('action=change-password')) {
-    setTimeout(() => {
-      const btn = document.getElementById('change-pw-btn');
-      if (btn) btn.click();
-    }, 100);
-  }
-
-});
+  });
 
   document.getElementById('save-edit-btn').addEventListener('click', () => {
     personal = { ...draft };
     renderHeader();
     renderView();
     setEditMode(false);
-  
-  if (window.location.search.includes('action=change-password')) {
-    setTimeout(() => {
-      const btn = document.getElementById('change-pw-btn');
-      if (btn) btn.click();
-    }, 100);
-  }
-
-});
+  });
 
   // Password Modal
   const pwModal = document.getElementById('pw-modal');
@@ -193,24 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
       pwModal.classList.add('hidden');
       document.getElementById('pw-form').reset();
       document.getElementById('pw-error').classList.add('hidden');
-    
-  if (window.location.search.includes('action=change-password')) {
-    setTimeout(() => {
-      const btn = document.getElementById('change-pw-btn');
-      if (btn) btn.click();
-    }, 100);
-  }
-
-});
-  
-  if (window.location.search.includes('action=change-password')) {
-    setTimeout(() => {
-      const btn = document.getElementById('change-pw-btn');
-      if (btn) btn.click();
-    }, 100);
-  }
-
-});
+    });
+  });
 
   document.getElementById('pw-form').addEventListener('submit', (e) => {
     e.preventDefault();
@@ -249,24 +193,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof lucide !== 'undefined') lucide.createIcons();
     document.getElementById('pw-done-btn').addEventListener('click', () => {
       window.location.reload();
-    
-  if (window.location.search.includes('action=change-password')) {
-    setTimeout(() => {
-      const btn = document.getElementById('change-pw-btn');
-      if (btn) btn.click();
-    }, 100);
-  }
-
-});
-  
-  if (window.location.search.includes('action=change-password')) {
-    setTimeout(() => {
-      const btn = document.getElementById('change-pw-btn');
-      if (btn) btn.click();
-    }, 100);
-  }
-
-});
+    });
+  });
 
   document.querySelectorAll('.pw-toggle').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -280,24 +208,8 @@ document.addEventListener('DOMContentLoaded', () => {
         icon.setAttribute('data-lucide', 'eye');
       }
       if (typeof lucide !== 'undefined') lucide.createIcons();
-    
-  if (window.location.search.includes('action=change-password')) {
-    setTimeout(() => {
-      const btn = document.getElementById('change-pw-btn');
-      if (btn) btn.click();
-    }, 100);
-  }
-
-});
-  
-  if (window.location.search.includes('action=change-password')) {
-    setTimeout(() => {
-      const btn = document.getElementById('change-pw-btn');
-      if (btn) btn.click();
-    }, 100);
-  }
-
-});
+    });
+  });
 
   renderHeader();
   renderView();
@@ -308,5 +220,4 @@ document.addEventListener('DOMContentLoaded', () => {
       if (btn) btn.click();
     }, 100);
   }
-
 });
