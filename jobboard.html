@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Careers - Corazon Travel and Tours</title>
-  
+
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/tailwind-bundle.css">
-  
+
   <script src="js/lucide.min.js"></script>
 
-  
-  
+
+
 </head>
+
 <body class="min-h-screen bg-white">
 
   <!-- Main View -->
@@ -28,7 +30,8 @@
           <div class="text-xs text-[#9CA3AF]">Careers Portal</div>
         </div>
       </div>
-      <a href="login.html" class="flex items-center gap-1.5 text-xs text-[#6B7280] hover:text-[var(--foreground)] border border-[#E5E7EB] px-3 py-1.5 rounded-lg transition-colors">
+      <a href="login.html"
+        class="flex items-center gap-1.5 text-xs text-[#6B7280] hover:text-[var(--foreground)] border border-[#E5E7EB] px-3 py-1.5 rounded-lg transition-colors">
         <i data-lucide="arrow-left" class="w-[13px] h-[13px]"></i> Return to System
       </a>
     </header>
@@ -43,9 +46,11 @@
       <div class="flex max-w-xl mx-auto gap-2 bg-white rounded-2xl border border-[#E5E7EB] p-2 shadow-sm">
         <div class="relative flex-1">
           <i data-lucide="search" class="w-[15px] h-[15px] absolute left-3 top-1/2 -translate-y-1/2 text-[#9CA3AF]"></i>
-          <input id="search-input" placeholder="Job Title / Keyword" class="w-full pl-9 pr-3 py-2.5 bg-transparent text-sm text-[var(--foreground)] outline-none placeholder:text-[#9CA3AF]">
+          <input id="search-input" placeholder="Job Title / Keyword"
+            class="w-full pl-9 pr-3 py-2.5 bg-transparent text-sm text-[var(--foreground)] outline-none placeholder:text-[#9CA3AF]">
         </div>
-        <button id="search-btn" class="px-6 py-2.5 rounded-xl text-white text-sm font-semibold shrink-0" style="background: var(--primary);">
+        <button id="search-btn" class="px-6 py-2.5 rounded-xl text-white text-sm font-semibold shrink-0"
+          style="background: var(--primary);">
           Search
         </button>
       </div>
@@ -61,7 +66,8 @@
     <!-- Job Cards Grid -->
     <section class="max-w-6xl mx-auto px-8 py-10">
       <div class="flex items-center justify-between mb-6">
-        <p class="text-sm text-[#6B7280]">Showing <strong id="jobs-count" class="text-[var(--foreground)]">0</strong> open positions</p>
+        <p class="text-sm text-[#6B7280]">Showing <strong id="jobs-count" class="text-[var(--foreground)]">0</strong>
+          open positions</p>
       </div>
 
       <div id="no-jobs" class="text-center py-16 text-[#9CA3AF] hidden">No jobs match your search.</div>
@@ -72,7 +78,9 @@
 
       <!-- See All Jobs button -->
       <div id="see-all-container" class="flex justify-center mt-10 hidden">
-        <button id="see-all-btn" class="flex items-center gap-2 px-8 py-3 rounded-xl text-white text-sm font-semibold transition-all hover:opacity-90" style="background: var(--primary); box-shadow: 0 4px 14px rgba(110,18,22,0.25);">
+        <button id="see-all-btn"
+          class="flex items-center gap-2 px-8 py-3 rounded-xl text-white text-sm font-semibold transition-all hover:opacity-90"
+          style="background: var(--primary); box-shadow: 0 4px 14px rgba(110,18,22,0.25);">
           <span id="see-all-text">See All Jobs</span>
           <i data-lucide="chevron-right" id="see-all-icon" class="w-[16px] h-[16px] transition-transform"></i>
         </button>
@@ -83,7 +91,8 @@
   <!-- Job Details View (Hidden by default) -->
   <div id="details-view" class="min-h-screen bg-[#F7F8FA] hidden">
     <header class="bg-white border-b border-[#E5E7EB] px-8 py-4 flex items-center justify-between sticky top-0 z-10">
-      <button id="back-to-jobs-btn" class="flex items-center gap-2 text-sm text-[#6B7280] hover:text-[var(--foreground)] transition-colors">
+      <button id="back-to-jobs-btn"
+        class="flex items-center gap-2 text-sm text-[#6B7280] hover:text-[var(--foreground)] transition-colors">
         <i data-lucide="arrow-left" class="w-[16px] h-[16px]"></i> Back to Jobs
       </button>
       <a href="login.html" class="text-xs text-[#6B7280] hover:text-[var(--foreground)]">Return to System</a>
@@ -96,19 +105,32 @@
             <span id="detail-type" class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3"></span>
             <h1 id="detail-title" class="text-2xl font-bold text-[var(--foreground)]"></h1>
             <div class="flex items-center gap-4 mt-2 text-sm text-[#6B7280]">
-              <span class="flex items-center gap-1.5"><i data-lucide="building-2" class="w-[14px] h-[14px]"></i><span id="detail-dept"></span></span>
-              <span class="flex items-center gap-1.5"><i data-lucide="clock" class="w-[14px] h-[14px]"></i>Posted <span id="detail-posted"></span></span>
+              <span class="flex items-center gap-1.5"><i data-lucide="building-2" class="w-[14px] h-[14px]"></i><span
+                  id="detail-dept"></span></span>
+              <span class="flex items-center gap-1.5"><i data-lucide="clock" class="w-[14px] h-[14px]"></i>Posted <span
+                  id="detail-posted"></span></span>
             </div>
           </div>
-          <button id="detail-apply-btn1" class="px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:opacity-90" style="background: var(--primary); box-shadow: 0 4px 14px rgba(110,18,22,0.35);">
+          <button id="detail-apply-btn1"
+            class="px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:opacity-90"
+            style="background: var(--primary); box-shadow: 0 4px 14px rgba(110,18,22,0.35);">
             Apply Now
           </button>
         </div>
 
         <div class="grid grid-cols-3 gap-4 mb-8 p-4 bg-[#F7F8FA] rounded-xl">
-          <div><div class="text-xs text-[#9CA3AF] mb-0.5">Application Deadline</div><div id="detail-deadline" class="text-sm font-semibold text-[var(--foreground)]"></div></div>
-          <div><div class="text-xs text-[#9CA3AF] mb-0.5">Number of Slots</div><div id="detail-slots" class="text-sm font-semibold text-[var(--foreground)]"></div></div>
-          <div><div class="text-xs text-[#9CA3AF] mb-0.5">Department</div><div id="detail-dept-box" class="text-sm font-semibold text-[var(--foreground)]"></div></div>
+          <div>
+            <div class="text-xs text-[#9CA3AF] mb-0.5">Application Deadline</div>
+            <div id="detail-deadline" class="text-sm font-semibold text-[var(--foreground)]"></div>
+          </div>
+          <div>
+            <div class="text-xs text-[#9CA3AF] mb-0.5">Number of Slots</div>
+            <div id="detail-slots" class="text-sm font-semibold text-[var(--foreground)]"></div>
+          </div>
+          <div>
+            <div class="text-xs text-[#9CA3AF] mb-0.5">Department</div>
+            <div id="detail-dept-box" class="text-sm font-semibold text-[var(--foreground)]"></div>
+          </div>
         </div>
 
         <div class="space-y-6">
@@ -123,7 +145,9 @@
         </div>
 
         <div class="mt-8 pt-6 border-t border-[#E5E7EB]">
-          <button id="detail-apply-btn2" class="w-full py-3 rounded-xl text-white font-semibold text-sm hover:opacity-90 transition-all" style="background: var(--primary);">
+          <button id="detail-apply-btn2"
+            class="w-full py-3 rounded-xl text-white font-semibold text-sm hover:opacity-90 transition-all"
+            style="background: var(--primary);">
             Apply Now
           </button>
         </div>
@@ -133,13 +157,16 @@
 
   <!-- Application Modal -->
   <div id="apply-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
-    <div id="apply-modal-content" class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+    <div id="apply-modal-content"
+      class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden max-h-[90vh] overflow-y-auto"
+      onclick="event.stopPropagation()">
       <div class="flex items-center justify-between px-6 py-5 border-b border-[#E5E7EB]">
         <div>
           <h3 class="font-bold text-[var(--foreground)]">Apply for this Position</h3>
           <p id="apply-subtitle" class="text-xs text-[#6B7280] mt-0.5"></p>
         </div>
-        <button id="close-apply-btn" class="p-1.5 rounded-lg hover:bg-[#F7F8FA] text-[#9CA3AF]"><i data-lucide="x" class="w-[18px] h-[18px]"></i></button>
+        <button id="close-apply-btn" class="p-1.5 rounded-lg hover:bg-[#F7F8FA] text-[#9CA3AF]"><i data-lucide="x"
+            class="w-[18px] h-[18px]"></i></button>
       </div>
 
       <!-- Success Message -->
@@ -148,27 +175,36 @@
           <i data-lucide="check-circle-2" class="w-[32px] h-[32px] text-emerald-500"></i>
         </div>
         <h3 class="text-xl font-bold text-[var(--foreground)] mb-2">Application Submitted!</h3>
-        <p class="text-sm text-[#6B7280] leading-relaxed">Your application for <strong id="success-job-title"></strong> has been received. We'll review it and get back to you shortly.</p>
-        <button id="done-apply-btn" class="mt-6 px-6 py-2.5 rounded-xl text-white text-sm font-semibold" style="background: var(--primary);">Done</button>
+        <p class="text-sm text-[#6B7280] leading-relaxed">Your application for <strong id="success-job-title"></strong>
+          has been received. We'll review it and get back to you shortly.</p>
+        <button id="done-apply-btn" class="mt-6 px-6 py-2.5 rounded-xl text-white text-sm font-semibold"
+          style="background: var(--primary);">Done</button>
       </div>
 
       <!-- Form -->
       <form id="apply-form" class="p-6 space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-[#374151] mb-1.5">Full Name <span class="text-red-500">*</span></label>
-          <input type="text" id="app-name" placeholder="Juan dela Cruz" required class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-[var(--foreground)] outline-none focus:ring-2 focus:ring-[var(--foreground)]/10 placeholder:text-[#9CA3AF]">
+          <label class="block text-xs font-semibold text-[#374151] mb-1.5">Full Name <span
+              class="text-red-500">*</span></label>
+          <input type="text" id="app-name" placeholder="Juan dela Cruz" required
+            class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-[var(--foreground)] outline-none focus:ring-2 focus:ring-[var(--foreground)]/10 placeholder:text-[#9CA3AF]">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-[#374151] mb-1.5">Email Address <span class="text-red-500">*</span></label>
-          <input type="email" id="app-email" placeholder="juan@email.com" required class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-[var(--foreground)] outline-none focus:ring-2 focus:ring-[var(--foreground)]/10 placeholder:text-[#9CA3AF]">
+          <label class="block text-xs font-semibold text-[#374151] mb-1.5">Email Address <span
+              class="text-red-500">*</span></label>
+          <input type="email" id="app-email" placeholder="juan@email.com" required
+            class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-[var(--foreground)] outline-none focus:ring-2 focus:ring-[var(--foreground)]/10 placeholder:text-[#9CA3AF]">
         </div>
         <div>
           <label class="block text-xs font-semibold text-[#374151] mb-1.5">Contact Number</label>
-          <input type="text" id="app-phone" placeholder="+63 9XX XXX XXXX" class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-[var(--foreground)] outline-none focus:ring-2 focus:ring-[var(--foreground)]/10 placeholder:text-[#9CA3AF]">
+          <input type="text" id="app-phone" placeholder="+63 9XX XXX XXXX"
+            class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-[var(--foreground)] outline-none focus:ring-2 focus:ring-[var(--foreground)]/10 placeholder:text-[#9CA3AF]">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-[#374151] mb-1.5">Resume (PDF only) <span class="text-red-500">*</span></label>
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-dashed border-[#E5E7EB] rounded-xl cursor-pointer hover:border-[#6E1216]/30 transition-colors bg-[#F7F8FA]">
+          <label class="block text-xs font-semibold text-[#374151] mb-1.5">Resume (PDF only) <span
+              class="text-red-500">*</span></label>
+          <label
+            class="flex items-center gap-3 px-4 py-3 border-2 border-dashed border-[#E5E7EB] rounded-xl cursor-pointer hover:border-[#6E1216]/30 transition-colors bg-[#F7F8FA]">
             <i data-lucide="upload" class="w-[18px] h-[18px] text-[#9CA3AF]"></i>
             <div>
               <div id="file-name-display" class="text-sm text-[#374151] font-medium">Click to upload your resume</div>
@@ -178,10 +214,14 @@
           </label>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-[#374151] mb-1.5">Cover Letter <span class="text-[#9CA3AF] font-normal">(Optional)</span></label>
-          <textarea id="app-cover" rows="4" placeholder="Tell us why you're a great fit for this role..." class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-[var(--foreground)] outline-none resize-none placeholder:text-[#9CA3AF]"></textarea>
+          <label class="block text-xs font-semibold text-[#374151] mb-1.5">Cover Letter <span
+              class="text-[#9CA3AF] font-normal">(Optional)</span></label>
+          <textarea id="app-cover" rows="4" placeholder="Tell us why you're a great fit for this role..."
+            class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-[var(--foreground)] outline-none resize-none placeholder:text-[#9CA3AF]"></textarea>
         </div>
-        <button type="submit" class="w-full py-3 rounded-xl text-white text-sm font-semibold transition-all hover:opacity-90 mt-2" style="background: var(--primary); box-shadow: 0 4px 14px rgba(110,18,22,0.35);">
+        <button type="submit"
+          class="w-full py-3 rounded-xl text-white text-sm font-semibold transition-all hover:opacity-90 mt-2"
+          style="background: var(--primary); box-shadow: 0 4px 14px rgba(110,18,22,0.35);">
           Submit Application
         </button>
       </form>
@@ -191,4 +231,5 @@
   <script src="js/shared.js"></script>
   <script type="module" src="js/jobboard.js"></script>
 </body>
+
 </html>
