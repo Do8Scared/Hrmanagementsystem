@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Payslip
   if(latestPayslip) {
     document.getElementById('ps-period').textContent = latestPayslip.period;
-    document.getElementById('ps-gross').textContent = `₱${latestPayslip.grossPay.toLocaleString('en-PH', { minimumFractionDigits: 2 })}`;
+    document.getElementById('ps-gross').textContent = `₱${latestPayslip.basicSalary.toLocaleString('en-PH', { minimumFractionDigits: 2 })}`;
     document.getElementById('ps-net').textContent = `₱${latestPayslip.netPay.toLocaleString('en-PH', { minimumFractionDigits: 2 })}`;
   }
 

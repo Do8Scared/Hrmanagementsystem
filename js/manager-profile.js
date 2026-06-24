@@ -1,7 +1,7 @@
 import { db } from './db.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const EMP_ID = 'EMP002';
+  const EMP_ID = 'EMP001';
   let emp = db.employees.find(e => e.id === EMP_ID);
   
   let personal = {

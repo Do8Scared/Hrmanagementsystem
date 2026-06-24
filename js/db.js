@@ -60,7 +60,7 @@ export const db = {
   nteRecords: [],
   nodRecords: [],
   payslips: [
-    { id: 'PAY-001', employeeId: 'EMP002', period: 'June 1-15, 2026', basicSalary: 25000, netPay: 22000, totalDeductions: 3000, status: 'Paid' }
+    { id: 'PAY-001', employeeId: 'EMP002', period: 'June 1-15, 2026', basicSalary: 25000, overtime: 0, grossPay: 25000, sss: 500, philhealth: 300, pagibig: 100, tax: 2100, netPay: 22000, totalDeductions: 3000, status: 'Paid' }
   ],
   performanceEvaluations: [],
   save: function() { console.log("db.save() called"); },
