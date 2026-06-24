@@ -40,4 +40,29 @@ export const db = {
     });
     db.saveApps(apps);
   }
+
+  // Mocks for employee/manager portals
+  employees: [
+    { id: 'EMP001', name: 'Maria Santos', department: 'Human Resources', role: 'HR Manager' },
+    { id: 'EMP002', name: 'Juan dela Cruz', department: 'Engineering', role: 'Software Engineer' }
+  ],
+  attendanceRecords: [],
+  leaveRequests: [],
+  leaveBalances: [
+    { employeeId: 'EMP002', vacation: 10, sick: 10 }
+  ],
+  manpowerRequests: [],
+  interviews: [
+    { id: 'INT-001', applicantId: 'APP001', applicantName: 'Alfonso Dela Cruz', jobTitle: 'Senior React Developer', date: '2026-06-25', time: '10:00', format: 'Virtual', interviewer: 'Maria Santos', status: 'Upcoming' },
+    { id: 'INT-002', applicantId: 'APP002', applicantName: 'Maria Santos', jobTitle: 'Finance Analyst', date: '2026-06-20', time: '14:00', format: 'In-Person', interviewer: 'Maria Santos', status: 'Done' }
+  ],
+  interviewFeedbacks: [],
+  nteRecords: [],
+  nodRecords: [],
+  payslips: [
+    { id: 'PAY-001', employeeId: 'EMP002', period: 'June 1-15, 2026', basicSalary: 25000, netPay: 22000, totalDeductions: 3000, status: 'Paid' }
+  ],
+  performanceEvaluations: [],
+  save: function() { console.log("db.save() called"); },
+
 };
