@@ -143,6 +143,49 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           return;
         }
+
+        // --- Sidebar Navigation Logic ---
+        const navLabel = target.querySelector('.nav-label');
+        if (target.classList.contains('nav-item') || navLabel) {
+          const btnText = (navLabel ? navLabel.textContent : text).trim().toLowerCase();
+          const pathParts = window.location.pathname.split('/');
+          const currentRole = pathParts[pathParts.length - 2]; // e.g. 'admin', 'manager', 'employee'
+          
+          if (!['admin', 'manager', 'employee'].includes(currentRole)) return;
+          
+          e.preventDefault();
+          let targetPage = '';
+          
+          if (btnText.includes('dashboard')) targetPage = `${currentRole}-dashboard.html`;
+          else if (btnText.includes('employee management')) targetPage = `${currentRole}-employees.html`;
+          else if (btnText.includes('payroll')) targetPage = `${currentRole}-payroll.html`;
+          else if (btnText.includes('attendance')) targetPage = `${currentRole}-attendance.html`;
+          else if (btnText.includes('leave')) targetPage = `${currentRole}-leave.html`;
+          else if (btnText.includes('recruitment')) targetPage = `${currentRole}-recruitment.html`;
+          else if (btnText.includes('hr admin') || btnText.includes('hr cases')) targetPage = currentRole === 'admin' ? 'admin-hr.html' : 'employee-hrcases.html';
+          else if (btnText.includes('announcements')) targetPage = `${currentRole}-announcements.html`;
+          else if (btnText.includes('profile')) targetPage = `${currentRole}-profile.html`;
+          else if (btnText.includes('payslip')) targetPage = `${currentRole}-payslips.html`;
+          else if (btnText.includes('performance')) targetPage = `${currentRole}-performance.html`;
+          else if (btnText.includes('interview')) targetPage = `${currentRole}-interviews.html`;
+          else if (btnText.includes('manpower')) targetPage = `${currentRole}-manpower.html`;
+          
+          if (targetPage) {
+            window.location.href = targetPage;
+          }
+        }
+
+        // --- Switch Role Logic ---
+        if (text.toLowerCase().includes('switch to manager')) {
+          e.preventDefault();
+          window.location.href = '../manager/manager-dashboard.html';
+        } else if (text.toLowerCase().includes('switch to admin')) {
+          e.preventDefault();
+          window.location.href = '../admin/admin-dashboard.html';
+        } else if (text.toLowerCase().includes('switch to employee')) {
+          e.preventDefault();
+          window.location.href = '../employee/employee-dashboard.html';
+        }
       }
       target = target.parentNode;
     }
