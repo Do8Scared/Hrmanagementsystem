@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     filtered.forEach(n => {
       const tr = document.createElement('tr');
-      tr.className = "border-b border-border/50 hover:bg-secondary/20 transition-colors";
+ tr.className = "border-b border-border/50 hover:bg-gray-50 transition-colors cursor-pointer ";
       
       const c = statusCfg[n.status];
       const statusHtml = `<span class="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-semibold ${c.bg} ${c.text}"><span class="w-1.5 h-1.5 rounded-full ${c.dot}"></span>${n.status}</span>`;

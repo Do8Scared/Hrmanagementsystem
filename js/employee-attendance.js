@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (r.status === 'Undertime') remarks = 'Partial deduction';
 
       const tr = document.createElement('tr');
-      tr.className = `border-b border-border/50 transition-colors ${bgClass}`;
+ tr.className = `border-b border-border/50 hover:bg-gray-50 transition-colors cursor-pointer ${bgClass}`;
       tr.innerHTML = `
         <td class="px-5 py-3 text-sm text-foreground font-medium">${r.date}</td>
         <td class="px-5 py-3 text-sm text-muted-foreground">${dayName}</td>

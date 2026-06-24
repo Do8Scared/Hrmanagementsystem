@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mrList.forEach((mr, i) => {
       if (mr.status === 'Pending') pendingCount++;
       const tr = document.createElement('tr');
-      tr.className = `border-b border-border/50 hover:bg-secondary/20 transition-colors ${i % 2 !== 0 ? 'bg-secondary/10' : ''}`;
+ tr.className = `border-b border-border/50 hover:bg-gray-50 transition-colors cursor-pointer ${i % 2 !== 0 ? 'bg-secondary/10' : ''}`;
       
       let statusHtml = '';
       if (mr.status === 'Approved') statusHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-emerald-600 bg-emerald-50 border border-emerald-100">Approved</span>`;
@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
     jpTbody.innerHTML = '';
     jpList.forEach((jp, i) => {
       const tr = document.createElement('tr');
-      tr.className = `border-b border-border/50 hover:bg-secondary/20 ${i % 2 !== 0 ? 'bg-secondary/10' : ''}`;
+ tr.className = `border-b border-border/50 hover:bg-gray-50 transition-colors cursor-pointer ${i % 2 !== 0 ? 'bg-secondary/10' : ''}`;
       
       let statusHtml = '';
       if (jp.status === 'Open') statusHtml = `<span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700">Open</span>`;
@@ -439,7 +439,7 @@ document.addEventListener('DOMContentLoaded', () => {
     schedulingTbody.innerHTML = '';
     intList.forEach((iv, i) => {
       const tr = document.createElement('tr');
-      tr.className = `border-b border-border/50 hover:bg-secondary/20 ${i % 2 !== 0 ? 'bg-secondary/10' : ''}`;
+ tr.className = `border-b border-border/50 hover:bg-gray-50 transition-colors cursor-pointer ${i % 2 !== 0 ? 'bg-secondary/10' : ''}`;
       
       tr.innerHTML = `
         <td class="px-3 py-3 text-sm font-medium text-foreground">${iv.applicantName}</td>

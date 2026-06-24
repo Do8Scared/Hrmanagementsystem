@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   myPayslips.forEach((p, i) => {
     const tr = document.createElement('tr');
-    tr.className = `border-b border-border/50 cursor-pointer hover:bg-secondary/30 transition-colors ${i % 2 !== 0 ? 'bg-secondary/10' : ''}`;
+ tr.className = `border-b border-border/50 hover:bg-gray-50 transition-colors cursor-pointer ${i % 2 !== 0 ? 'bg-secondary/10' : ''}`;
     tr.innerHTML = `
       <td class="px-5 py-4 text-sm font-medium text-foreground">${p.period}</td>
       <td class="px-5 py-4 text-sm text-foreground">${fmt(p.basicSalary)}</td>

@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (r.status === 'Pending') pendingCount++;
 
       const tr = document.createElement('tr');
-      tr.className = `border-b border-border/50 hover:bg-secondary/20 transition-colors ${i % 2 === 0 ? '' : 'bg-secondary/10'}`;
+ tr.className = `border-b border-border/50 hover:bg-gray-50 transition-colors cursor-pointer ${i % 2 === 0 ? '' : 'bg-secondary/10'}`;
 
       const initials = r.employeeName.split(' ').map(n => n[0]).join('').slice(0, 2);
       

@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (r.status === 'Absent') bgClass = 'bg-red-50/30';
       else if (i % 2 !== 0) bgClass = 'bg-secondary/10';
 
-      tr.className = `border-b border-border/50 ${bgClass}`;
+ tr.className = `border-b border-border/50 hover:bg-gray-50 transition-colors cursor-pointer ${bgClass}`;
       
       let statusHtml = '';
       if (r.status === 'Present') statusHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-emerald-600 bg-emerald-50 border border-emerald-100">Present</span>`;

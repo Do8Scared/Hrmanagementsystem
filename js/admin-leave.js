@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const tr = document.createElement('tr');
-      tr.className = `border-b border-border/50 hover:bg-secondary/20 transition-colors ${i % 2 === 0 ? '' : 'bg-secondary/10'}`;
+ tr.className = `border-b border-border/50 hover:bg-gray-50 transition-colors cursor-pointer ${i % 2 === 0 ? '' : 'bg-secondary/10'}`;
       tr.innerHTML = `
         <td class="px-5 py-4">
           <div class="flex items-center gap-2.5">
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!bal) return;
       
       const tr = document.createElement('tr');
-      tr.className = `border-b border-border/50 ${i % 2 === 0 ? '' : 'bg-secondary/10'}`;
+ tr.className = `border-b border-border/50 hover:bg-gray-50 transition-colors cursor-pointer ${i % 2 === 0 ? '' : 'bg-secondary/10'}`;
       tr.innerHTML = `
         <td class="px-5 py-4">
           <div class="flex items-center gap-2.5">

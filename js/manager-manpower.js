@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     tbody.innerHTML = '';
     requests.forEach((r, i) => {
       const tr = document.createElement('tr');
-      tr.className = `border-b border-border/50 hover:bg-secondary/20 ${i % 2 !== 0 ? 'bg-secondary/10' : ''}`;
+ tr.className = `border-b border-border/50 hover:bg-gray-50 transition-colors cursor-pointer ${i % 2 !== 0 ? 'bg-secondary/10' : ''}`;
       tr.innerHTML = `
         <td class="px-5 py-3 text-xs font-mono text-primary font-medium">${r.id}</td>
         <td class="px-5 py-3 text-sm font-medium text-foreground">${r.positionTitle}</td>

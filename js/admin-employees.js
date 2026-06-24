@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       paginated.forEach((emp, i) => {
         const tr = document.createElement('tr');
-        tr.className = `border-b border-border/50 hover:bg-secondary/20 transition-colors ${i % 2 === 0 ? '' : 'bg-secondary/10'}`;
+ tr.className = `border-b border-border/50 hover:bg-gray-50 transition-colors cursor-pointer ${i % 2 === 0 ? '' : 'bg-secondary/10'}`;
         
         let statusHtml = '';
         if (emp.status === 'Active') {

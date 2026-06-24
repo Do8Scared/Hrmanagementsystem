@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const initials = iv.applicantName.split(' ').map(n => n[0]).join('').slice(0, 2);
       
       const tr = document.createElement('tr');
-      tr.className = `border-b border-border/50 hover:bg-secondary/20 ${i % 2 !== 0 ? 'bg-secondary/10' : ''}`;
+ tr.className = `border-b border-border/50 hover:bg-gray-50 transition-colors cursor-pointer ${i % 2 !== 0 ? 'bg-secondary/10' : ''}`;
       tr.innerHTML = `
         <td class="px-5 py-3">
           <div class="flex items-center gap-2.5">
