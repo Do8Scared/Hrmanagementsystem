@@ -1,10 +1,16 @@
+import { db } from './db.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   const EMP_ID = 'EMP002';
   let emp = db.employees.find(e => e.id === EMP_ID);
-  
+
+  // Derive initials and position alias
+  emp.initials = (emp.name || '').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  emp.position = emp.role;
+
   let personal = {
     name: emp.name, birthDate: emp.birthDate, gender: emp.gender,
-    civilStatus: 'Single', phone: emp.phone, email: emp.email,
+    civilStatus: emp.civilStatus || 'Single', phone: emp.phone, email: emp.email,
   };
   let draft = { ...personal };
 
@@ -37,11 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('employment-details').innerHTML = `
       <div><div class="text-xs font-semibold text-muted-foreground mb-1">Department</div><div class="text-sm font-semibold text-foreground">${emp.department}</div></div>
-      <div><div class="text-xs font-semibold text-muted-foreground mb-1">Position / Job Title</div><div class="text-sm font-semibold text-foreground">${emp.position}</div></div>
-      <div><div class="text-xs font-semibold text-muted-foreground mb-1">Employment Type</div><div class="text-sm font-semibold text-foreground">Regular</div></div>
-      <div><div class="text-xs font-semibold text-muted-foreground mb-1">Date Hired</div><div class="text-sm font-semibold text-foreground">${emp.joinDate}</div></div>
-      <div><div class="text-xs font-semibold text-muted-foreground mb-1">Reporting Supervisor</div><div class="text-sm font-semibold text-foreground">Maria Santos</div></div>
-      <div><div class="text-xs font-semibold text-muted-foreground mb-1">Work Email</div><div class="text-sm font-semibold text-foreground">${emp.email}</div></div>
+      <div><div class="text-xs font-semibold text-muted-foreground mb-1">Position / Job Title</div><div class="text-sm font-semibold text-foreground">${emp.position || '—'}</div></div>
+      <div><div class="text-xs font-semibold text-muted-foreground mb-1">Employment Type</div><div class="text-sm font-semibold text-foreground">${emp.employmentType || 'Regular'}</div></div>
+      <div><div class="text-xs font-semibold text-muted-foreground mb-1">Date Hired</div><div class="text-sm font-semibold text-foreground">${emp.dateHired || '—'}</div></div>
+      <div><div class="text-xs font-semibold text-muted-foreground mb-1">Reporting Supervisor</div><div class="text-sm font-semibold text-foreground">${emp.supervisor || '—'}</div></div>
+      <div><div class="text-xs font-semibold text-muted-foreground mb-1">Work Email</div><div class="text-sm font-semibold text-foreground">${emp.workEmail || emp.email || '—'}</div></div>
     `;
 
     renderGovtIds();

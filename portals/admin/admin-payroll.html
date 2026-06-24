@@ -256,6 +256,9 @@
               <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border text-sm text-muted-foreground hover:bg-secondary transition-colors">
                 <i data-lucide="download" style="width: 15px; height: 15px;"></i> Export CSV
               </button>
+              <button id="calc-payroll-btn" class="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-primary text-primary text-sm font-medium hover:bg-primary/10 transition-colors">
+                <i data-lucide="calculator" style="width: 15px; height: 15px;"></i> Calculate Payroll
+              </button>
               <button id="process-all-btn" class="hidden flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors">
                 <i data-lucide="check-circle-2" style="width: 15px; height: 15px;"></i> Process All
               </button>
@@ -394,9 +397,59 @@
         </div>
       </div>
     </div>
+    </div>
 
-    </main>
-  </div>
+    <!-- Payroll Calculator Modal -->
+    <div id="calc-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden" onclick="event.stopPropagation()">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-border">
+          <div class="flex items-center gap-2">
+            <i data-lucide="calculator" style="width: 16px; height: 16px;" class="text-primary"></i>
+            <span class="font-semibold text-foreground text-sm">Payroll Calculator</span>
+          </div>
+          <button id="close-calc-btn" class="p-1.5 rounded-lg hover:bg-secondary text-muted-foreground"><i data-lucide="x" style="width: 14px; height: 14px;"></i></button>
+        </div>
+        <div class="p-6 space-y-4">
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-foreground mb-1.5">Employee Name</label>
+              <input id="calc-name" type="text" placeholder="e.g. Juan dela Cruz" class="w-full px-3 py-2 rounded-lg border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-foreground mb-1.5">Pay Period</label>
+              <input id="calc-period" type="text" placeholder="e.g. June 1-30, 2026" class="w-full px-3 py-2 rounded-lg border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-foreground mb-1.5">Basic Salary (₱)</label>
+              <input id="calc-basic" type="number" placeholder="0.00" min="0" oninput="computePayroll()" class="w-full px-3 py-2 rounded-lg border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-foreground mb-1.5">Overtime Pay (₱)</label>
+              <input id="calc-ot" type="number" placeholder="0.00" min="0" value="0" oninput="computePayroll()" class="w-full px-3 py-2 rounded-lg border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+            </div>
+          </div>
+          <!-- Live Computation Result -->
+          <div id="calc-result" class="rounded-xl border border-border bg-secondary/30 p-4 space-y-2 hidden">
+            <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Computation Summary</div>
+            <div class="flex justify-between text-sm"><span class="text-muted-foreground">Basic Salary</span><span id="r-basic" class="font-medium text-foreground">₱0.00</span></div>
+            <div class="flex justify-between text-sm"><span class="text-muted-foreground">Overtime Pay</span><span id="r-ot" class="font-medium text-foreground">₱0.00</span></div>
+            <div class="flex justify-between text-sm font-semibold border-t border-border pt-2"><span class="text-foreground">Gross Pay</span><span id="r-gross" class="text-foreground">₱0.00</span></div>
+            <div class="flex justify-between text-sm text-red-500"><span>SSS Contribution</span><span id="r-sss">₱0.00</span></div>
+            <div class="flex justify-between text-sm text-red-500"><span>PhilHealth</span><span id="r-philhealth">₱0.00</span></div>
+            <div class="flex justify-between text-sm text-red-500"><span>Pag-IBIG</span><span id="r-pagibig">₱0.00</span></div>
+            <div class="flex justify-between text-sm text-red-500"><span>Withholding Tax</span><span id="r-tax">₱0.00</span></div>
+            <div class="flex justify-between text-sm text-red-500 border-t border-border pt-2"><span class="font-semibold">Total Deductions</span><span id="r-deductions" class="font-semibold">₱0.00</span></div>
+            <div class="flex justify-between text-base font-bold border-t border-border pt-2"><span class="text-foreground">Net Pay</span><span id="r-net" class="text-primary">₱0.00</span></div>
+          </div>
+          <div class="flex gap-3 pt-1">
+            <button id="close-calc-cancel" class="flex-1 py-2.5 rounded-xl border border-border text-sm font-medium text-foreground hover:bg-secondary transition-colors">Close</button>
+            <button id="add-payroll-record-btn" class="flex-1 py-2.5 rounded-xl text-white text-sm font-medium transition-all hover:opacity-90 hidden" style="background: var(--primary)">Add to Payroll</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
   <script src="../../js/shared.js"></script>
   <script src="../../js/admin-payroll.js"></script>
