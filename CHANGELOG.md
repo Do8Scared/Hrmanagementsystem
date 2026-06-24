@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Created Admin and Manager Profile portals (`admin-profile.html`, `manager-profile.html`) to allow profile viewing and management, matching the Employee profile layout.
+- Standardized the "Change Password" modal and dropdown functionality across all portals (Admin, Manager, Employee), with deep-linking support (`?action=change-password`).
+- Added a blank `favicon.ico` to suppress recurring browser 404 errors during development.
+- Added missing mock data arrays and attributes to `db.js` (e.g. `birthDate`, `gender`, `phone`, `email`, `avatar`) to properly support profile features.
+
+### Fixed
+- Fixed 404 and JavaScript Syntax Errors on profile pages caused by incomplete HTML structural porting (truncated `<form>` tags and missing elements from `<main>`).
+- Fixed Syntax Errors in `db.js` where commas were missing between objects.
+- Fixed `TypeError: Cannot read properties of undefined` in Manager and Employee portals caused by missing database tables by scaffolding empty arrays in `db.js`.
+- Fixed white screen UI failure when changing passwords.
 - Complete rewrite of the HR Management System from React/Vite/Tailwind to Vanilla HTML, CSS, and JS to ensure lightweight performance and zero build-step requirement.
 - Added `js/shared.js` and `css/styles.css` using Tailwind CSS via CDN.
 - Built Login page (`index.html` formerly `login.html`) with interactive validations.
