@@ -1,4 +1,4 @@
-import { db } from './db.js';
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const EMP_ID = 'EMP002'; // Alex Diaz

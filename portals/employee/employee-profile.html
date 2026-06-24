@@ -37,12 +37,12 @@
 
   <style type="text/tailwindcss">
     @layer base {
-      * { @apply border-border outline-ring/50; }
+      * { @apply border-border; }
       body { @apply bg-background text-foreground; font-family: var(--font-family); }
     }
     .field-cls {
-      @apply w-full px-3 py-2 bg-input border border-border rounded-lg text-sm text-foreground outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all;
-    }
+  @apply w-full px-3 py-2 bg-input border border-border rounded-lg text-sm text-foreground outline-none focus:border-accent focus:ring-2 transition-all;
+}
   </style>
 </head>
 <body class="bg-background text-foreground h-screen overflow-hidden flex">
@@ -334,7 +334,8 @@
     </div>
   </div>
 
+<script src="../../js/db.js"></script>
   <script src="../../js/shared.js"></script>
-  <script type="module" src="../../js/employee-profile.js"></script>
+  <script src="../../js/employee-profile.js"></script>
 </body>
 </html>
