@@ -95,6 +95,37 @@ document.addEventListener('DOMContentLoaded', () => {
   const sidebarUserMini = document.getElementById('sidebar-user-mini');
   const menuIcon = document.getElementById('menu-icon');
 
+  // --- Profile Picture Update ---
+  const profileUpload = document.getElementById('profile-upload');
+  const profileImages = document.querySelectorAll('img[alt="Profile"]');
+  if (profileUpload) {
+    profileUpload.addEventListener('change', function(e) {
+      if (e.target.files && e.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          profileImages.forEach(img => img.src = e.target.result);
+        };
+        reader.readAsDataURL(e.target.files[0]);
+      }
+    });
+  }
+
+  // --- Switch View Button Logic ---
+  const switchViewBtns = document.querySelectorAll('.switch-view-btn');
+  switchViewBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const path = window.location.pathname.toLowerCase();
+      // Cycle: Admin -> Manager -> Employee -> Admin
+      if (path.includes('/admin/')) {
+        window.location.href = '../manager/manager-dashboard.html';
+      } else if (path.includes('/manager/')) {
+        window.location.href = '../employee/employee-dashboard.html';
+      } else if (path.includes('/employee/')) {
+        window.location.href = '../admin/admin-dashboard.html';
+      }
+    });
+  });
+
   let sidebarOpen = true;
 
   if (sidebarToggle && sidebar) {
