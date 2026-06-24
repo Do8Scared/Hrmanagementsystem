@@ -49,13 +49,37 @@
 
   /* Sidebar */
   --sidebar: #6E1216;              
-  --sidebar-foreground: #FFF5E9;
+  --sidebar-foreground: #FFFFFF;   
   --sidebar-primary: #E8A800;      
-  --sidebar-primary-foreground: #2A1215;
-  --sidebar-accent: #5A0D10;       
-  --sidebar-accent-foreground: #FFF5E9;
-  --sidebar-border: rgba(255, 235, 180, 0.12);
-  --sidebar-ring: #E8A800;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #8B1A1E;       
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #8B1A1E;       
+  --sidebar-ring: #E8A800;         
+}
+
+/* Sidebar Navigation Items */
+.nav-item {
+  color: rgba(255, 245, 233, 0.55);
+  font-weight: 400;
+}
+.nav-item:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+.nav-item.active {
+  background: rgba(232, 168, 0, 0.18);
+  color: #FFF5E9;
+  font-weight: 700;
+}
+.nav-item.active i {
+  color: var(--sidebar-primary) !important;
+}
+.nav-indicator {
+  background: var(--sidebar-primary);
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  margin-left: auto;
 }
 
 body {

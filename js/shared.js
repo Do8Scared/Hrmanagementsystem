@@ -4,6 +4,38 @@ document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
   }
 
+  // --- Dynamic Sidebar Highlighting ---
+  const currentPath = window.location.pathname;
+  const navItems = document.querySelectorAll('.nav-item');
+  
+  navItems.forEach(item => {
+    const navLabel = item.querySelector('.nav-label');
+    const text = navLabel ? navLabel.textContent.trim().toLowerCase() : item.textContent.trim().toLowerCase();
+    
+    let isMatch = false;
+    if (text.includes('dashboard') && currentPath.includes('-dashboard.html')) isMatch = true;
+    else if (text.includes('employee management') && currentPath.includes('-employees.html')) isMatch = true;
+    else if (text.includes('payroll') && currentPath.includes('-payroll.html')) isMatch = true;
+    else if (text.includes('attendance') && currentPath.includes('-attendance.html')) isMatch = true;
+    else if (text.includes('leave') && currentPath.includes('-leave.html')) isMatch = true;
+    else if (text.includes('recruitment') && currentPath.includes('-recruitment.html')) isMatch = true;
+    else if ((text.includes('hr admin') || text.includes('hr cases')) && (currentPath.includes('-hr.html') || currentPath.includes('-hrcases.html'))) isMatch = true;
+    else if (text.includes('announcements') && currentPath.includes('-announcements.html')) isMatch = true;
+    else if (text.includes('profile') && currentPath.includes('-profile.html')) isMatch = true;
+    else if (text.includes('payslip') && currentPath.includes('-payslips.html')) isMatch = true;
+    else if (text.includes('performance') && currentPath.includes('-performance.html')) isMatch = true;
+    else if (text.includes('interview') && currentPath.includes('-interviews.html')) isMatch = true;
+    else if (text.includes('manpower') && currentPath.includes('-manpower.html')) isMatch = true;
+    
+    if (isMatch) {
+      item.classList.add('active');
+      // Append the gold indicator dot dynamically
+      const indicator = document.createElement('span');
+      indicator.className = 'nav-indicator';
+      item.appendChild(indicator);
+    }
+  });
+
   // --- Dropdown Logic ---
   const notifBtn = document.getElementById('notif-btn');
   const notifDropdown = document.getElementById('notif-dropdown');
