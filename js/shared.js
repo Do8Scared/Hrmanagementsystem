@@ -119,4 +119,32 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // --- Global Logout Logic ---
+  document.addEventListener('click', (e) => {
+    // Traverse up to find the clicked button
+    let target = e.target;
+    while (target && target !== document) {
+      if (target.tagName === 'BUTTON') {
+        const title = target.getAttribute('title') || '';
+        const text = target.textContent || '';
+        if (title.toLowerCase().includes('log out') || title.toLowerCase().includes('logout') || 
+            text.toLowerCase().includes('log out') || text.toLowerCase().includes('logout')) {
+          
+          e.preventDefault();
+          // Find path to index.html depending on current depth
+          const isRoot = window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('jobboard.html');
+          const isPortal = window.location.pathname.includes('/portals/');
+          
+          if (isPortal) {
+            window.location.href = '../../index.html';
+          } else {
+            window.location.href = 'index.html';
+          }
+          return;
+        }
+      }
+      target = target.parentNode;
+    }
+  });
 });

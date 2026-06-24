@@ -27,6 +27,16 @@
   --font-weight-normal: 400;
   --ring: #C8890A;
 
+  /* Login page aliases */
+  --crimson-deep: var(--primary);
+  --crimson: #a02020;
+  --gold: var(--accent);
+  --gold-bright: #E8A800;
+  --cream: var(--card);
+  --cream-muted: var(--muted);
+  --text-dark: var(--foreground);
+  --text-muted: var(--muted-foreground);
+
   /* Charts */
   --chart-1: #C8890A;              
   --chart-2: #10B981;              
