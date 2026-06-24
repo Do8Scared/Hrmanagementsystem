@@ -39,7 +39,7 @@ export const db = {
       score: Math.floor(Math.random() * 30) + 60 // Mock score
     });
     db.saveApps(apps);
-  }
+  },
 
   // Mocks for employee/manager portals
   employees: [
