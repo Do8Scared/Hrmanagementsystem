@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const rec = records.find(r => r.date === dateStr);
       
       const cell = document.createElement('div');
-      cell.className = "aspect-square rounded-lg flex flex-col items-center justify-center text-xs relative border border-border hover:shadow-sm";
+      cell.className = "aspect-square rounded-lg flex flex-col items-center pt-2 text-xs relative border border-border hover:shadow-sm bg-card";
       cell.innerHTML = `<span class="text-foreground font-medium">${d}</span>`;
       
       if (rec) {
