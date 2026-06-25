@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentJob = null;
     detailsView.classList.add('hidden');
     mainView.classList.remove('hidden');
-    window.scrollTo(0,0);
+    window.location.hash = '#careers-section';
   });
 
   // --- Apply Modal ---
