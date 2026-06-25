@@ -206,14 +206,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Input is the previous sibling of the button inside the flex container
     const input = btn.previousElementSibling;
     if (!input || input.tagName !== 'INPUT') return;
-    const iconEl = btn.querySelector('i, svg');
+    
     if (input.type === 'password') {
       input.type = 'text';
-      if (iconEl && iconEl.tagName === 'I') iconEl.setAttribute('data-lucide', 'eye-off');
-      else if (iconEl) iconEl.setAttribute('data-lucide', 'eye-off');
+      btn.innerHTML = '<i data-lucide="eye-off" style="width: 16px; height: 16px;"></i>';
     } else {
       input.type = 'password';
-      if (iconEl) iconEl.setAttribute('data-lucide', 'eye');
+      btn.innerHTML = '<i data-lucide="eye" style="width: 16px; height: 16px;"></i>';
     }
     if (typeof lucide !== 'undefined') lucide.createIcons();
   });
