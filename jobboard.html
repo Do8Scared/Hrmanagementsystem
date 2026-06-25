@@ -47,6 +47,70 @@
     .bg-emerald-50 { background-color: #ecfdf5; }
     .text-emerald-500 { color: #10b981; }
     .text-red-500 { color: #ef4444; }
+
+    /* Filter sticky bar */
+    .filter-sticky {
+      position: sticky;
+      top: 64px;
+      z-index: 20;
+      background: white;
+      border-bottom: 1px solid rgb(232, 216, 200);
+      padding: 10px 32px;
+    }
+
+    /* Careers hero */
+    .careers-hero {
+      background: #FBF7F1;
+      padding: 56px 24px;
+      text-align: center;
+      border-top: 1px solid rgb(232, 216, 200);
+    }
+
+    /* Job card two-button row */
+    .job-card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .btn-view-details {
+      flex: 1;
+      padding: 8px 0;
+      border-radius: 12px;
+      border: 1px solid rgb(232, 216, 200);
+      font-size: 12px;
+      font-weight: 700;
+      color: rgb(42, 18, 21);
+      background: white;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .btn-view-details:hover {
+      border-color: rgb(110, 18, 22);
+      background: rgb(251, 247, 241);
+    }
+
+    .btn-apply {
+      flex: 1;
+      padding: 8px 0;
+      border-radius: 12px;
+      background: rgb(110, 18, 22);
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.15s;
+    }
+    .btn-apply:hover {
+      opacity: 0.88;
+    }
+
+    /* Employment type badge variants */
+    .badge-fulltime    { background: #FEF2F2; color: #6E1216; }
+    .badge-parttime    { background: #FAF5FF; color: #7E22CE; }
+    .badge-contractual { background: #FFFBEB; color: #B45309; }
+    .badge-internship  { background: #ECFDF5; color: #047857; }
   </style>
 </head>
 
@@ -63,7 +127,7 @@
 
       <nav class="flex items-center gap-0.5 flex-1 justify-center flex-wrap">
         <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all"
-          style="background: rgb(110, 18, 22); color: white;" onclick="window.scrollTo(0,0)">Home</button>
+          style="background: rgb(110, 18, 22); color: white;" id="nav-home-btn" onclick="window.scrollTo(0,0)">Home</button>
         <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:bg-[#F0E6D8]"
           style="color: rgb(122, 92, 80);" onclick="document.getElementById('about-us').scrollIntoView({behavior: 'smooth'})">About Us</button>
         <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:bg-[#F0E6D8]"
@@ -114,7 +178,7 @@
             Explore Our Tours
           </button>
           <button class="px-8 py-3.5 rounded-xl font-bold text-sm text-white border-2 hover:bg-white/10 transition-all hover:-translate-y-0.5"
-            style="border-color: rgba(255, 255, 255, 0.35);" onclick="window.location.hash='#careers-section'">
+            style="border-color: rgba(255, 255, 255, 0.35);" onclick="document.getElementById('careers-section').scrollIntoView({behavior:'smooth'})">
             Join Our Team
           </button>
         </div>
@@ -199,50 +263,61 @@
       </div>
     </section>
 
-    <!-- Join Our Team Section (Dynamic Job Board) -->
-    <section id="careers-section" style="background: rgb(251, 247, 241);">
-      <div class="max-w-6xl mx-auto px-6 py-14 border-t" style="border-color: rgb(232, 216, 200);">
-        <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
-          <div>
-            <h2 class="text-2xl font-bold" style="color: rgb(42, 18, 21);">Join Our Team</h2>
-            <p class="text-sm mt-0.5" style="color: rgb(122, 92, 80);">Explore open positions and apply for a role that matches your skills.</p>
-          </div>
-          
-          <div class="flex w-full md:w-auto max-w-md gap-2 bg-white rounded-2xl border p-2 shadow-sm" style="border-color: rgb(232, 216, 200);">
+    <!-- ── CAREERS ── -->
+    <section id="careers-section">
+
+      <!-- Careers Hero -->
+      <div class="careers-hero">
+        <div class="max-w-3xl mx-auto">
+          <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold mb-4"
+            style="background: rgba(110,18,22,0.09); color: rgb(110,18,22);">Careers at Corazon</span>
+          <h2 class="text-3xl font-bold mb-3" style="color: rgb(42,18,21);">Grow With Us</h2>
+          <p class="text-sm leading-relaxed mb-8" style="color: rgb(122,92,80); max-width: 420px; margin-left: auto; margin-right: auto;">
+            Join a team passionate about travel, people, and making every journey memorable.
+          </p>
+          <!-- Search -->
+          <div class="flex max-w-xl mx-auto gap-2 bg-white rounded-2xl border p-2 shadow-sm" style="border-color: rgb(232, 216, 200);">
             <div class="relative flex-1 min-w-[200px]">
               <i data-lucide="search" style="width: 15px; height: 15px; color: rgb(122, 92, 80);" class="absolute left-3 top-1/2 -translate-y-1/2"></i>
-              <input id="search-input" placeholder="Job Title / Keyword"
-                class="w-full pl-9 pr-3 py-2 bg-transparent text-sm text-[var(--foreground)] outline-none placeholder:text-[#9CA3AF]">
+              <input id="search-input" placeholder="Search positions…"
+                class="w-full pl-9 pr-3 py-2.5 bg-transparent text-sm outline-none"
+                style="color: rgb(42,18,21);">
             </div>
-            <button id="search-btn" class="px-5 py-2 rounded-xl text-white text-sm font-semibold shrink-0 transition-opacity hover:opacity-90"
-              style="background: rgb(200, 137, 10);">
+            <button id="search-btn" class="px-6 py-2.5 rounded-xl text-white text-sm font-bold shrink-0 transition-opacity hover:opacity-90"
+              style="background: rgb(110,18,22);">
               Search
             </button>
           </div>
         </div>
+      </div>
 
-        <div class="flex items-center gap-2 flex-wrap mb-6" id="filter-container">
-          <!-- Filters will be generated by JS -->
-        </div>
+      <!-- Sticky Filter Bar -->
+      <div class="filter-sticky">
+        <div class="max-w-6xl mx-auto flex items-center gap-2 flex-wrap" id="filter-container"></div>
+      </div>
 
-        <div class="flex items-center justify-between mb-4">
-          <p class="text-sm text-[#6B7280]">Showing <strong id="jobs-count" style="color: rgb(110, 18, 22);">0</strong> open positions</p>
-        </div>
+      <!-- Jobs Grid -->
+      <div style="background: rgb(251, 247, 241);">
+        <div class="max-w-6xl mx-auto px-6 py-10">
+          <p class="text-sm mb-6" style="color: rgb(122,92,80);">
+            Showing <strong id="jobs-count" style="color: rgb(110,18,22);">0</strong> open position<span id="jobs-count-plural">s</span>
+          </p>
 
-        <div id="no-jobs" class="text-center py-16 text-[#9CA3AF] hidden">No jobs match your search.</div>
+          <div id="no-jobs" class="text-center py-16 hidden" style="color: #9CA3AF;">No positions match your search.</div>
 
-        <div id="jobs-grid" class="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <!-- Job cards generated by JS -->
-        </div>
+          <div id="jobs-grid" class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <!-- Job cards generated by JS -->
+          </div>
 
-        <!-- See All Jobs button -->
-        <div id="see-all-container" class="flex justify-center mt-10 hidden">
-          <button id="see-all-btn"
-            class="flex items-center gap-2 px-8 py-3 rounded-xl text-white text-sm font-semibold transition-all hover:opacity-90"
-            style="background: rgb(110, 18, 22); box-shadow: 0 4px 14px rgba(110,18,22,0.25);">
-            <span id="see-all-text">See All Jobs</span>
-            <i data-lucide="chevron-right" id="see-all-icon" class="w-[16px] h-[16px] transition-transform"></i>
-          </button>
+          <!-- See All Jobs button -->
+          <div id="see-all-container" class="flex justify-center mt-10 hidden">
+            <button id="see-all-btn"
+              class="flex items-center gap-2 px-8 py-3 rounded-xl text-white text-sm font-semibold transition-all hover:opacity-90"
+              style="background: rgb(110, 18, 22); box-shadow: 0 4px 14px rgba(110,18,22,0.25);">
+              <span id="see-all-text">See All Jobs</span>
+              <i data-lucide="chevron-right" id="see-all-icon" class="w-[16px] h-[16px] transition-transform"></i>
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -267,62 +342,67 @@
   </div>
 
   <!-- Job Details View (Hidden by default) -->
-  <div id="details-view" class="flex-1 bg-[#F7F8FA] hidden py-10">
+  <div id="details-view" class="flex-1 hidden py-10" style="background: #F7F8FA;">
     <div class="max-w-3xl mx-auto px-6">
       <button id="back-to-jobs-btn"
-        class="flex items-center gap-2 text-sm text-[#6B7280] hover:text-[var(--foreground)] transition-colors mb-6">
+        class="flex items-center gap-2 text-sm font-bold mb-6 hover:gap-3 transition-all"
+        style="color: rgb(110,18,22);">
         <i data-lucide="arrow-left" class="w-[16px] h-[16px]"></i> Back to Jobs
       </button>
       
-      <div class="bg-white rounded-2xl border border-[#E5E7EB] p-8 shadow-sm">
-        <div class="flex items-start justify-between mb-6">
+      <div class="bg-white rounded-2xl border p-8 shadow-sm" style="border-color: rgb(232,216,200);">
+        <div class="flex items-start justify-between mb-6 gap-4">
           <div>
-            <span id="detail-type" class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3"></span>
-            <h1 id="detail-title" class="text-2xl font-bold text-[var(--foreground)]"></h1>
-            <div class="flex items-center gap-4 mt-2 text-sm text-[#6B7280]">
-              <span class="flex items-center gap-1.5"><i data-lucide="building-2" class="w-[14px] h-[14px]"></i><span
-                  id="detail-dept"></span></span>
-              <span class="flex items-center gap-1.5"><i data-lucide="clock" class="w-[14px] h-[14px]"></i>Posted <span
-                  id="detail-posted"></span></span>
+            <span id="detail-type" class="inline-block px-3 py-1 rounded-full text-xs font-bold mb-3"></span>
+            <h1 id="detail-title" class="text-2xl font-bold" style="color: rgb(42,18,21);"></h1>
+            <div class="flex items-center gap-4 mt-2 text-sm" style="color: #6B7280;">
+              <span class="flex items-center gap-1.5"><i data-lucide="building-2" class="w-[14px] h-[14px]"></i><span id="detail-dept"></span></span>
+              <span class="flex items-center gap-1.5"><i data-lucide="clock" class="w-[14px] h-[14px]"></i>Deadline: <span id="detail-posted"></span></span>
             </div>
           </div>
-          <button id="detail-apply-btn1"
-            class="px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:opacity-90"
-            style="background: var(--primary); box-shadow: 0 4px 14px rgba(110,18,22,0.35);">
-            Apply Now
-          </button>
+          <div class="flex items-center gap-2 flex-shrink-0">
+            <button id="detail-bookmark-btn" class="p-2 rounded-xl border transition-colors"
+              style="border-color: rgb(232,216,200); color: #D1D5DB;">
+              <i data-lucide="bookmark" id="detail-bookmark-icon" class="w-[18px] h-[18px]"></i>
+            </button>
+            <button id="detail-apply-btn1"
+              class="px-6 py-3 rounded-xl text-white font-bold text-sm transition-all hover:opacity-90"
+              style="background: rgb(110,18,22); box-shadow: 0 4px 14px rgba(110,18,22,0.35);">
+              Apply Now
+            </button>
+          </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-4 mb-8 p-4 bg-[#F7F8FA] rounded-xl border" style="border-color: rgb(232, 216, 200);">
+        <div class="grid grid-cols-3 gap-4 mb-8 p-4 rounded-xl border" style="background: #F7F8FA; border-color: rgb(232,216,200);">
           <div>
-            <div class="text-xs text-[#9CA3AF] mb-0.5">Application Deadline</div>
-            <div id="detail-deadline" class="text-sm font-semibold text-[var(--foreground)]"></div>
+            <div class="text-xs mb-0.5" style="color: #9CA3AF;">Application Deadline</div>
+            <div id="detail-deadline" class="text-sm font-bold" style="color: rgb(42,18,21);"></div>
           </div>
           <div>
-            <div class="text-xs text-[#9CA3AF] mb-0.5">Number of Slots</div>
-            <div id="detail-slots" class="text-sm font-semibold text-[var(--foreground)]"></div>
+            <div class="text-xs mb-0.5" style="color: #9CA3AF;">Number of Slots</div>
+            <div id="detail-slots" class="text-sm font-bold" style="color: rgb(42,18,21);"></div>
           </div>
           <div>
-            <div class="text-xs text-[#9CA3AF] mb-0.5">Department</div>
-            <div id="detail-dept-box" class="text-sm font-semibold text-[var(--foreground)]"></div>
+            <div class="text-xs mb-0.5" style="color: #9CA3AF;">Department</div>
+            <div id="detail-dept-box" class="text-sm font-bold" style="color: rgb(42,18,21);"></div>
           </div>
         </div>
 
         <div class="space-y-6">
           <div>
-            <h3 class="text-base font-bold text-[var(--foreground)] mb-3">Job Description</h3>
-            <p id="detail-desc" class="text-sm text-[#374151] leading-relaxed"></p>
+            <h3 class="text-base font-bold mb-3" style="color: rgb(42,18,21);">Job Description</h3>
+            <p id="detail-desc" class="text-sm leading-relaxed" style="color: #374151;"></p>
           </div>
           <div>
-            <h3 class="text-base font-bold text-[var(--foreground)] mb-3">Qualifications</h3>
-            <p id="detail-qualifications" class="text-sm text-[#374151] leading-relaxed"></p>
+            <h3 class="text-base font-bold mb-3" style="color: rgb(42,18,21);">Qualifications</h3>
+            <p id="detail-qualifications" class="text-sm leading-relaxed" style="color: #374151;"></p>
           </div>
         </div>
 
-        <div class="mt-8 pt-6 border-t border-[#E5E7EB]">
+        <div class="mt-8 pt-6 flex gap-3" style="border-top: 1px solid rgb(232,216,200);">
           <button id="detail-apply-btn2"
-            class="w-full py-3 rounded-xl text-white font-semibold text-sm hover:opacity-90 transition-all"
-            style="background: var(--primary);">
+            class="flex-1 py-3 rounded-xl text-white font-bold text-sm hover:opacity-90 transition-all"
+            style="background: rgb(110,18,22);">
             Apply Now
           </button>
         </div>
@@ -381,13 +461,14 @@
     <div id="apply-modal-content"
       class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden max-h-[90vh] overflow-y-auto"
       onclick="event.stopPropagation()">
-      <div class="flex items-center justify-between px-6 py-5 border-b border-[#E5E7EB]">
+      <div class="flex items-center justify-between px-6 py-5 border-b" style="border-color: #E5E7EB;">
         <div>
-          <h3 class="font-bold text-[var(--foreground)]">Apply for this Position</h3>
-          <p id="apply-subtitle" class="text-xs text-[#6B7280] mt-0.5"></p>
+          <h3 class="font-bold" style="color: rgb(42,18,21);">Apply for this Position</h3>
+          <p id="apply-subtitle" class="text-xs mt-0.5" style="color: #6B7280;"></p>
         </div>
-        <button id="close-apply-btn" class="p-1.5 rounded-lg hover:bg-[#F7F8FA] text-[#9CA3AF]"><i data-lucide="x"
-            class="w-[18px] h-[18px]"></i></button>
+        <button id="close-apply-btn" class="p-1.5 rounded-lg hover:bg-gray-50" style="color: #9CA3AF;">
+          <i data-lucide="x" class="w-[18px] h-[18px]"></i>
+        </button>
       </div>
 
       <!-- Success Message -->
@@ -395,62 +476,62 @@
         <div class="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mb-4">
           <i data-lucide="check-circle-2" class="w-[32px] h-[32px] text-emerald-500"></i>
         </div>
-        <h3 class="text-xl font-bold text-[var(--foreground)] mb-2">Application Submitted!</h3>
-        <p class="text-sm text-[#6B7280] leading-relaxed">Your application for <strong id="success-job-title"></strong>
+        <h3 class="text-xl font-bold mb-2" style="color: rgb(42,18,21);">Application Submitted!</h3>
+        <p class="text-sm leading-relaxed" style="color: #6B7280;">Your application for <strong id="success-job-title"></strong>
           has been received. We'll review it and get back to you shortly.</p>
-        <button id="done-apply-btn" class="mt-6 px-6 py-2.5 rounded-xl text-white text-sm font-semibold"
-          style="background: var(--primary);">Done</button>
+        <button id="done-apply-btn" class="mt-6 px-6 py-2.5 rounded-xl text-white text-sm font-bold"
+          style="background: rgb(110,18,22);">Done</button>
       </div>
 
       <!-- Form -->
       <form id="apply-form" class="px-6 py-6 space-y-4">
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-semibold text-[#374151] mb-1.5">First Name <span
-                class="text-red-500">*</span></label>
+            <label class="block text-xs font-bold mb-1.5" style="color: #374151;">First Name <span class="text-red-500">*</span></label>
             <input type="text" id="app-fname" placeholder="Juan" required
-              class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-[var(--foreground)] outline-none focus:ring-2 focus:ring-[var(--foreground)]/10 placeholder:text-[#9CA3AF]">
+              class="w-full px-3 py-2.5 rounded-xl border text-sm outline-none"
+              style="background: #F7F8FA; border-color: #E5E7EB; color: rgb(42,18,21);">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-[#374151] mb-1.5">Last Name <span
-                class="text-red-500">*</span></label>
+            <label class="block text-xs font-bold mb-1.5" style="color: #374151;">Last Name <span class="text-red-500">*</span></label>
             <input type="text" id="app-lname" placeholder="Dela Cruz" required
-              class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-[var(--foreground)] outline-none focus:ring-2 focus:ring-[var(--foreground)]/10 placeholder:text-[#9CA3AF]">
+              class="w-full px-3 py-2.5 rounded-xl border text-sm outline-none"
+              style="background: #F7F8FA; border-color: #E5E7EB; color: rgb(42,18,21);">
           </div>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-[#374151] mb-1.5">Email Address <span
-              class="text-red-500">*</span></label>
+          <label class="block text-xs font-bold mb-1.5" style="color: #374151;">Email Address <span class="text-red-500">*</span></label>
           <input type="email" id="app-email" placeholder="juan@email.com" required
-            class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-[var(--foreground)] outline-none focus:ring-2 focus:ring-[var(--foreground)]/10 placeholder:text-[#9CA3AF]">
+            class="w-full px-3 py-2.5 rounded-xl border text-sm outline-none"
+            style="background: #F7F8FA; border-color: #E5E7EB; color: rgb(42,18,21);">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-[#374151] mb-1.5">Contact Number</label>
+          <label class="block text-xs font-bold mb-1.5" style="color: #374151;">Contact Number</label>
           <input type="text" id="app-phone" placeholder="+63 9XX XXX XXXX"
-            class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-[var(--foreground)] outline-none focus:ring-2 focus:ring-[var(--foreground)]/10 placeholder:text-[#9CA3AF]">
+            class="w-full px-3 py-2.5 rounded-xl border text-sm outline-none"
+            style="background: #F7F8FA; border-color: #E5E7EB; color: rgb(42,18,21);">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-[#374151] mb-1.5">Resume (PDF only) <span
-              class="text-red-500">*</span></label>
-          <label
-            class="flex items-center gap-3 px-4 py-3 border-2 border-dashed border-[#E5E7EB] rounded-xl cursor-pointer hover:border-[#6E1216]/30 transition-colors bg-[#F7F8FA]">
-            <i data-lucide="upload" class="w-[18px] h-[18px] text-[#9CA3AF]"></i>
+          <label class="block text-xs font-bold mb-1.5" style="color: #374151;">Resume (PDF only) <span class="text-red-500">*</span></label>
+          <label class="flex items-center gap-3 px-4 py-3 border-2 border-dashed rounded-xl cursor-pointer transition-colors"
+            style="border-color: #E5E7EB; background: #F7F8FA;">
+            <i data-lucide="upload" class="w-[18px] h-[18px]" style="color: #9CA3AF;"></i>
             <div>
-              <div id="file-name-display" class="text-sm text-[#374151] font-medium">Click to upload your resume</div>
-              <div class="text-xs text-[#9CA3AF]">PDF files only, max 5MB</div>
+              <div id="file-name-display" class="text-sm font-semibold" style="color: #374151;">Click to upload your resume</div>
+              <div class="text-xs" style="color: #9CA3AF;">PDF files only, max 5MB</div>
             </div>
             <input type="file" id="app-resume" accept=".pdf" class="hidden">
           </label>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-[#374151] mb-1.5">Cover Letter <span
-              class="text-[#9CA3AF] font-normal">(Optional)</span></label>
-          <textarea id="app-cover" rows="4" placeholder="Tell us why you're a great fit for this role..."
-            class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-[var(--foreground)] outline-none resize-none placeholder:text-[#9CA3AF]"></textarea>
+          <label class="block text-xs font-bold mb-1.5" style="color: #374151;">Cover Letter <span class="text-xs font-normal" style="color: #9CA3AF;">(Optional)</span></label>
+          <textarea id="app-cover" rows="4" placeholder="Tell us why you're a great fit for this role…"
+            class="w-full px-3 py-2.5 rounded-xl border text-sm outline-none resize-none"
+            style="background: #F7F8FA; border-color: #E5E7EB; color: rgb(42,18,21);"></textarea>
         </div>
         <button type="submit"
-          class="w-full py-3 rounded-xl text-white text-sm font-semibold transition-all hover:opacity-90 mt-2"
-          style="background: var(--primary); box-shadow: 0 4px 14px rgba(110,18,22,0.35);">
+          class="w-full py-3 rounded-xl text-white text-sm font-bold transition-all hover:opacity-90 mt-2"
+          style="background: rgb(110,18,22); box-shadow: 0 4px 14px rgba(110,18,22,0.35);">
           Submit Application
         </button>
       </form>
