@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const typeStyle = typeStyles[job.employmentType] || 'background: #F3F4F6; color: #4B5563;';
 
       const card = document.createElement('div');
-      card.className = "bg-white border border-[#E5E7EB] rounded-2xl p-5 flex flex-col transition-all job-card";
+      card.className = "bg-white border border-[#e8d8c8] rounded-2xl p-5 flex flex-col transition-all job-card";
       
       let descHtml = `${shortDesc}`;
       if (job.description.length > 120) {

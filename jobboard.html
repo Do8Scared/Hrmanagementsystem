@@ -49,49 +49,75 @@
     </style>
   </head>
 
-<body class="min-h-screen bg-white">
+<body class="min-h-screen" style="background: rgb(251, 247, 241);">
 
   <!-- Main View -->
   <div id="main-view">
     <!-- Header -->
-    <header class="bg-white border-b border-[#E5E7EB] px-8 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background: var(--primary);">
-          <i data-lucide="building-2" class="w-[18px] h-[18px] text-white"></i>
-        </div>
-        <div>
-          <div class="font-bold text-[var(--foreground)] text-sm">Corazon Travel and Tours</div>
-          <div class="text-xs text-[#9CA3AF]">Careers Portal</div>
+    <header class="sticky top-0 z-30 bg-white border-b shadow-sm" style="border-color: rgb(232, 216, 200);">
+      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
+        <button class="flex-shrink-0" onclick="window.location.href='landing.html'">
+          <div class="rounded-xl overflow-hidden" style="background: rgb(110, 18, 22); padding: 4px 10px;">
+            <img src="assets/corazon_logo.png" alt="Corazon Travel and Tours" class="h-8 w-auto object-contain">
+          </div>
+        </button>
+
+        <nav class="hidden md:flex items-center gap-0.5 flex-1 justify-center">
+          <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:bg-[#F0E6D8]"
+            style="color: rgb(122, 92, 80);" onclick="window.location.href='landing.html'">Home</button>
+          <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:bg-[#F0E6D8]"
+            style="color: rgb(122, 92, 80);">About Us</button>
+          <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:bg-[#F0E6D8]"
+            style="color: rgb(122, 92, 80);">Services</button>
+          <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all"
+            style="color: rgb(255, 255, 255); background: rgb(110, 18, 22);" onclick="window.location.href='jobboard.html'">Careers</button>
+          <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:bg-[#F0E6D8]"
+            style="color: rgb(122, 92, 80);">Contact</button>
+        </nav>
+
+        <div class="flex items-center gap-2 flex-shrink-0">
+          <button class="hidden sm:block px-4 py-2 rounded-xl text-sm font-bold text-white hover:opacity-90 transition-opacity"
+            style="background: rgb(200, 137, 10);" onclick="window.location.href='jobboard.html'">Apply Now</button>
+          <button class="flex items-center gap-1 text-xs px-3 py-1.5 rounded-lg border hover:bg-gray-50 transition-colors"
+            style="border-color: rgb(232, 216, 200); color: rgb(122, 92, 80);" onclick="window.location.href='index.html'">
+            <i data-lucide="arrow-left" style="width: 12px; height: 12px;"></i> System
+          </button>
         </div>
       </div>
-      <a href="index.html"
-        class="flex items-center gap-1.5 text-xs text-[#6B7280] hover:text-[var(--foreground)] border border-[#E5E7EB] px-3 py-1.5 rounded-lg transition-colors">
-        <i data-lucide="arrow-left" class="w-[13px] h-[13px]"></i> Return to System
-      </a>
     </header>
 
-    <!-- Hero -->
-    <section class="py-16 px-6 text-center bg-gradient-to-b from-[#F0F4FF] to-white">
-      <h1 class="text-4xl font-bold text-[var(--foreground)] mb-3">Apply Now</h1>
-      <p class="text-[#6B7280] max-w-xl mx-auto mb-8 leading-relaxed">
-        Explore open positions and apply for a role that matches your skills and career goals.
-      </p>
-      <!-- Search bar -->
-      <div class="flex max-w-xl mx-auto gap-2 bg-white rounded-2xl border border-[#E5E7EB] p-2 shadow-sm">
-        <div class="relative flex-1">
-          <i data-lucide="search" class="w-[15px] h-[15px] absolute left-3 top-1/2 -translate-y-1/2 text-[#9CA3AF]"></i>
-          <input id="search-input" placeholder="Job Title / Keyword"
-            class="w-full pl-9 pr-3 py-2.5 bg-transparent text-sm text-[var(--foreground)] outline-none placeholder:text-[#9CA3AF]">
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden py-16 px-6 text-center"
+      style="background: linear-gradient(135deg, rgb(110, 18, 22), rgb(90, 13, 16));">
+      <div class="absolute inset-0 opacity-10"
+        style="background-image: radial-gradient(circle, rgb(255, 255, 255) 1px, transparent 1px); background-size: 28px 28px;">
+      </div>
+      <div class="absolute top-0 left-0 right-0 h-1"
+        style="background: linear-gradient(90deg, rgb(200, 137, 10), rgb(232, 168, 0), rgb(200, 137, 10));"></div>
+      
+      <div class="relative max-w-3xl mx-auto px-6">
+        <h1 class="text-4xl font-bold text-white mb-3 leading-tight">Apply Now</h1>
+        <p class="text-white/65 text-base max-w-xl mx-auto mb-8 leading-relaxed">
+          Explore open positions and apply for a role that matches your skills and career goals.
+        </p>
+        
+        <!-- Search bar -->
+        <div class="flex max-w-xl mx-auto gap-2 bg-white rounded-2xl border p-2 shadow-sm" style="border-color: rgb(232, 216, 200);">
+          <div class="relative flex-1">
+            <i data-lucide="search" style="width: 15px; height: 15px; color: rgb(122, 92, 80);" class="absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input id="search-input" placeholder="Job Title / Keyword"
+              class="w-full pl-9 pr-3 py-2.5 bg-transparent text-sm text-[var(--foreground)] outline-none placeholder:text-[#9CA3AF]">
+          </div>
+          <button id="search-btn" class="px-6 py-2.5 rounded-xl text-white text-sm font-semibold shrink-0 transition-opacity hover:opacity-90"
+            style="background: rgb(200, 137, 10);">
+            Search
+          </button>
         </div>
-        <button id="search-btn" class="px-6 py-2.5 rounded-xl text-white text-sm font-semibold shrink-0"
-          style="background: var(--primary);">
-          Search
-        </button>
       </div>
     </section>
 
     <!-- Filter Bar -->
-    <section class="px-8 py-4 border-b border-[#E5E7EB] bg-white sticky top-0 z-10">
+    <section class="px-8 py-4 border-b sticky top-0 z-10" style="background: rgb(251, 247, 241); border-color: rgb(232, 216, 200);">
       <div class="max-w-6xl mx-auto flex items-center gap-2 flex-wrap" id="filter-container">
         <!-- Filters will be generated by JS -->
       </div>
@@ -188,6 +214,52 @@
       </div>
     </div>
   </div>
+
+  <!-- Footer -->
+  <footer style="background: rgb(61, 10, 12); border-top: 3px solid rgb(200, 137, 10);">
+    <div class="max-w-6xl mx-auto px-6 py-10 grid grid-cols-4 gap-8">
+      <div>
+        <div class="rounded-xl overflow-hidden inline-block mb-4 bg-white p-1.5" style="background: rgb(110, 18, 22);">
+          <img src="assets/corazon_logo.png" alt="Corazon" class="h-9 w-auto object-contain bg-white rounded">
+        </div>
+        <p class="text-xs leading-relaxed" style="color: rgba(255, 245, 233, 0.45);">
+          Making every journey memorable since 2010.
+        </p>
+      </div>
+
+      <div>
+        <div class="text-xs font-bold mb-3" style="color: rgba(232, 168, 0, 0.6);">Company</div>
+        <ul class="space-y-1.5">
+          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);" onclick="window.location.href='landing.html'">Home</button></li>
+          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">About Us</button></li>
+          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">Services</button></li>
+          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">Contact</button></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="text-xs font-bold mb-3" style="color: rgba(232, 168, 0, 0.6);">Services</div>
+        <ul class="space-y-1.5">
+          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">Domestic Tours</button></li>
+          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">International</button></li>
+          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">Honeymoon</button></li>
+          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">Corporate</button></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="text-xs font-bold mb-3" style="color: rgba(232, 168, 0, 0.6);">Careers</div>
+        <ul class="space-y-1.5">
+          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);" onclick="window.location.href='jobboard.html'">Open Positions</button></li>
+          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">Internships</button></li>
+          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">Why Join Us</button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t px-6 py-4 text-center text-xs" style="border-color: rgba(255, 235, 180, 0.08); color: rgba(255, 245, 233, 0.25);">
+      © 2026 Corazon Travel and Tours · Taguig City, Philippines · All rights reserved
+    </div>
+  </footer>
 
   <!-- Application Modal -->
   <div id="apply-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
