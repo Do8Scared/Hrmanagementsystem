@@ -303,57 +303,57 @@
       </div>
 
       <!-- Header -->
-      <div class="flex flex-col items-center px-8 pb-2 pt-1">
-        <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style="background: #FDE8E8;">
-          <i data-lucide="lock" style="width: 28px; height: 28px; color: var(--primary);"></i>
+      <div class="flex flex-col items-center px-8 pb-4 pt-2">
+        <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5" style="background: #FBEAE8;">
+          <i data-lucide="lock" style="width: 30px; height: 30px; color: var(--primary);"></i>
         </div>
-        <h3 class="text-xl font-bold text-foreground">Change Password</h3>
-        <p class="text-sm text-muted-foreground mt-1 text-center">Your new password must be different from your previous password.</p>
+        <h3 class="text-2xl font-bold text-foreground">Change Password</h3>
+        <p class="text-sm text-muted-foreground mt-1.5 text-center leading-snug">Your new password must be different from your previous password.</p>
       </div>
 
       <!-- Form -->
-      <form id="pw-form" class="px-8 pb-8 pt-5 space-y-4">
-        <div id="pw-error" class="hidden text-xs font-semibold text-red-600 bg-red-50 p-2.5 rounded-lg border border-red-200"></div>
+      <form id="pw-form" class="px-8 pb-8 pt-2 space-y-4">
+        <div id="pw-error" class="hidden text-xs font-semibold text-red-600 bg-red-50 p-2.5 rounded-xl border border-red-200"></div>
 
         <div>
-          <label class="block text-sm font-semibold text-foreground mb-1.5">Current Password</label>
-          <div class="relative flex items-center" style="background: #FDF5F0; border: 1px solid #E8D5CC; border-radius: 10px;">
-            <i data-lucide="lock" style="width: 15px; height: 15px; color: #B0837A; flex-shrink: 0; margin-left: 14px;"></i>
+          <label class="block text-sm font-bold text-foreground mb-2">Current Password</label>
+          <div class="flex items-center" style="background: #FDF6F0; border: 1.5px solid #E8D5CC; border-radius: 50px;">
+            <i data-lucide="lock" style="width: 15px; height: 15px; color: #B0837A; flex-shrink: 0; margin-left: 18px;"></i>
             <input type="password" id="pw-current" required placeholder="Enter your current password"
-              class="flex-1 bg-transparent py-3 px-3 text-sm text-foreground placeholder-gray-400 focus:outline-none">
-            <button type="button" class="px-3 text-muted-foreground hover:text-foreground pw-toggle transition-colors flex-shrink-0">
+              style="background: transparent; border: none; outline: none; flex: 1; padding: 13px 10px; font-size: 14px; color: var(--foreground);" placeholder-color="#9CA3AF">
+            <button type="button" class="pw-toggle flex-shrink-0" style="padding: 0 16px; color: #9CA3AF; background: none; border: none; cursor: pointer;">
               <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
             </button>
           </div>
         </div>
 
         <div>
-          <label class="block text-sm font-semibold text-foreground mb-1.5">New Password</label>
-          <div class="relative flex items-center" style="background: #FDF5F0; border: 1px solid #E8D5CC; border-radius: 10px;">
-            <i data-lucide="lock" style="width: 15px; height: 15px; color: #B0837A; flex-shrink: 0; margin-left: 14px;"></i>
+          <label class="block text-sm font-bold text-foreground mb-2">New Password</label>
+          <div class="flex items-center" style="background: #FDF6F0; border: 1.5px solid #E8D5CC; border-radius: 50px;">
+            <i data-lucide="lock" style="width: 15px; height: 15px; color: #B0837A; flex-shrink: 0; margin-left: 18px;"></i>
             <input type="password" id="pw-new" required placeholder="Create a new password"
-              class="flex-1 bg-transparent py-3 px-3 text-sm text-foreground placeholder-gray-400 focus:outline-none">
-            <button type="button" class="px-3 text-muted-foreground hover:text-foreground pw-toggle transition-colors flex-shrink-0">
+              style="background: transparent; border: none; outline: none; flex: 1; padding: 13px 10px; font-size: 14px; color: var(--foreground);">
+            <button type="button" class="pw-toggle flex-shrink-0" style="padding: 0 16px; color: #9CA3AF; background: none; border: none; cursor: pointer;">
               <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
             </button>
           </div>
         </div>
 
         <div>
-          <label class="block text-sm font-semibold text-foreground mb-1.5">Confirm New Password</label>
-          <div class="relative flex items-center" style="background: #FDF5F0; border: 1px solid #E8D5CC; border-radius: 10px;">
-            <i data-lucide="lock" style="width: 15px; height: 15px; color: #B0837A; flex-shrink: 0; margin-left: 14px;"></i>
+          <label class="block text-sm font-bold text-foreground mb-2">Confirm New Password</label>
+          <div class="flex items-center" style="background: #FDF6F0; border: 1.5px solid #E8D5CC; border-radius: 50px;">
+            <i data-lucide="lock" style="width: 15px; height: 15px; color: #B0837A; flex-shrink: 0; margin-left: 18px;"></i>
             <input type="password" id="pw-confirm" required placeholder="Re-enter your new password"
-              class="flex-1 bg-transparent py-3 px-3 text-sm text-foreground placeholder-gray-400 focus:outline-none">
-            <button type="button" class="px-3 text-muted-foreground hover:text-foreground pw-toggle transition-colors flex-shrink-0">
+              style="background: transparent; border: none; outline: none; flex: 1; padding: 13px 10px; font-size: 14px; color: var(--foreground);">
+            <button type="button" class="pw-toggle flex-shrink-0" style="padding: 0 16px; color: #9CA3AF; background: none; border: none; cursor: pointer;">
               <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
             </button>
           </div>
         </div>
 
-        <div class="flex gap-3 pt-2">
-          <button type="button" class="close-pw-modal flex-1 py-3 rounded-xl border border-border text-sm font-semibold text-foreground hover:bg-secondary transition-colors">Cancel</button>
-          <button type="submit" class="flex-1 py-3 rounded-xl text-white text-sm font-semibold transition-all hover:opacity-90 shadow-sm" style="background: var(--primary)">Update Password</button>
+        <div class="flex gap-3 pt-3">
+          <button type="button" class="close-pw-modal flex-1 py-3.5 text-sm font-bold text-foreground transition-colors hover:bg-gray-50" style="border: 1.5px solid #D1C4C4; border-radius: 50px;">Cancel</button>
+          <button type="submit" class="flex-1 py-3.5 text-white text-sm font-bold transition-all hover:opacity-90" style="background: var(--primary); border-radius: 50px;">Update Password</button>
         </div>
       </form>
     </div>
