@@ -76,7 +76,7 @@
 
       <div class="flex items-center gap-2 flex-shrink-0">
         <button class="hidden sm:block px-4 py-2 rounded-xl text-sm font-bold text-white hover:opacity-90 transition-opacity"
-          style="background: rgb(200, 137, 10);" onclick="window.location.hash='#careers-section'">Apply Now</button>
+          style="background: rgb(200, 137, 10);" onclick="document.getElementById('careers-section').scrollIntoView({behavior: 'smooth'})">Apply Now</button>
         <button class="flex items-center gap-1 text-xs px-3 py-1.5 rounded-lg border hover:bg-gray-50 transition-colors"
           style="border-color: rgb(232, 216, 200); color: rgb(122, 92, 80);" onclick="window.location.href='index.html'">
           <i data-lucide="arrow-left" style="width: 12px; height: 12px;"></i> System
@@ -365,7 +365,7 @@
       <div>
         <div class="text-xs font-bold mb-3" style="color: rgba(232, 168, 0, 0.6);">Careers</div>
         <ul class="space-y-1.5">
-          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);" onclick="window.location.hash='#careers-section'">Open Positions</button></li>
+          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);" onclick="document.getElementById('careers-section').scrollIntoView({behavior: 'smooth'})">Open Positions</button></li>
           <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">Internships</button></li>
           <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">Why Join Us</button></li>
         </ul>
