@@ -194,121 +194,94 @@ document.addEventListener('DOMContentLoaded', () => {
   const calcModal = document.getElementById('calc-modal');
   const calcPayrollBtn = document.getElementById('calc-payroll-btn');
   const closeCalcBtn = document.getElementById('close-calc-btn');
-  const closeCalcCancel = document.getElementById('close-calc-cancel');
-  const addPayrollRecordBtn = document.getElementById('add-payroll-record-btn');
 
   function closeCalc() {
     calcModal.classList.add('hidden');
-    document.getElementById('calc-name').value = '';
-    document.getElementById('calc-period').value = '';
-    document.getElementById('calc-basic').value = '';
-    document.getElementById('calc-ot').value = '0';
-    document.getElementById('calc-result').classList.add('hidden');
-    addPayrollRecordBtn.classList.add('hidden');
+    // Clear inputs
+    document.getElementById('emp-name').value = '';
+    document.getElementById('pay-period').value = '';
+    document.getElementById('basic-salary').value = '0';
+    document.getElementById('overtime-pay').value = '0';
+    document.getElementById('allowances').value = '0';
+    document.getElementById('absences').value = '0';
+    // Clear outputs
+    document.getElementById('out-name').textContent = 'Juan dela Cruz';
+    document.getElementById('out-period').textContent = 'June 1-30, 2026';
+    document.getElementById('out-gross').textContent = '₱ 0.00';
+    document.getElementById('out-sss').textContent = '₱ 0.00';
+    document.getElementById('out-philhealth').textContent = '₱ 0.00';
+    document.getElementById('out-pagibig').textContent = '₱ 200.00';
+    document.getElementById('out-tax').textContent = '₱ 0.00';
+    document.getElementById('out-total-deductions').textContent = '₱ 0.00';
+    document.getElementById('out-net-pay').textContent = '₱ 0.00';
   }
+
+  // Simplified logic based on standalone calculator requested
+  window.computePayroll = function() {
+    const name = document.getElementById('emp-name').value.trim() || 'Juan dela Cruz';
+    const period = document.getElementById('pay-period').value.trim() || 'June 1-30, 2026';
+    const basic = parseFloat(document.getElementById('basic-salary').value) || 0;
+    const overtime = parseFloat(document.getElementById('overtime-pay').value) || 0;
+    const allowances = parseFloat(document.getElementById('allowances').value) || 0;
+    const absences = parseFloat(document.getElementById('absences').value) || 0;
+
+    // Gross Pay
+    const gross = basic + overtime + allowances - absences;
+
+    // Statutory Deductions (Simplified)
+    const sss = basic * 0.045;
+    const philhealth = basic * 0.025;
+    const pagibig = 200.00;
+
+    // Taxable Income
+    let taxableIncome = (basic + overtime) - (sss + philhealth + pagibig + absences);
+    if (taxableIncome < 0) taxableIncome = 0;
+
+    // Withholding Tax
+    let tax = taxableIncome * 0.15;
+    if (tax < 0) tax = 0;
+
+    // Total Deductions
+    const totalDed = sss + philhealth + pagibig + tax;
+
+    // Net Pay
+    let netPay = gross - totalDed;
+    if (netPay < 0) netPay = 0;
+
+    // Render
+    const f = n => '₱ ' + n.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    
+    document.getElementById('out-name').textContent = name;
+    document.getElementById('out-period').textContent = period;
+    document.getElementById('out-gross').textContent = f(gross);
+    document.getElementById('out-sss').textContent = f(sss);
+    document.getElementById('out-philhealth').textContent = f(philhealth);
+    document.getElementById('out-pagibig').textContent = f(pagibig);
+    document.getElementById('out-tax').textContent = f(tax);
+    document.getElementById('out-total-deductions').textContent = f(totalDed);
+    document.getElementById('out-net-pay').textContent = f(netPay);
+  };
 
   calcPayrollBtn.addEventListener('click', () => {
     calcModal.classList.remove('hidden');
+    window.computePayroll();
     if (typeof lucide !== 'undefined') lucide.createIcons();
   });
-  closeCalcBtn.addEventListener('click', closeCalc);
-  closeCalcCancel.addEventListener('click', closeCalc);
+  
+  const closeBtn = document.getElementById('close-calc-btn');
+  if (closeBtn) closeBtn.addEventListener('click', closeCalc);
   calcModal.addEventListener('click', closeCalc);
-  calcModal.querySelector('.bg-white').addEventListener('click', e => e.stopPropagation());
+  
+  const modalInner = calcModal.querySelector('.bg-white');
+  if(modalInner) modalInner.addEventListener('click', e => e.stopPropagation());
 
-  // Philippine statutory deduction computation
-  window.computePayroll = function() {
-    const basic = parseFloat(document.getElementById('calc-basic').value) || 0;
-    const ot = parseFloat(document.getElementById('calc-ot').value) || 0;
-    if (basic <= 0) {
-      document.getElementById('calc-result').classList.add('hidden');
-      addPayrollRecordBtn.classList.add('hidden');
-      return;
-    }
-
-    const gross = basic + ot;
-
-    // SSS: Fixed contribution table 2023 (simplified based on gross)
-    let sss = 0;
-    if (gross <= 3250) sss = 135;
-    else if (gross <= 6500) sss = 270;
-    else if (gross <= 9750) sss = 405;
-    else if (gross <= 13000) sss = 540;
-    else if (gross <= 16250) sss = 675;
-    else if (gross <= 19500) sss = 810;
-    else if (gross <= 22750) sss = 945;
-    else if (gross <= 26000) sss = 1080;
-    else if (gross <= 29250) sss = 1215;
-    else sss = 1350;
-
-    // PhilHealth: 5% of basic, split 50/50, employee share capped at 5000/mo
-    const philhealth = Math.min(basic * 0.025, 2500);
-
-    // Pag-IBIG: fixed 100 (employee share)
-    const pagibig = 100;
-
-    // Withholding Tax (BIR 2023 revised rates — monthly)
-    let tax = 0;
-    const taxable = gross - sss - philhealth - pagibig;
-    if (taxable <= 20833) tax = 0;
-    else if (taxable <= 33333) tax = (taxable - 20833) * 0.15;
-    else if (taxable <= 66667) tax = 1875 + (taxable - 33333) * 0.20;
-    else if (taxable <= 166667) tax = 8541.80 + (taxable - 66667) * 0.25;
-    else if (taxable <= 666667) tax = 33541.80 + (taxable - 166667) * 0.30;
-    else tax = 183541.80 + (taxable - 666667) * 0.35;
-
-    tax = Math.max(0, Math.round(tax * 100) / 100);
-    const totalDed = sss + philhealth + pagibig + tax;
-    const netPay = gross - totalDed;
-
-    // Render
-    const f = n => `₱${n.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    document.getElementById('r-basic').textContent = f(basic);
-    document.getElementById('r-ot').textContent = f(ot);
-    document.getElementById('r-gross').textContent = f(gross);
-    document.getElementById('r-sss').textContent = f(sss);
-    document.getElementById('r-philhealth').textContent = f(philhealth);
-    document.getElementById('r-pagibig').textContent = f(pagibig);
-    document.getElementById('r-tax').textContent = f(tax);
-    document.getElementById('r-deductions').textContent = f(totalDed);
-    document.getElementById('r-net').textContent = f(netPay);
-
-    document.getElementById('calc-result').classList.remove('hidden');
-    addPayrollRecordBtn.classList.remove('hidden');
-
-    // Store for add-to-payroll
-    addPayrollRecordBtn._computed = { gross, sss, philhealth, pagibig, tax, totalDed, netPay, basic, ot };
-  };
-
-  addPayrollRecordBtn.addEventListener('click', () => {
-    const name = document.getElementById('calc-name').value.trim() || 'Unknown Employee';
-    const period = document.getElementById('calc-period').value.trim() || 'Current Period';
-    const c = addPayrollRecordBtn._computed;
-    if (!c) return;
-
-    const newId = `PR${String(records.length + 1).padStart(3, '0')}`;
-    const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
-    records.push({
-      id: newId,
-      employeeId: `CALC-${newId}`,
-      employeeName: name,
-      department: 'N/A',
-      period,
-      basicSalary: c.basic,
-      overtime: c.ot,
-      grossPay: c.gross,
-      sss: c.sss,
-      philhealth: c.philhealth,
-      pagibig: c.pagibig,
-      tax: c.tax,
-      netPay: c.netPay,
-      totalDeductions: c.totalDed,
-      status: 'Pending',
-    });
-    closeCalc();
-    renderTable();
-    if (typeof lucide !== 'undefined') lucide.createIcons();
+  // Attach event listeners to new inputs
+  const calcInputs = ['emp-name', 'pay-period', 'basic-salary', 'overtime-pay', 'allowances', 'absences'];
+  calcInputs.forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('input', window.computePayroll);
   });
+
 
   // Init
   renderTable();
