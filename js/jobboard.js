@@ -16,11 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let searchKeyword = '';
   let showAll = false;
 
-  const typeColor = {
-    'Full Time': 'bg-[var(--secondary)] text-[var(--accent)]',
-    'Part Time': 'bg-purple-50 text-purple-700',
-    'Contractual': 'bg-amber-50 text-amber-700',
-    'Internship': 'bg-emerald-50 text-emerald-700',
+  const typeStyles = {
+    'Full Time': 'background: var(--secondary); color: var(--accent);',
+    'Part Time': 'background: #FAF5FF; color: #7E22CE;',
+    'Contractual': 'background: #FFFBEB; color: #B45309;',
+    'Internship': 'background: #ECFDF5; color: #047857;',
   };
 
   const filtersList = ['All', 'Full Time', 'Part Time', 'Contractual', 'Internship', 'Saved Jobs'];
@@ -64,7 +64,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const isActive = filter === f;
       
       const btn = document.createElement('button');
-      btn.className = `flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all border ${isActive ? 'text-white border-primary bg-[var(--primary)]' : 'border-[#E5E7EB] text-[#6B7280] bg-white hover:border-[var(--primary)]'}`;
+      btn.className = `flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all border ${isActive ? 'text-white' : 'text-[#6B7280] bg-white'}`;
+          if (isActive) {
+            btn.style.background = 'var(--primary)';
+            btn.style.borderColor = 'var(--primary)';
+          } else {
+            btn.style.borderColor = '#E5E7EB';
+            btn.onmouseover = () => btn.style.borderColor = 'var(--primary)';
+            btn.onmouseout = () => btn.style.borderColor = '#E5E7EB';
+          };
       
       const badgeClass = isActive ? 'bg-white/20 text-white' : 'bg-[#F0F0F0] text-[#6B7280]';
       
@@ -111,10 +119,10 @@ document.addEventListener('DOMContentLoaded', () => {
     visibleJobs.forEach(job => {
       const isSaved = savedJobs.includes(job.id);
       const shortDesc = job.description.length > 120 ? job.description.substring(0, 120) + '...' : job.description;
-      const typeCls = typeColor[job.employmentType] || 'bg-gray-100 text-gray-600';
+      const typeStyle = typeStyles[job.employmentType] || 'background: #F3F4F6; color: #4B5563;';
 
       const card = document.createElement('div');
-      card.className = "bg-white border border-[#E5E7EB] rounded-2xl p-5 flex flex-col hover:shadow-md hover:border-[var(--primary)]/20 transition-all";
+      card.className = "bg-white border border-[#E5E7EB] rounded-2xl p-5 flex flex-col transition-all job-card";
       
       let descHtml = `${shortDesc}`;
       if (job.description.length > 120) {
@@ -123,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       card.innerHTML = `
         <div class="flex items-start justify-between mb-3">
-          <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${typeCls}">${job.employmentType}</span>
+          <span class="px-2.5 py-1 rounded-full text-xs font-semibold" style="${typeStyle}">${job.employmentType}</span>
           <div class="flex items-center gap-1">
             <button class="save-btn p-1.5 rounded-lg transition-colors ${isSaved ? 'text-[var(--foreground)]' : 'text-[#D1D5DB] hover:text-[var(--foreground)]'}">
               <i data-lucide="bookmark" class="w-[15px] h-[15px]" fill="${isSaved ? 'currentColor' : 'none'}"></i>
@@ -196,9 +204,11 @@ document.addEventListener('DOMContentLoaded', () => {
     detailsView.classList.remove('hidden');
     window.scrollTo(0,0);
 
-    const typeCls = typeColor[job.employmentType] || 'bg-gray-100 text-gray-600';
+    const typeStyle = typeStyles[job.employmentType] || 'background: #F3F4F6; color: #4B5563;';
     const detailType = document.getElementById('detail-type');
-    detailType.className = `inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 ${typeCls}`;
+    const typeStyle = typeStyles[job.employmentType] || 'background: #F3F4F6; color: #4B5563;';
+        detailType.className = `inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3`;
+        detailType.style.cssText = typeStyle;
     detailType.textContent = job.employmentType;
 
     document.getElementById('detail-title').textContent = job.title;

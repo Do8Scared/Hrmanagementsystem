@@ -117,11 +117,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const path = window.location.pathname.toLowerCase();
       // Cycle: Admin -> Manager -> Employee -> Admin
       if (path.includes('/admin/')) {
-        window.location.href = '../manager/manager-dashboard.html';
+        window.location.href = '../managerportal/manager-dashboard.html';
       } else if (path.includes('/manager/')) {
-        window.location.href = '../employee/employee-dashboard.html';
+        window.location.href = '../employeeportal/employee-dashboard.html';
       } else if (path.includes('/employee/')) {
-        window.location.href = '../admin/admin-dashboard.html';
+        window.location.href = '../adminportal/admin-dashboard.html';
       }
     });
   });
@@ -197,10 +197,10 @@ document.addEventListener('DOMContentLoaded', () => {
           e.preventDefault();
           // Find path to index.html depending on current depth
           const isRoot = window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('jobboard.html');
-          const isPortal = window.location.pathname.includes('/portals/');
+          const isPortal = window.location.pathname.includes('portal');
           
           if (isPortal) {
-            window.location.href = '../../index.html';
+            window.location.href = '../index.html';
           } else {
             window.location.href = 'index.html';
           }
@@ -241,13 +241,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Switch Role Logic ---
         if (text.toLowerCase().includes('switch to manager')) {
           e.preventDefault();
-          window.location.href = '../manager/manager-dashboard.html';
+          window.location.href = '../managerportal/manager-dashboard.html';
         } else if (text.toLowerCase().includes('switch to admin')) {
           e.preventDefault();
-          window.location.href = '../admin/admin-dashboard.html';
+          window.location.href = '../adminportal/admin-dashboard.html';
         } else if (text.toLowerCase().includes('switch to employee')) {
           e.preventDefault();
-          window.location.href = '../employee/employee-dashboard.html';
+          window.location.href = '../employeeportal/employee-dashboard.html';
         }
       }
       target = target.parentNode;
