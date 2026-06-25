@@ -11,14 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const forgotPwSuccess = document.getElementById('forgot-pw-success');
 
   // Role switching
-  let currentRole = 'admin'; // 'admin', 'manager', or 'employee'
+  let currentRole = 'admin'; // 'admin' or 'employee'
   const roleAdminBtn = document.getElementById('role-admin-btn');
-  const roleManagerBtn = document.getElementById('role-manager-btn');
   const roleEmployeeBtn = document.getElementById('role-employee-btn');
   const emailInput = document.getElementById('email-input');
 
   function resetRoleButtons() {
-    [roleAdminBtn, roleManagerBtn, roleEmployeeBtn].forEach(btn => {
+    [roleAdminBtn, roleEmployeeBtn].forEach(btn => {
       btn.style.background = 'transparent';
       btn.style.color = 'var(--text-muted)';
       btn.style.boxShadow = 'none';
@@ -32,11 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
       roleAdminBtn.style.color = '#FFF5E9';
       roleAdminBtn.style.boxShadow = '0 2px 10px rgba(110,18,22,0.33)';
       emailInput.placeholder = 'admin@corazontraveltours.ph';
-    } else if (currentRole === 'manager') {
-      roleManagerBtn.style.background = 'var(--crimson)';
-      roleManagerBtn.style.color = '#FFF5E9';
-      roleManagerBtn.style.boxShadow = '0 2px 10px rgba(110,18,22,0.33)';
-      emailInput.placeholder = 'manager@corazontraveltours.ph';
     } else {
       roleEmployeeBtn.style.background = 'var(--crimson)';
       roleEmployeeBtn.style.color = '#FFF5E9';
@@ -51,11 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateRoleUI();
   });
 
-  roleManagerBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    currentRole = 'manager';
-    updateRoleUI();
-  });
+
 
   roleEmployeeBtn.addEventListener('click', (e) => {
     e.preventDefault();
