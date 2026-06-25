@@ -206,9 +206,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const typeStyle = typeStyles[job.employmentType] || 'background: #F3F4F6; color: #4B5563;';
     const detailType = document.getElementById('detail-type');
-    const typeStyle = typeStyles[job.employmentType] || 'background: #F3F4F6; color: #4B5563;';
-        detailType.className = `inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3`;
-        detailType.style.cssText = typeStyle;
+    detailType.className = `inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3`;
+    detailType.style.cssText = typeStyle;
     detailType.textContent = job.employmentType;
 
     document.getElementById('detail-title').textContent = job.title;
