@@ -2,24 +2,23 @@
   --font-size: 15px;
   --font-family: 'Nunito', system-ui, sans-serif;
 
-  /* ── Corazon palette ─────────────────────────────────────────────────────── */
-  --background: #FBF7F1;           
-  --foreground: #2A1215;           
+  --background: #FBF7F1;
+  --foreground: #2A1215;
   --card: #FFFFFF;
   --card-foreground: #2A1215;
   --popover: #FFFFFF;
   --popover-foreground: #2A1215;
-  --primary: #6e1313;              
+  --primary: #6e1313;
   --primary-foreground: #FFFFFF;
-  --secondary: #F5EBE0;            
+  --secondary: #F5EBE0;
   --secondary-foreground: #2A1215;
-  --muted: #EDE3D8;                
-  --muted-foreground: #7A5C50;     
-  --accent: #C8890A;               
+  --muted: #EDE3D8;
+  --muted-foreground: #7A5C50;
+  --accent: #C8890A;
   --accent-foreground: #FFFFFF;
   --destructive: #DC2626;
   --destructive-foreground: #FFFFFF;
-  --border: #E8D8C8;               
+  --border: #E8D8C8;
   --input: transparent;
   --input-background: #FBF4EC;
   --switch-background: #C8A88A;
@@ -27,10 +26,9 @@
   --font-weight-normal: 400;
   --ring: #C8890A;
 
-  /* Login page aliases */
-  --crimson-deep: #2b0808; /* Darker maroon for the page background */
+  --crimson-deep: #2b0808;
   --crimson: #6e1313;
-  --crimson-dark: #4a0c0c; /* Missing variable that broke the sign-in button */
+  --crimson-dark: #4a0c0c;
   --gold: var(--accent);
   --gold-bright: #E8A800;
   --cream: var(--card);
@@ -38,27 +36,24 @@
   --text-dark: var(--foreground);
   --text-muted: var(--muted-foreground);
 
-  /* Charts */
-  --chart-1: #C8890A;              
-  --chart-2: #10B981;              
-  --chart-3: #6e1313;              
-  --chart-4: #F59E0B;              
-  --chart-5: #7C3AED;              
+  --chart-1: #C8890A;
+  --chart-2: #10B981;
+  --chart-3: #6e1313;
+  --chart-4: #F59E0B;
+  --chart-5: #7C3AED;
 
   --radius: 0.625rem;
 
-  /* Sidebar */
-  --sidebar: #6E1216;              
-  --sidebar-foreground: #FFFFFF;   
-  --sidebar-primary: #E8A800;      
+  --sidebar: #6E1216;
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-primary: #E8A800;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #8B1A1E;       
+  --sidebar-accent: #8B1A1E;
   --sidebar-accent-foreground: #FFFFFF;
-  --sidebar-border: #8B1A1E;       
-  --sidebar-ring: #E8A800;         
+  --sidebar-border: #8B1A1E;
+  --sidebar-ring: #E8A800;
 }
 
-/* Sidebar Navigation Items */
 .nav-item {
   color: rgba(255, 245, 233, 0.55);
   font-weight: 400;
@@ -89,34 +84,30 @@ body {
   font-size: var(--font-size);
 }
 
-/* Custom scrollbar for sidebar */
 .sidebar-scroll {
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
 }
 .sidebar-scroll::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
 }
 
-/* Fix for WebKit autofill turning inputs blue/yellow */
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
-    -webkit-text-fill-color: var(--text-dark) !important;
-    transition: background-color 5000s ease-in-out 0s;
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: var(--text-dark) !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
-/* Hide scrollbar for kanban or modules */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* Polyfills for Tailwind classes missing from the bundle but generated in JS */
 .flex-shrink-0 { flex-shrink: 0; }
 .whitespace-nowrap { white-space: nowrap; }
 .gap-1 { gap: 0.25rem; }
