@@ -4,161 +4,276 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Careers - Corazon Travel and Tours</title>
+  <title>Corazon Travel and Tours</title>
+  <meta name="description"
+    content="Streamline HR tasks with a comprehensive system for managing employees, attendance, payroll, leave, and performance evaluations in one platform.">
 
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/tailwind-bundle.css">
 
   <script src="js/lucide.min.js"></script>
 
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:wght@700;800&display=swap');
 
+    body {
+      font-family: 'Nunito', system-ui, sans-serif;
+    }
 
+    .job-card:hover {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      border-color: rgba(110, 19, 19, 0.3) !important;
+    }
 
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:wght@700;800&display=swap');
-      
-      body { font-family: 'Nunito', system-ui, sans-serif; }
-      
-      .job-card:hover {
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        border-color: rgba(110, 19, 19, 0.3);
-      }
-      
-      /* Dynamic JS Tailwind Classes */
-      .text-\[\#D1D5DB\] { color: #D1D5DB; }
-      .text-\[var\(--foreground\)\] { color: var(--foreground); }
-      .hover\:text-\[var\(--foreground\)\]:hover { color: var(--foreground); }
-      .w-\[15px\] { width: 15px; }
-      .h-\[15px\] { height: 15px; }
-      .w-\[12px\] { width: 12px; }
-      .h-\[12px\] { height: 12px; }
-      .text-\[\#9CA3AF\] { color: #9CA3AF; }
-      .text-\[\#6B7280\] { color: #6B7280; }
-      .text-\[\#2B6CB0\] { color: #2B6CB0; }
-      .border-\[var\(--primary\)\] { border-color: var(--primary); }
-      .hover\:bg-\[var\(--foreground\)\]:hover { background-color: var(--foreground); }
-      .hover\:text-white:hover { color: #ffffff; }
-      .bg-\[\#F7F8FA\] { background-color: #F7F8FA; }
-      .w-\[32px\] { width: 32px; }
-      .h-\[32px\] { height: 32px; }
-      .w-\[18px\] { width: 18px; }
-      .h-\[18px\] { height: 18px; }
-      .bg-emerald-50 { background-color: #ecfdf5; }
-      .text-emerald-500 { color: #10b981; }
-      .text-red-500 { color: #ef4444; }
-    </style>
-  </head>
+    /* Dynamic JS Tailwind Classes */
+    .text-\[\#D1D5DB\] { color: #D1D5DB; }
+    .text-\[var\(--foreground\)\] { color: var(--foreground); }
+    .hover\:text-\[var\(--foreground\)\]:hover { color: var(--foreground); }
+    .w-\[15px\] { width: 15px; }
+    .h-\[15px\] { height: 15px; }
+    .w-\[12px\] { width: 12px; }
+    .h-\[12px\] { height: 12px; }
+    .text-\[\#9CA3AF\] { color: #9CA3AF; }
+    .text-\[\#6B7280\] { color: #6B7280; }
+    .text-\[\#2B6CB0\] { color: #2B6CB0; }
+    .border-\[var\(--primary\)\] { border-color: var(--primary); }
+    .hover\:bg-\[var\(--foreground\)\]:hover { background-color: var(--foreground); }
+    .hover\:text-white:hover { color: #ffffff; }
+    .bg-\[\#F7F8FA\] { background-color: #F7F8FA; }
+    .w-\[32px\] { width: 32px; }
+    .h-\[32px\] { height: 32px; }
+    .w-\[18px\] { width: 18px; }
+    .h-\[18px\] { height: 18px; }
+    .bg-emerald-50 { background-color: #ecfdf5; }
+    .text-emerald-500 { color: #10b981; }
+    .text-red-500 { color: #ef4444; }
+  </style>
+</head>
 
-<body class="min-h-screen" style="background: rgb(251, 247, 241);">
+<body class="min-h-screen flex flex-col" style="background: rgb(255, 255, 255);">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-30 bg-white border-b shadow-sm" style="border-color: rgb(232, 216, 200);">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
+      <button class="flex-shrink-0" onclick="window.scrollTo(0,0)">
+        <div class="rounded-xl overflow-hidden" style="background: rgb(110, 18, 22); padding: 4px 10px;">
+          <img src="assets/corazon_logo.png" alt="Corazon Travel and Tours" class="h-8 w-auto object-contain">
+        </div>
+      </button>
+
+      <nav class="hidden md:flex items-center gap-0.5 flex-1 justify-center">
+        <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all"
+          style="background: rgb(110, 18, 22); color: white;" onclick="window.scrollTo(0,0)">Home</button>
+        <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:bg-[#F0E6D8]"
+          style="color: rgb(122, 92, 80);" onclick="document.getElementById('about-us').scrollIntoView({behavior: 'smooth'})">About Us</button>
+        <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:bg-[#F0E6D8]"
+          style="color: rgb(122, 92, 80);" onclick="document.getElementById('services').scrollIntoView({behavior: 'smooth'})">Services</button>
+        <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:bg-[#F0E6D8]"
+          style="color: rgb(122, 92, 80);" onclick="document.getElementById('careers-section').scrollIntoView({behavior: 'smooth'})">Careers</button>
+        <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:bg-[#F0E6D8]"
+          style="color: rgb(122, 92, 80);" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Contact</button>
+      </nav>
+
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <button class="hidden sm:block px-4 py-2 rounded-xl text-sm font-bold text-white hover:opacity-90 transition-opacity"
+          style="background: rgb(200, 137, 10);" onclick="window.location.hash='#careers-section'">Apply Now</button>
+        <button class="flex items-center gap-1 text-xs px-3 py-1.5 rounded-lg border hover:bg-gray-50 transition-colors"
+          style="border-color: rgb(232, 216, 200); color: rgb(122, 92, 80);" onclick="window.location.href='index.html'">
+          <i data-lucide="arrow-left" style="width: 12px; height: 12px;"></i> System
+        </button>
+      </div>
+    </div>
+  </header>
 
   <!-- Main View -->
-  <div id="main-view">
-    <!-- Header -->
-    <header class="sticky top-0 z-30 bg-white border-b shadow-sm" style="border-color: rgb(232, 216, 200);">
-      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
-        <button class="flex-shrink-0" onclick="window.location.href='landing.html'">
-          <div class="rounded-xl overflow-hidden" style="background: rgb(110, 18, 22); padding: 4px 10px;">
-            <img src="assets/corazon_logo.png" alt="Corazon Travel and Tours" class="h-8 w-auto object-contain">
-          </div>
-        </button>
-
-        <nav class="hidden md:flex items-center gap-0.5 flex-1 justify-center">
-          <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:bg-[#F0E6D8]"
-            style="color: rgb(122, 92, 80);" onclick="window.location.href='landing.html'">Home</button>
-          <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:bg-[#F0E6D8]"
-            style="color: rgb(122, 92, 80);">About Us</button>
-          <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:bg-[#F0E6D8]"
-            style="color: rgb(122, 92, 80);">Services</button>
-          <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all"
-            style="color: rgb(255, 255, 255); background: rgb(110, 18, 22);" onclick="window.location.href='jobboard.html'">Careers</button>
-          <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:bg-[#F0E6D8]"
-            style="color: rgb(122, 92, 80);">Contact</button>
-        </nav>
-
-        <div class="flex items-center gap-2 flex-shrink-0">
-          <button class="hidden sm:block px-4 py-2 rounded-xl text-sm font-bold text-white hover:opacity-90 transition-opacity"
-            style="background: rgb(200, 137, 10);" onclick="window.location.href='jobboard.html'">Apply Now</button>
-          <button class="flex items-center gap-1 text-xs px-3 py-1.5 rounded-lg border hover:bg-gray-50 transition-colors"
-            style="border-color: rgb(232, 216, 200); color: rgb(122, 92, 80);" onclick="window.location.href='index.html'">
-            <i data-lucide="arrow-left" style="width: 12px; height: 12px;"></i> System
-          </button>
-        </div>
-      </div>
-    </header>
-
+  <div id="main-view" class="flex-1">
+    
     <!-- Hero Section -->
-    <section class="relative overflow-hidden py-16 px-6 text-center"
+    <section class="relative overflow-hidden py-24 text-center"
       style="background: linear-gradient(135deg, rgb(110, 18, 22), rgb(90, 13, 16));">
       <div class="absolute inset-0 opacity-10"
         style="background-image: radial-gradient(circle, rgb(255, 255, 255) 1px, transparent 1px); background-size: 28px 28px;">
       </div>
       <div class="absolute top-0 left-0 right-0 h-1"
         style="background: linear-gradient(90deg, rgb(200, 137, 10), rgb(232, 168, 0), rgb(200, 137, 10));"></div>
+      <div class="absolute top-10 right-10 w-72 h-72 rounded-full bg-white/5 pointer-events-none"></div>
       
       <div class="relative max-w-3xl mx-auto px-6">
-        <h1 class="text-4xl font-bold text-white mb-3 leading-tight">Apply Now</h1>
-        <p class="text-white/65 text-base max-w-xl mx-auto mb-8 leading-relaxed">
-          Explore open positions and apply for a role that matches your skills and career goals.
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold mb-6"
+          style="background: rgba(200, 137, 10, 0.145); color: rgb(232, 168, 0); border: 1px solid rgba(200, 137, 10, 0.25);">
+          <i data-lucide="plane" style="width: 12px; height: 12px;"></i> Explore · Discover · Travel
+        </span>
+        <h1 class="text-5xl font-bold text-white mb-4 leading-tight">Your Journey Begins<br><span
+            style="color: rgb(232, 168, 0);">Here with Corazon</span></h1>
+        <p class="text-white/65 text-lg max-w-xl mx-auto mb-10 leading-relaxed">
+          World-class travel experiences across the Philippines and beyond. Crafted with passion, delivered with care.
         </p>
-        
-        <!-- Search bar -->
-        <div class="flex max-w-xl mx-auto gap-2 bg-white rounded-2xl border p-2 shadow-sm" style="border-color: rgb(232, 216, 200);">
-          <div class="relative flex-1">
-            <i data-lucide="search" style="width: 15px; height: 15px; color: rgb(122, 92, 80);" class="absolute left-3 top-1/2 -translate-y-1/2"></i>
-            <input id="search-input" placeholder="Job Title / Keyword"
-              class="w-full pl-9 pr-3 py-2.5 bg-transparent text-sm text-[var(--foreground)] outline-none placeholder:text-[#9CA3AF]">
-          </div>
-          <button id="search-btn" class="px-6 py-2.5 rounded-xl text-white text-sm font-semibold shrink-0 transition-opacity hover:opacity-90"
-            style="background: rgb(200, 137, 10);">
-            Search
+        <div class="flex items-center justify-center gap-4 flex-wrap">
+          <button class="px-8 py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all hover:-translate-y-0.5"
+            style="background: rgb(232, 168, 0); color: rgb(90, 13, 16); box-shadow: rgba(200, 137, 10, 0.333) 0px 6px 20px;">
+            Explore Our Tours
+          </button>
+          <button class="px-8 py-3.5 rounded-xl font-bold text-sm text-white border-2 hover:bg-white/10 transition-all hover:-translate-y-0.5"
+            style="border-color: rgba(255, 255, 255, 0.35);" onclick="window.location.hash='#careers-section'">
+            Join Our Team
           </button>
         </div>
       </div>
     </section>
 
-    <!-- Filter Bar -->
-    <section class="px-8 py-4 border-b sticky top-0 z-10" style="background: rgb(251, 247, 241); border-color: rgb(232, 216, 200);">
-      <div class="max-w-6xl mx-auto flex items-center gap-2 flex-wrap" id="filter-container">
-        <!-- Filters will be generated by JS -->
+    <!-- Stats Section -->
+    <section id="about-us" style="background: rgb(240, 230, 216);">
+      <div class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-4 gap-6">
+        <div class="text-center">
+          <div class="text-4xl font-bold mb-1" style="color: rgb(110, 18, 22);">15+</div>
+          <div class="text-sm font-semibold" style="color: rgb(122, 92, 80);">Years of Experience</div>
+        </div>
+        <div class="text-center">
+          <div class="text-4xl font-bold mb-1" style="color: rgb(110, 18, 22);">500+</div>
+          <div class="text-sm font-semibold" style="color: rgb(122, 92, 80);">Tours Completed</div>
+        </div>
+        <div class="text-center">
+          <div class="text-4xl font-bold mb-1" style="color: rgb(110, 18, 22);">10,000+</div>
+          <div class="text-sm font-semibold" style="color: rgb(122, 92, 80);">Happy Travelers</div>
+        </div>
+        <div class="text-center">
+          <div class="text-4xl font-bold mb-1" style="color: rgb(110, 18, 22);">50+</div>
+          <div class="text-sm font-semibold" style="color: rgb(122, 92, 80);">Destinations</div>
+        </div>
       </div>
     </section>
 
-    <!-- Job Cards Grid -->
-    <section class="max-w-6xl mx-auto px-8 py-10">
-      <div class="flex items-center justify-between mb-6">
-        <p class="text-sm text-[#6B7280]">Showing <strong id="jobs-count" class="text-[var(--foreground)]">0</strong>
-          open positions</p>
+    <!-- What We Offer -->
+    <section id="services" class="max-w-6xl mx-auto px-6 py-16">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold mb-2" style="color: rgb(42, 18, 21);">What We Offer</h2>
+        <p class="text-sm" style="color: rgb(122, 92, 80);">Tailored travel experiences for every explorer</p>
       </div>
+      <div class="grid grid-cols-3 gap-5">
+        
+        <!-- Service 1 -->
+        <div class="rounded-2xl p-6 border hover:shadow-md transition-all group hover:-translate-y-1 cursor-pointer bg-white" style="border-color: rgb(232, 216, 200);">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors group-hover:bg-[#6e1216]"
+            style="background: rgba(110, 18, 22, 0.082);">
+            <i data-lucide="plane" class="transition-colors group-hover:text-white" style="color: rgb(110, 18, 22); width: 22px; height: 22px;"></i>
+          </div>
+          <h3 class="font-bold text-base mb-2" style="color: rgb(42, 18, 21);">Domestic Tours</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color: rgb(122, 92, 80);">
+            Discover the Philippines — Palawan, Boracay, Siargao, Bohol and more. Something for every budget.
+          </p>
+          <button class="flex items-center gap-1 text-xs font-bold transition-all group-hover:gap-2" style="color: rgb(110, 18, 22);">
+            Learn more <i data-lucide="chevron-right" style="width: 13px; height: 13px;"></i>
+          </button>
+        </div>
 
-      <div id="no-jobs" class="text-center py-16 text-[#9CA3AF] hidden">No jobs match your search.</div>
+        <!-- Service 2 -->
+        <div class="rounded-2xl p-6 border hover:shadow-md transition-all group hover:-translate-y-1 cursor-pointer bg-white" style="border-color: rgb(232, 216, 200);">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors group-hover:bg-[#c8890a]"
+            style="background: rgba(200, 137, 10, 0.082);">
+            <i data-lucide="globe" class="transition-colors group-hover:text-white" style="color: rgb(200, 137, 10); width: 22px; height: 22px;"></i>
+          </div>
+          <h3 class="font-bold text-base mb-2" style="color: rgb(42, 18, 21);">International Tours</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color: rgb(122, 92, 80);">
+            Japan, Korea, Singapore, Dubai, Europe — guided group tours with accommodation included.
+          </p>
+          <button class="flex items-center gap-1 text-xs font-bold transition-all group-hover:gap-2" style="color: rgb(200, 137, 10);">
+            Learn more <i data-lucide="chevron-right" style="width: 13px; height: 13px;"></i>
+          </button>
+        </div>
 
-      <div id="jobs-grid" class="grid grid-cols-3 gap-5">
-        <!-- Job cards generated by JS -->
+        <!-- Service 3 -->
+        <div class="rounded-2xl p-6 border hover:shadow-md transition-all group hover:-translate-y-1 cursor-pointer bg-white" style="border-color: rgb(232, 216, 200);">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors group-hover:bg-[#7c3aed]"
+            style="background: rgba(124, 58, 237, 0.082);">
+            <i data-lucide="map" class="transition-colors group-hover:text-white" style="color: rgb(124, 58, 237); width: 22px; height: 22px;"></i>
+          </div>
+          <h3 class="font-bold text-base mb-2" style="color: rgb(42, 18, 21);">Custom Packages</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color: rgb(122, 92, 80);">
+            We craft personalized itineraries based on your preferences, schedule, and budget. Your trip, your way.
+          </p>
+          <button class="flex items-center gap-1 text-xs font-bold transition-all group-hover:gap-2" style="color: rgb(124, 58, 237);">
+            Learn more <i data-lucide="chevron-right" style="width: 13px; height: 13px;"></i>
+          </button>
+        </div>
+
       </div>
+    </section>
 
-      <!-- See All Jobs button -->
-      <div id="see-all-container" class="flex justify-center mt-10 hidden">
-        <button id="see-all-btn"
-          class="flex items-center gap-2 px-8 py-3 rounded-xl text-white text-sm font-semibold transition-all hover:opacity-90"
-          style="background: var(--primary); box-shadow: 0 4px 14px rgba(110,18,22,0.25);">
-          <span id="see-all-text">See All Jobs</span>
-          <i data-lucide="chevron-right" id="see-all-icon" class="w-[16px] h-[16px] transition-transform"></i>
-        </button>
+    <!-- Join Our Team Section (Dynamic Job Board) -->
+    <section id="careers-section" style="background: rgb(251, 247, 241);">
+      <div class="max-w-6xl mx-auto px-6 py-14 border-t" style="border-color: rgb(232, 216, 200);">
+        <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
+          <div>
+            <h2 class="text-2xl font-bold" style="color: rgb(42, 18, 21);">Join Our Team</h2>
+            <p class="text-sm mt-0.5" style="color: rgb(122, 92, 80);">Explore open positions and apply for a role that matches your skills.</p>
+          </div>
+          
+          <div class="flex w-full md:w-auto max-w-md gap-2 bg-white rounded-2xl border p-2 shadow-sm" style="border-color: rgb(232, 216, 200);">
+            <div class="relative flex-1 min-w-[200px]">
+              <i data-lucide="search" style="width: 15px; height: 15px; color: rgb(122, 92, 80);" class="absolute left-3 top-1/2 -translate-y-1/2"></i>
+              <input id="search-input" placeholder="Job Title / Keyword"
+                class="w-full pl-9 pr-3 py-2 bg-transparent text-sm text-[var(--foreground)] outline-none placeholder:text-[#9CA3AF]">
+            </div>
+            <button id="search-btn" class="px-5 py-2 rounded-xl text-white text-sm font-semibold shrink-0 transition-opacity hover:opacity-90"
+              style="background: rgb(200, 137, 10);">
+              Search
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 flex-wrap mb-6" id="filter-container">
+          <!-- Filters will be generated by JS -->
+        </div>
+
+        <div class="flex items-center justify-between mb-4">
+          <p class="text-sm text-[#6B7280]">Showing <strong id="jobs-count" style="color: rgb(110, 18, 22);">0</strong> open positions</p>
+        </div>
+
+        <div id="no-jobs" class="text-center py-16 text-[#9CA3AF] hidden">No jobs match your search.</div>
+
+        <div id="jobs-grid" class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <!-- Job cards generated by JS -->
+        </div>
+
+        <!-- See All Jobs button -->
+        <div id="see-all-container" class="flex justify-center mt-10 hidden">
+          <button id="see-all-btn"
+            class="flex items-center gap-2 px-8 py-3 rounded-xl text-white text-sm font-semibold transition-all hover:opacity-90"
+            style="background: rgb(110, 18, 22); box-shadow: 0 4px 14px rgba(110,18,22,0.25);">
+            <span id="see-all-text">See All Jobs</span>
+            <i data-lucide="chevron-right" id="see-all-icon" class="w-[16px] h-[16px] transition-transform"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section id="contact" class="max-w-6xl mx-auto px-6 py-14">
+      <div class="rounded-3xl p-12 text-center relative overflow-hidden"
+        style="background: linear-gradient(135deg, rgb(110, 18, 22), rgb(90, 13, 16));">
+        <div class="absolute inset-0 opacity-10"
+          style="background-image: radial-gradient(circle, rgb(255, 255, 255) 1px, transparent 1px); background-size: 22px 22px;">
+        </div>
+        <h2 class="text-3xl font-bold text-white mb-3 relative">Ready to Explore the World?</h2>
+        <p class="text-white/60 mb-8 relative">Contact us and let's plan your perfect getaway.</p>
+        <div class="flex items-center justify-center gap-4 relative">
+          <button class="px-8 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all hover:-translate-y-0.5"
+            style="background: rgb(232, 168, 0); color: rgb(90, 13, 16);">Get in Touch</button>
+          <button class="px-8 py-3 rounded-xl font-bold text-sm text-white border-2 hover:bg-white/10 transition-all hover:-translate-y-0.5"
+            style="border-color: rgba(255, 255, 255, 0.35);">View Packages</button>
+        </div>
       </div>
     </section>
   </div>
 
   <!-- Job Details View (Hidden by default) -->
-  <div id="details-view" class="min-h-screen bg-[#F7F8FA] hidden">
-    <header class="bg-white border-b border-[#E5E7EB] px-8 py-4 flex items-center justify-between sticky top-0 z-10">
+  <div id="details-view" class="flex-1 bg-[#F7F8FA] hidden py-10">
+    <div class="max-w-3xl mx-auto px-6">
       <button id="back-to-jobs-btn"
-        class="flex items-center gap-2 text-sm text-[#6B7280] hover:text-[var(--foreground)] transition-colors">
+        class="flex items-center gap-2 text-sm text-[#6B7280] hover:text-[var(--foreground)] transition-colors mb-6">
         <i data-lucide="arrow-left" class="w-[16px] h-[16px]"></i> Back to Jobs
       </button>
-      <a href="index.html" class="text-xs text-[#6B7280] hover:text-[var(--foreground)]">Return to System</a>
-    </header>
-
-    <div class="max-w-3xl mx-auto px-6 py-10">
+      
       <div class="bg-white rounded-2xl border border-[#E5E7EB] p-8 shadow-sm">
         <div class="flex items-start justify-between mb-6">
           <div>
@@ -178,7 +293,7 @@
           </button>
         </div>
 
-        <div class="grid grid-cols-3 gap-4 mb-8 p-4 bg-[#F7F8FA] rounded-xl">
+        <div class="grid grid-cols-3 gap-4 mb-8 p-4 bg-[#F7F8FA] rounded-xl border" style="border-color: rgb(232, 216, 200);">
           <div>
             <div class="text-xs text-[#9CA3AF] mb-0.5">Application Deadline</div>
             <div id="detail-deadline" class="text-sm font-semibold text-[var(--foreground)]"></div>
@@ -230,10 +345,10 @@
       <div>
         <div class="text-xs font-bold mb-3" style="color: rgba(232, 168, 0, 0.6);">Company</div>
         <ul class="space-y-1.5">
-          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);" onclick="window.location.href='landing.html'">Home</button></li>
-          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">About Us</button></li>
-          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">Services</button></li>
-          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">Contact</button></li>
+          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);" onclick="window.scrollTo(0,0)">Home</button></li>
+          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);" onclick="document.getElementById('about-us').scrollIntoView({behavior: 'smooth'})">About Us</button></li>
+          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);" onclick="document.getElementById('services').scrollIntoView({behavior: 'smooth'})">Services</button></li>
+          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Contact</button></li>
         </ul>
       </div>
 
@@ -250,7 +365,7 @@
       <div>
         <div class="text-xs font-bold mb-3" style="color: rgba(232, 168, 0, 0.6);">Careers</div>
         <ul class="space-y-1.5">
-          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);" onclick="window.location.href='jobboard.html'">Open Positions</button></li>
+          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);" onclick="window.location.hash='#careers-section'">Open Positions</button></li>
           <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">Internships</button></li>
           <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">Why Join Us</button></li>
         </ul>
@@ -288,12 +403,20 @@
       </div>
 
       <!-- Form -->
-      <form id="apply-form" class="p-6 space-y-4">
-        <div>
-          <label class="block text-xs font-semibold text-[#374151] mb-1.5">Full Name <span
-              class="text-red-500">*</span></label>
-          <input type="text" id="app-name" placeholder="Juan dela Cruz" required
-            class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-[var(--foreground)] outline-none focus:ring-2 focus:ring-[var(--foreground)]/10 placeholder:text-[#9CA3AF]">
+      <form id="apply-form" class="px-6 py-6 space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-[#374151] mb-1.5">First Name <span
+                class="text-red-500">*</span></label>
+            <input type="text" id="app-fname" placeholder="Juan" required
+              class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-[var(--foreground)] outline-none focus:ring-2 focus:ring-[var(--foreground)]/10 placeholder:text-[#9CA3AF]">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-[#374151] mb-1.5">Last Name <span
+                class="text-red-500">*</span></label>
+            <input type="text" id="app-lname" placeholder="Dela Cruz" required
+              class="w-full px-3 py-2.5 bg-[#F7F8FA] border border-[#E5E7EB] rounded-xl text-sm text-[var(--foreground)] outline-none focus:ring-2 focus:ring-[var(--foreground)]/10 placeholder:text-[#9CA3AF]">
+          </div>
         </div>
         <div>
           <label class="block text-xs font-semibold text-[#374151] mb-1.5">Email Address <span
