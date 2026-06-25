@@ -196,21 +196,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.pw-toggle');
-    if (!btn) return;
-    // Input is the previous sibling of the button inside the flex container
-    const input = btn.previousElementSibling;
-    if (!input || input.tagName !== 'INPUT') return;
-    
-    if (input.type === 'password') {
-      input.type = 'text';
-      btn.innerHTML = '<i data-lucide="eye-off" style="width: 16px; height: 16px;"></i>';
-    } else {
-      input.type = 'password';
-      btn.innerHTML = '<i data-lucide="eye" style="width: 16px; height: 16px;"></i>';
-    }
-    if (typeof lucide !== 'undefined') lucide.createIcons();
+  document.querySelectorAll('.pw-toggle').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const btnEl = e.currentTarget;
+      const input = btnEl.previousElementSibling;
+      if (!input || input.tagName !== 'INPUT') return;
+      
+      if (input.type === 'password') {
+        input.type = 'text';
+        btnEl.innerHTML = '<i data-lucide="eye-off" style="width: 16px; height: 16px;"></i>';
+      } else {
+        input.type = 'password';
+        btnEl.innerHTML = '<i data-lucide="eye" style="width: 16px; height: 16px;"></i>';
+      }
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    });
   });
 
   renderHeader();
