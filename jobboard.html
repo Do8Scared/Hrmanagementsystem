@@ -1,539 +1,503 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Corazon Travel and Tours</title>
-  <meta name="description"
-    content="Streamline HR tasks with a comprehensive system for managing employees, attendance, payroll, leave, and performance evaluations in one platform.">
-
+  <meta name="description" content="World-class travel experiences across the Philippines and beyond.">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/tailwind-bundle.css">
-
   <script src="js/lucide.min.js"></script>
-
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:wght@700;800&display=swap');
-
-    body {
-      font-family: 'Nunito', system-ui, sans-serif;
-    }
-
-    .job-card:hover {
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      border-color: rgba(110, 19, 19, 0.3) !important;
-    }
-
-    /* Dynamic JS Tailwind Classes */
-    .text-\[\#D1D5DB\] { color: #D1D5DB; }
-    .text-\[var\(--foreground\)\] { color: var(--foreground); }
-    .hover\:text-\[var\(--foreground\)\]:hover { color: var(--foreground); }
-    .w-\[15px\] { width: 15px; }
-    .h-\[15px\] { height: 15px; }
-    .w-\[12px\] { width: 12px; }
-    .h-\[12px\] { height: 12px; }
-    .text-\[\#9CA3AF\] { color: #9CA3AF; }
-    .text-\[\#6B7280\] { color: #6B7280; }
-    .text-\[\#2B6CB0\] { color: #2B6CB0; }
-    .border-\[var\(--primary\)\] { border-color: var(--primary); }
-    .hover\:bg-\[var\(--foreground\)\]:hover { background-color: var(--foreground); }
-    .hover\:text-white:hover { color: #ffffff; }
-    .bg-\[\#F7F8FA\] { background-color: #F7F8FA; }
-    .w-\[32px\] { width: 32px; }
-    .h-\[32px\] { height: 32px; }
-    .w-\[18px\] { width: 18px; }
-    .h-\[18px\] { height: 18px; }
-    .bg-emerald-50 { background-color: #ecfdf5; }
-    .text-emerald-500 { color: #10b981; }
-    .text-red-500 { color: #ef4444; }
-
-    /* Filter sticky bar */
-    .filter-sticky {
-      position: sticky;
-      top: 64px;
-      z-index: 20;
-      background: white;
-      border-bottom: 1px solid rgb(232, 216, 200);
-      padding: 10px 32px;
-    }
-
-    /* Careers hero */
-    .careers-hero {
-      background: #FBF7F1;
-      padding: 56px 24px;
-      text-align: center;
-      border-top: 1px solid rgb(232, 216, 200);
-    }
-
-    /* Job card two-button row */
-    .job-card-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: auto;
-    }
-
-    .btn-view-details {
-      flex: 1;
-      padding: 8px 0;
-      border-radius: 12px;
-      border: 1px solid rgb(232, 216, 200);
-      font-size: 12px;
-      font-weight: 700;
-      color: rgb(42, 18, 21);
-      background: white;
-      cursor: pointer;
-      transition: border-color 0.15s, background 0.15s;
-    }
-    .btn-view-details:hover {
-      border-color: rgb(110, 18, 22);
-      background: rgb(251, 247, 241);
-    }
-
-    .btn-apply {
-      flex: 1;
-      padding: 8px 0;
-      border-radius: 12px;
-      background: rgb(110, 18, 22);
-      font-size: 12px;
-      font-weight: 700;
-      color: white;
-      cursor: pointer;
-      border: none;
-      transition: opacity 0.15s;
-    }
-    .btn-apply:hover {
-      opacity: 0.88;
-    }
-
-    /* Employment type badge variants */
-    .badge-fulltime    { background: #FEF2F2; color: #6E1216; }
-    .badge-parttime    { background: #FAF5FF; color: #7E22CE; }
-    .badge-contractual { background: #FFFBEB; color: #B45309; }
-    .badge-internship  { background: #ECFDF5; color: #047857; }
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Nunito', system-ui, sans-serif; }
+    .filter-sticky { position: sticky; top: 64px; z-index: 20; background: #fff; border-bottom: 1px solid #E8D8C8; padding: 12px 32px; }
+    .job-card:hover { box-shadow: 0 4px 12px rgba(110,18,22,0.08); border-color: rgba(110,18,22,0.25) !important; }
+    .job-card-actions { display: flex; gap: 8px; margin-top: auto; }
+    .btn-view { flex:1; padding:8px 0; border-radius:12px; border:1px solid #E8D8C8; font-size:12px; font-weight:700; color:#2A1215; background:#fff; cursor:pointer; transition:all 0.15s; }
+    .btn-view:hover { border-color:#6E1216; background:#FBF7F1; }
+    .btn-apply-card { flex:1; padding:8px 0; border-radius:12px; background:#6E1216; font-size:12px; font-weight:700; color:#fff; border:none; cursor:pointer; transition:opacity 0.15s; }
+    .btn-apply-card:hover { opacity:0.88; }
+    .contact-input { width:100%; padding:10px 12px; border-radius:12px; border:1px solid #E8D8C8; background:#FBF7F1; font-size:14px; font-family:inherit; color:#2A1215; outline:none; transition:border-color 0.15s; box-sizing:border-box; }
+    .contact-input:focus { border-color:#C8890A; }
+    .nav-btn { background: transparent; }
+    .nav-btn.active { background: #6E1216 !important; color: #fff !important; }
   </style>
 </head>
+<body class="min-h-screen flex flex-col" style="background:#fff;">
 
-<body class="min-h-screen flex flex-col" style="background: rgb(255, 255, 255);">
-
-  <!-- Header -->
-  <header class="sticky top-0 bg-white border-b shadow-sm" style="border-color: rgb(232, 216, 200); z-index: 50;">
+  <header class="sticky top-0 bg-white border-b shadow-sm" style="border-color:#E8D8C8; z-index:50;">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
-      <button class="flex-shrink-0" onclick="window.scrollTo(0,0)">
-        <div class="rounded-xl overflow-hidden" style="background: rgb(110, 18, 22); padding: 4px 10px;">
+      <button data-nav="home" class="flex-shrink-0">
+        <div class="rounded-xl overflow-hidden" style="background:#6E1216; padding:4px 10px;">
           <img src="assets/corazon_logo.png" alt="Corazon Travel and Tours" class="h-8 w-auto object-contain">
         </div>
       </button>
-
       <nav class="flex items-center gap-0.5 flex-1 justify-center flex-wrap">
-        <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all"
-          style="background: rgb(110, 18, 22); color: white;" id="nav-home-btn" onclick="window.scrollTo(0,0)">Home</button>
-        <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:bg-[#F0E6D8]"
-          style="color: rgb(122, 92, 80);" onclick="document.getElementById('about-us').scrollIntoView({behavior: 'smooth'})">About Us</button>
-        <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:bg-[#F0E6D8]"
-          style="color: rgb(122, 92, 80);" onclick="document.getElementById('services').scrollIntoView({behavior: 'smooth'})">Services</button>
-        <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:bg-[#F0E6D8]"
-          style="color: rgb(122, 92, 80);" onclick="document.getElementById('careers-section').scrollIntoView({behavior: 'smooth'})">Careers</button>
-        <button class="px-4 py-2 rounded-lg text-sm font-bold transition-all hover:bg-[#F0E6D8]"
-          style="color: rgb(122, 92, 80);" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Contact</button>
+        <button data-nav="home"   class="nav-btn active px-4 py-2 rounded-lg text-sm font-bold transition-all" style="color:#fff;">Home</button>
+        <button data-nav="about"   class="nav-btn px-4 py-2 rounded-lg text-sm font-bold transition-all" style="color:#7A5C50;">About Us</button>
+        <button data-nav="services" class="nav-btn px-4 py-2 rounded-lg text-sm font-bold transition-all" style="color:#7A5C50;">Services</button>
+        <button data-nav="careers"  class="nav-btn px-4 py-2 rounded-lg text-sm font-bold transition-all" style="color:#7A5C50;">Careers</button>
+        <button data-nav="contact"  class="nav-btn px-4 py-2 rounded-lg text-sm font-bold transition-all" style="color:#7A5C50;">Contact</button>
       </nav>
-
       <div class="flex items-center gap-2 flex-shrink-0">
-        <button class="px-4 py-2 rounded-xl text-sm font-bold text-white hover:opacity-90 transition-opacity"
-          style="background: rgb(200, 137, 10);" onclick="document.getElementById('careers-section').scrollIntoView({behavior: 'smooth'})">Apply Now</button>
-        <button class="flex items-center gap-1 text-xs px-3 py-1.5 rounded-lg border hover:bg-gray-50 transition-colors"
-          style="border-color: rgb(232, 216, 200); color: rgb(122, 92, 80);" onclick="window.location.href='index.html'">
-          <i data-lucide="arrow-left" style="width: 12px; height: 12px;"></i> System
-        </button>
+        <button data-nav="careers" class="px-4 py-2 rounded-xl text-sm font-bold text-white hover:opacity-90 transition-opacity" style="background:#C8890A;">Apply Now</button>
+        <a href="index.html" class="flex items-center gap-1 text-xs px-3 py-1.5 rounded-lg border hover:bg-gray-50 transition-colors" style="border-color:#E8D8C8; color:#7A5C50; text-decoration:none;">
+          <i data-lucide="arrow-left" style="width:12px; height:12px;"></i> System
+        </a>
       </div>
     </div>
   </header>
 
-  <!-- Main View -->
-  <div id="main-view" class="flex-1">
-    
-    <!-- Hero Section -->
-    <section class="relative overflow-hidden py-24 text-center"
-      style="background: linear-gradient(135deg, rgb(110, 18, 22), rgb(90, 13, 16));">
-      <div class="absolute inset-0 opacity-10"
-        style="background-image: radial-gradient(circle, rgb(255, 255, 255) 1px, transparent 1px); background-size: 28px 28px;">
-      </div>
-      <div class="absolute top-0 left-0 right-0 h-1"
-        style="background: linear-gradient(90deg, rgb(200, 137, 10), rgb(232, 168, 0), rgb(200, 137, 10));"></div>
-      <div class="absolute top-10 right-10 w-72 h-72 rounded-full bg-white/5 pointer-events-none"></div>
-      
+  <!-- HOME -->
+  <div id="page-home" class="flex-1">
+    <section class="relative overflow-hidden py-24 text-center" style="background:linear-gradient(135deg,#6E1216,#5A0D10);">
+      <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle,#fff 1px,transparent 1px); background-size:28px 28px;"></div>
+      <div class="absolute top-0 left-0 right-0 h-1" style="background:linear-gradient(90deg,#C8890A,#E8A800,#C8890A);"></div>
+      <div class="absolute top-10 right-10 w-72 h-72 rounded-full pointer-events-none" style="background:rgba(255,255,255,0.05);"></div>
       <div class="relative max-w-3xl mx-auto px-6">
-        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold mb-6"
-          style="background: rgba(200, 137, 10, 0.145); color: rgb(232, 168, 0); border: 1px solid rgba(200, 137, 10, 0.25);">
-          <i data-lucide="plane" style="width: 12px; height: 12px;"></i> Explore · Discover · Travel
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold mb-6" style="background:rgba(200,137,10,0.15); color:#E8A800; border:1px solid rgba(200,137,10,0.25);">
+          <i data-lucide="plane" style="width:12px; height:12px;"></i> Explore · Discover · Travel
         </span>
-        <h1 class="text-5xl font-bold text-white mb-4 leading-tight">Your Journey Begins<br><span
-            style="color: rgb(232, 168, 0);">Here with Corazon</span></h1>
-        <p class="text-white/65 text-lg max-w-xl mx-auto mb-10 leading-relaxed">
-          World-class travel experiences across the Philippines and beyond. Crafted with passion, delivered with care.
-        </p>
+        <h1 class="text-5xl font-bold text-white mb-4 leading-tight">Your Journey Begins<br><span style="color:#E8A800;">Here with Corazon</span></h1>
+        <p class="text-lg max-w-xl mx-auto mb-10 leading-relaxed" style="color:rgba(255,255,255,0.65);">World-class travel experiences across the Philippines and beyond. Crafted with passion, delivered with care.</p>
         <div class="flex items-center justify-center gap-4 flex-wrap">
-          <button class="px-8 py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all hover:-translate-y-0.5"
-            style="background: rgb(232, 168, 0); color: rgb(90, 13, 16); box-shadow: rgba(200, 137, 10, 0.333) 0px 6px 20px;">
-            Explore Our Tours
-          </button>
-          <button class="px-8 py-3.5 rounded-xl font-bold text-sm text-white border-2 hover:bg-white/10 transition-all hover:-translate-y-0.5"
-            style="border-color: rgba(255, 255, 255, 0.35);" onclick="document.getElementById('careers-section').scrollIntoView({behavior:'smooth'})">
-            Join Our Team
-          </button>
+          <button data-nav="services" class="px-8 py-3.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all" style="background:#E8A800; color:#5A0D10; box-shadow:0 6px 20px rgba(200,137,10,0.35);">Explore Our Tours</button>
+          <button data-nav="careers" class="px-8 py-3.5 rounded-xl font-bold text-sm text-white border-2 transition-all" style="border-color:rgba(255,255,255,0.35);">Join Our Team</button>
         </div>
       </div>
     </section>
 
-    <!-- Stats Section -->
-    <section id="about-us" style="background: rgb(240, 230, 216);">
+    <section style="background:#F0E6D8;">
       <div class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-4 gap-6">
-        <div class="text-center">
-          <div class="text-4xl font-bold mb-1" style="color: rgb(110, 18, 22);">15+</div>
-          <div class="text-sm font-semibold" style="color: rgb(122, 92, 80);">Years of Experience</div>
-        </div>
-        <div class="text-center">
-          <div class="text-4xl font-bold mb-1" style="color: rgb(110, 18, 22);">500+</div>
-          <div class="text-sm font-semibold" style="color: rgb(122, 92, 80);">Tours Completed</div>
-        </div>
-        <div class="text-center">
-          <div class="text-4xl font-bold mb-1" style="color: rgb(110, 18, 22);">10,000+</div>
-          <div class="text-sm font-semibold" style="color: rgb(122, 92, 80);">Happy Travelers</div>
-        </div>
-        <div class="text-center">
-          <div class="text-4xl font-bold mb-1" style="color: rgb(110, 18, 22);">50+</div>
-          <div class="text-sm font-semibold" style="color: rgb(122, 92, 80);">Destinations</div>
-        </div>
+        <div class="text-center"><div class="text-4xl font-bold mb-1" style="color:#6E1216;">15+</div><div class="text-sm font-semibold" style="color:#7A5C50;">Years of Experience</div></div>
+        <div class="text-center"><div class="text-4xl font-bold mb-1" style="color:#6E1216;">500+</div><div class="text-sm font-semibold" style="color:#7A5C50;">Tours Completed</div></div>
+        <div class="text-center"><div class="text-4xl font-bold mb-1" style="color:#6E1216;">10,000+</div><div class="text-sm font-semibold" style="color:#7A5C50;">Happy Travelers</div></div>
+        <div class="text-center"><div class="text-4xl font-bold mb-1" style="color:#6E1216;">50+</div><div class="text-sm font-semibold" style="color:#7A5C50;">Destinations</div></div>
       </div>
     </section>
 
-    <!-- What We Offer -->
-    <section id="services" class="max-w-6xl mx-auto px-6 py-16">
+    <section class="max-w-6xl mx-auto px-6 py-16">
       <div class="text-center mb-10">
-        <h2 class="text-3xl font-bold mb-2" style="color: rgb(42, 18, 21);">What We Offer</h2>
-        <p class="text-sm" style="color: rgb(122, 92, 80);">Tailored travel experiences for every explorer</p>
+        <h2 class="text-3xl font-bold mb-2" style="color:#2A1215;">What We Offer</h2>
+        <p class="text-sm" style="color:#7A5C50;">Tailored travel experiences for every explorer</p>
       </div>
       <div class="grid grid-cols-3 gap-5">
-        
-        <!-- Service 1 -->
-        <div class="rounded-2xl p-6 border hover:shadow-md transition-all group hover:-translate-y-1 cursor-pointer bg-white" style="border-color: rgb(232, 216, 200);">
-          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors group-hover:bg-[#6e1216]"
-            style="background: rgba(110, 18, 22, 0.082);">
-            <i data-lucide="plane" class="transition-colors group-hover:text-white" style="color: rgb(110, 18, 22); width: 22px; height: 22px;"></i>
+        <div class="rounded-2xl p-6 border hover:shadow-md transition-all cursor-pointer bg-white" style="border-color:#E8D8C8;" data-nav="services">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(110,18,22,0.08);"><i data-lucide="plane" style="color:#6E1216; width:22px; height:22px;"></i></div>
+          <h3 class="font-bold text-base mb-2" style="color:#2A1215;">Domestic Tours</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:#7A5C50;">Discover the Philippines — Palawan, Boracay, Siargao, Bohol and more. Something for every budget.</p>
+          <span class="flex items-center gap-1 text-xs font-bold" style="color:#6E1216;">Learn more <i data-lucide="chevron-right" style="width:13px; height:13px;"></i></span>
+        </div>
+        <div class="rounded-2xl p-6 border hover:shadow-md transition-all cursor-pointer bg-white" style="border-color:#E8D8C8;" data-nav="services">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(200,137,10,0.08);"><i data-lucide="globe" style="color:#C8890A; width:22px; height:22px;"></i></div>
+          <h3 class="font-bold text-base mb-2" style="color:#2A1215;">International Tours</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:#7A5C50;">Japan, Korea, Singapore, Dubai, Europe — guided group tours with accommodation included.</p>
+          <span class="flex items-center gap-1 text-xs font-bold" style="color:#C8890A;">Learn more <i data-lucide="chevron-right" style="width:13px; height:13px;"></i></span>
+        </div>
+        <div class="rounded-2xl p-6 border hover:shadow-md transition-all cursor-pointer bg-white" style="border-color:#E8D8C8;" data-nav="services">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(124,58,237,0.08);"><i data-lucide="map" style="color:#7C3AED; width:22px; height:22px;"></i></div>
+          <h3 class="font-bold text-base mb-2" style="color:#2A1215;">Custom Packages</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:#7A5C50;">Personalized itineraries based on your preferences, schedule, and budget. Your trip, your way.</p>
+          <span class="flex items-center gap-1 text-xs font-bold" style="color:#7C3AED;">Learn more <i data-lucide="chevron-right" style="width:13px; height:13px;"></i></span>
+        </div>
+      </div>
+    </section>
+
+    <section style="background:#FBF7F1;">
+      <div class="max-w-6xl mx-auto px-6 py-14">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h2 class="text-2xl font-bold" style="color:#2A1215;">Join Our Team</h2>
+            <p class="text-sm mt-0.5" style="color:#7A5C50;">Current openings at Corazon</p>
           </div>
-          <h3 class="font-bold text-base mb-2" style="color: rgb(42, 18, 21);">Domestic Tours</h3>
-          <p class="text-sm leading-relaxed mb-4" style="color: rgb(122, 92, 80);">
-            Discover the Philippines — Palawan, Boracay, Siargao, Bohol and more. Something for every budget.
-          </p>
-          <button class="flex items-center gap-1 text-xs font-bold transition-all group-hover:gap-2" style="color: rgb(110, 18, 22);">
-            Learn more <i data-lucide="chevron-right" style="width: 13px; height: 13px;"></i>
-          </button>
+          <button data-nav="careers" class="flex items-center gap-1 text-sm font-bold" style="color:#6E1216;">View all <i data-lucide="chevron-right" style="width:14px; height:14px;"></i></button>
+        </div>
+        <div id="featured-jobs-grid" class="grid grid-cols-3 gap-4"></div>
+      </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-6 py-14">
+      <div class="rounded-3xl p-12 text-center relative overflow-hidden" style="background:linear-gradient(135deg,#6E1216,#5A0D10);">
+        <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle,#fff 1px,transparent 1px); background-size:22px 22px;"></div>
+        <h2 class="text-3xl font-bold text-white mb-3 relative">Ready to Explore the World?</h2>
+        <p class="mb-8 relative" style="color:rgba(255,255,255,0.6);">Contact us and let’s plan your perfect getaway.</p>
+        <div class="flex items-center justify-center gap-4 relative">
+          <button data-nav="contact" class="px-8 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all" style="background:#E8A800; color:#5A0D10;">Get in Touch</button>
+          <button data-nav="services" class="px-8 py-3 rounded-xl font-bold text-sm text-white border-2 transition-all" style="border-color:rgba(255,255,255,0.35);">View Packages</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ABOUT -->
+  <div id="page-about" class="flex-1 hidden">
+    <section style="background:#FBF7F1; padding:56px 24px; text-align:center;">
+      <div class="max-w-3xl mx-auto">
+        <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold mb-4" style="background:rgba(110,18,22,0.09); color:#6E1216;">Our Story</span>
+        <h1 class="text-4xl font-bold mb-4" style="color:#2A1215;">About Corazon Travel &amp; Tours</h1>
+        <p class="text-base leading-relaxed" style="color:#7A5C50;">Founded in 2010 in Taguig City, Corazon Travel and Tours was born from a dream — to make meaningful travel accessible to every Filipino.</p>
+      </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-6 py-16">
+      <div class="grid grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-2xl font-bold mb-4" style="color:#2A1215;">From a Small Office to a Trusted Name</h2>
+          <p class="text-sm leading-relaxed mb-4" style="color:#7A5C50;">We started as a two-person operation. Over 15 years, we grew into one of Metro Manila’s most trusted travel agencies, with 50+ professionals dedicated to crafting unforgettable journeys.</p>
+          <p class="text-sm leading-relaxed mb-6" style="color:#7A5C50;">We specialize in domestic Philippine tours, international group packages, corporate travel, and custom honeymoon itineraries.</p>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="rounded-xl p-4" style="background:#F0E6D8; border:1px solid #E8D8C8;"><div class="text-xs font-semibold mb-0.5" style="color:#7A5C50;">Founded</div><div class="text-sm font-bold" style="color:#2A1215;">2010</div></div>
+            <div class="rounded-xl p-4" style="background:#F0E6D8; border:1px solid #E8D8C8;"><div class="text-xs font-semibold mb-0.5" style="color:#7A5C50;">Headquarters</div><div class="text-sm font-bold" style="color:#2A1215;">Taguig City</div></div>
+            <div class="rounded-xl p-4" style="background:#F0E6D8; border:1px solid #E8D8C8;"><div class="text-xs font-semibold mb-0.5" style="color:#7A5C50;">Team Size</div><div class="text-sm font-bold" style="color:#2A1215;">50+ employees</div></div>
+            <div class="rounded-xl p-4" style="background:#F0E6D8; border:1px solid #E8D8C8;"><div class="text-xs font-semibold mb-0.5" style="color:#7A5C50;">Destinations</div><div class="text-sm font-bold" style="color:#2A1215;">50+ worldwide</div></div>
+          </div>
+        </div>
+        <div class="rounded-2xl relative flex flex-col items-center justify-center p-12 text-center" style="background:linear-gradient(135deg,#6E1216,#5A0D10); min-height:288px;">
+          <div class="absolute inset-0 opacity-10 rounded-2xl" style="background-image:radial-gradient(circle,#fff 1px,transparent 1px); background-size:20px 20px;"></div>
+          <i data-lucide="plane" style="width:44px; height:44px; color:rgba(255,255,255,0.25); margin-bottom:16px;"></i>
+          <div class="text-5xl font-bold text-white mb-2">15+</div>
+          <div style="color:rgba(255,255,255,0.6); font-size:14px; line-height:1.6;">Years Creating<br>Memorable Journeys</div>
+          <div style="width:40px; height:4px; border-radius:2px; background:#E8A800; margin-top:20px;"></div>
+        </div>
+      </div>
+    </section>
+
+    <section style="background:#FBF7F1;">
+      <div class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-2 gap-6">
+        <div class="bg-white rounded-2xl p-8 border" style="border-color:#E8D8C8;">
+          <div style="width:40px; height:4px; border-radius:2px; background:#6E1216; margin-bottom:16px;"></div>
+          <h3 class="text-xl font-bold mb-3" style="color:#2A1215;">Our Mission</h3>
+          <p class="text-sm leading-relaxed" style="color:#7A5C50;">To provide accessible, well-organized, and memorable travel experiences that enrich the lives of our clients while upholding the highest standards of service, safety, and value.</p>
+        </div>
+        <div class="bg-white rounded-2xl p-8 border" style="border-color:#E8D8C8;">
+          <div style="width:40px; height:4px; border-radius:2px; background:#6E1216; margin-bottom:16px;"></div>
+          <h3 class="text-xl font-bold mb-3" style="color:#2A1215;">Our Vision</h3>
+          <p class="text-sm leading-relaxed" style="color:#7A5C50;">To become the Philippines’ most trusted and innovative travel company — inspiring every Filipino to explore the world with confidence and joy.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-6 py-14">
+      <h2 class="text-2xl font-bold text-center mb-10" style="color:#2A1215;">Our Core Values</h2>
+      <div class="grid grid-cols-4 gap-5">
+        <div class="text-center p-6 rounded-2xl border hover:shadow-sm transition-all" style="border-color:#E8D8C8;"><div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4" style="background:rgba(110,18,22,0.09);"><i data-lucide="heart" style="color:#6E1216; width:22px; height:22px;"></i></div><h3 class="font-bold text-sm mb-2" style="color:#2A1215;">Passion for Travel</h3><p class="text-xs leading-relaxed" style="color:#7A5C50;">Every trip we craft is infused with genuine care.</p></div>
+        <div class="text-center p-6 rounded-2xl border hover:shadow-sm transition-all" style="border-color:#E8D8C8;"><div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4" style="background:rgba(110,18,22,0.09);"><i data-lucide="users" style="color:#6E1216; width:22px; height:22px;"></i></div><h3 class="font-bold text-sm mb-2" style="color:#2A1215;">Customer First</h3><p class="text-xs leading-relaxed" style="color:#7A5C50;">We listen, customize, and deliver beyond expectations.</p></div>
+        <div class="text-center p-6 rounded-2xl border hover:shadow-sm transition-all" style="border-color:#E8D8C8;"><div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4" style="background:rgba(110,18,22,0.09);"><i data-lucide="star" style="color:#6E1216; width:22px; height:22px;"></i></div><h3 class="font-bold text-sm mb-2" style="color:#2A1215;">Excellence</h3><p class="text-xs leading-relaxed" style="color:#7A5C50;">Highest standards in service, safety, and hospitality.</p></div>
+        <div class="text-center p-6 rounded-2xl border hover:shadow-sm transition-all" style="border-color:#E8D8C8;"><div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4" style="background:rgba(110,18,22,0.09);"><i data-lucide="award" style="color:#6E1216; width:22px; height:22px;"></i></div><h3 class="font-bold text-sm mb-2" style="color:#2A1215;">Trust &amp; Integrity</h3><p class="text-xs leading-relaxed" style="color:#7A5C50;">15 years of honest dealings and fair pricing.</p></div>
+      </div>
+    </section>
+
+    <section style="background:#FBF7F1;">
+      <div class="max-w-6xl mx-auto px-6 py-12">
+        <h2 class="text-2xl font-bold text-center mb-10" style="color:#2A1215;">Meet Our Leadership</h2>
+        <div class="grid grid-cols-4 gap-5">
+          <div class="bg-white rounded-2xl border p-6 text-center hover:shadow-sm transition-all" style="border-color:#E8D8C8;"><div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-xl font-bold" style="background:linear-gradient(135deg,#6E1216,#5A0D10);">CR</div><div class="font-bold text-sm" style="color:#2A1215;">Corazon Reyes</div><div class="text-xs mt-0.5" style="color:#6E1216;">Founder &amp; CEO</div><div class="text-xs mt-1" style="color:#7A5C50;">Since 2010</div></div>
+          <div class="bg-white rounded-2xl border p-6 text-center hover:shadow-sm transition-all" style="border-color:#E8D8C8;"><div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-xl font-bold" style="background:linear-gradient(135deg,#6E1216,#5A0D10);">MS</div><div class="font-bold text-sm" style="color:#2A1215;">Marco Santos</div><div class="text-xs mt-0.5" style="color:#6E1216;">Operations Director</div><div class="text-xs mt-1" style="color:#7A5C50;">Since 2012</div></div>
+          <div class="bg-white rounded-2xl border p-6 text-center hover:shadow-sm transition-all" style="border-color:#E8D8C8;"><div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-xl font-bold" style="background:linear-gradient(135deg,#6E1216,#5A0D10);">LG</div><div class="font-bold text-sm" style="color:#2A1215;">Lea Garcia</div><div class="text-xs mt-0.5" style="color:#6E1216;">Head of Tours</div><div class="text-xs mt-1" style="color:#7A5C50;">Since 2015</div></div>
+          <div class="bg-white rounded-2xl border p-6 text-center hover:shadow-sm transition-all" style="border-color:#E8D8C8;"><div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-xl font-bold" style="background:linear-gradient(135deg,#6E1216,#5A0D10);">PC</div><div class="font-bold text-sm" style="color:#2A1215;">Paolo Cruz</div><div class="text-xs mt-0.5" style="color:#6E1216;">Marketing Manager</div><div class="text-xs mt-1" style="color:#7A5C50;">Since 2018</div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- SERVICES -->
+  <div id="page-services" class="flex-1 hidden">
+    <section style="background:#FBF7F1; padding:56px 24px; text-align:center;">
+      <div class="max-w-3xl mx-auto">
+        <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold mb-4" style="background:rgba(110,18,22,0.09); color:#6E1216;">Our Services</span>
+        <h1 class="text-4xl font-bold mb-4" style="color:#2A1215;">Everything for Your Dream Trip</h1>
+        <p class="text-base leading-relaxed" style="color:#7A5C50;">From budget-friendly local getaways to luxury international tours — we have a package for every traveler.</p>
+      </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-6 py-14">
+      <div class="grid grid-cols-2 gap-6">
+
+        <div class="bg-white rounded-2xl border overflow-hidden hover:shadow-md transition-all" style="border-color:#E8D8C8;">
+          <div class="px-6 py-5 flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(110,18,22,0.08);"><i data-lucide="plane" style="color:#6E1216; width:22px; height:22px;"></i></div>
+            <div><div class="text-xs font-bold mb-0.5" style="color:#6E1216;">Explore the Philippines</div><h3 class="text-lg font-bold mb-1" style="color:#2A1215;">Domestic Tours</h3><p class="text-xs leading-relaxed" style="color:#7A5C50;">Discover the natural wonders of the Philippines — pristine beaches, rich heritage, and breathtaking landscapes.</p></div>
+          </div>
+          <div class="px-6 pb-5">
+            <div class="rounded-xl p-4 mb-4" style="background:#FBF7F1;"><div class="text-xs font-bold mb-2" style="color:#7A5C50;">Sample Packages:</div><ul class="space-y-1"><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#6E1216;flex-shrink:0;display:inline-block;"></span>Palawan Island Hopping (3D2N)</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#6E1216;flex-shrink:0;display:inline-block;"></span>Boracay Beach Escape (4D3N)</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#6E1216;flex-shrink:0;display:inline-block;"></span>Siargao Surfing Adventure (5D4N)</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#6E1216;flex-shrink:0;display:inline-block;"></span>Batanes Cultural Tour (6D5N)</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#6E1216;flex-shrink:0;display:inline-block;"></span>Bohol Heritage &amp; Nature (4D3N)</li></ul></div>
+            <div class="flex items-center justify-between"><div><span class="text-xs" style="color:#7A5C50;">Starting from </span><span class="text-sm font-bold" style="color:#6E1216;">&#8369;4,500</span></div><button data-nav="contact" class="px-4 py-2 rounded-xl text-xs font-bold text-white hover:opacity-90 transition-all" style="background:#6E1216;">Inquire Now</button></div>
+          </div>
         </div>
 
-        <!-- Service 2 -->
-        <div class="rounded-2xl p-6 border hover:shadow-md transition-all group hover:-translate-y-1 cursor-pointer bg-white" style="border-color: rgb(232, 216, 200);">
-          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors group-hover:bg-[#c8890a]"
-            style="background: rgba(200, 137, 10, 0.082);">
-            <i data-lucide="globe" class="transition-colors group-hover:text-white" style="color: rgb(200, 137, 10); width: 22px; height: 22px;"></i>
+        <div class="bg-white rounded-2xl border overflow-hidden hover:shadow-md transition-all" style="border-color:#E8D8C8;">
+          <div class="px-6 py-5 flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(200,137,10,0.08);"><i data-lucide="globe" style="color:#C8890A; width:22px; height:22px;"></i></div>
+            <div><div class="text-xs font-bold mb-0.5" style="color:#C8890A;">See the World</div><h3 class="text-lg font-bold mb-1" style="color:#2A1215;">International Tours</h3><p class="text-xs leading-relaxed" style="color:#7A5C50;">Guided international tours with accommodation and expert guides included across Asia and beyond.</p></div>
           </div>
-          <h3 class="font-bold text-base mb-2" style="color: rgb(42, 18, 21);">International Tours</h3>
-          <p class="text-sm leading-relaxed mb-4" style="color: rgb(122, 92, 80);">
-            Japan, Korea, Singapore, Dubai, Europe — guided group tours with accommodation included.
-          </p>
-          <button class="flex items-center gap-1 text-xs font-bold transition-all group-hover:gap-2" style="color: rgb(200, 137, 10);">
-            Learn more <i data-lucide="chevron-right" style="width: 13px; height: 13px;"></i>
-          </button>
+          <div class="px-6 pb-5">
+            <div class="rounded-xl p-4 mb-4" style="background:#FBF7F1;"><div class="text-xs font-bold mb-2" style="color:#7A5C50;">Sample Packages:</div><ul class="space-y-1"><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#C8890A;flex-shrink:0;display:inline-block;"></span>Japan Cherry Blossom (7D6N)</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#C8890A;flex-shrink:0;display:inline-block;"></span>Korea K-Culture (8D7N)</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#C8890A;flex-shrink:0;display:inline-block;"></span>Singapore &amp; Malaysia (6D5N)</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#C8890A;flex-shrink:0;display:inline-block;"></span>Dubai Luxury Getaway (7D6N)</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#C8890A;flex-shrink:0;display:inline-block;"></span>Europe Grand Tour (14D13N)</li></ul></div>
+            <div class="flex items-center justify-between"><div><span class="text-xs" style="color:#7A5C50;">Starting from </span><span class="text-sm font-bold" style="color:#C8890A;">&#8369;35,000</span></div><button data-nav="contact" class="px-4 py-2 rounded-xl text-xs font-bold text-white hover:opacity-90 transition-all" style="background:#C8890A;">Inquire Now</button></div>
+          </div>
         </div>
 
-        <!-- Service 3 -->
-        <div class="rounded-2xl p-6 border hover:shadow-md transition-all group hover:-translate-y-1 cursor-pointer bg-white" style="border-color: rgb(232, 216, 200);">
-          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors group-hover:bg-[#7c3aed]"
-            style="background: rgba(124, 58, 237, 0.082);">
-            <i data-lucide="map" class="transition-colors group-hover:text-white" style="color: rgb(124, 58, 237); width: 22px; height: 22px;"></i>
+        <div class="bg-white rounded-2xl border overflow-hidden hover:shadow-md transition-all" style="border-color:#E8D8C8;">
+          <div class="px-6 py-5 flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(124,58,237,0.08);"><i data-lucide="heart" style="color:#7C3AED; width:22px; height:22px;"></i></div>
+            <div><div class="text-xs font-bold mb-0.5" style="color:#7C3AED;">For Couples</div><h3 class="text-lg font-bold mb-1" style="color:#2A1215;">Honeymoon Packages</h3><p class="text-xs leading-relaxed" style="color:#7A5C50;">Make your special moments unforgettable with romantic destinations, private dinners, and spa treatments.</p></div>
           </div>
-          <h3 class="font-bold text-base mb-2" style="color: rgb(42, 18, 21);">Custom Packages</h3>
-          <p class="text-sm leading-relaxed mb-4" style="color: rgb(122, 92, 80);">
-            We craft personalized itineraries based on your preferences, schedule, and budget. Your trip, your way.
-          </p>
-          <button class="flex items-center gap-1 text-xs font-bold transition-all group-hover:gap-2" style="color: rgb(124, 58, 237);">
-            Learn more <i data-lucide="chevron-right" style="width: 13px; height: 13px;"></i>
-          </button>
+          <div class="px-6 pb-5">
+            <div class="rounded-xl p-4 mb-4" style="background:#FBF7F1;"><div class="text-xs font-bold mb-2" style="color:#7A5C50;">Sample Packages:</div><ul class="space-y-1"><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#7C3AED;flex-shrink:0;display:inline-block;"></span>Bali Romantic Retreat (7D6N)</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#7C3AED;flex-shrink:0;display:inline-block;"></span>Maldives Island Villa (6D5N)</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#7C3AED;flex-shrink:0;display:inline-block;"></span>Paris &amp; Rome in Love (10D9N)</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#7C3AED;flex-shrink:0;display:inline-block;"></span>Boracay Couples Escape (4D3N)</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#7C3AED;flex-shrink:0;display:inline-block;"></span>Palawan Private Island (5D4N)</li></ul></div>
+            <div class="flex items-center justify-between"><div><span class="text-xs" style="color:#7A5C50;">Starting from </span><span class="text-sm font-bold" style="color:#7C3AED;">&#8369;28,000</span></div><button data-nav="contact" class="px-4 py-2 rounded-xl text-xs font-bold text-white hover:opacity-90 transition-all" style="background:#7C3AED;">Inquire Now</button></div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border overflow-hidden hover:shadow-md transition-all" style="border-color:#E8D8C8;">
+          <div class="px-6 py-5 flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(5,150,105,0.08);"><i data-lucide="users" style="color:#059669; width:22px; height:22px;"></i></div>
+            <div><div class="text-xs font-bold mb-0.5" style="color:#059669;">Team Building &amp; Events</div><h3 class="text-lg font-bold mb-1" style="color:#2A1215;">Group &amp; Corporate</h3><p class="text-xs leading-relaxed" style="color:#7A5C50;">From annual company outings to large group tours — we handle all logistics so you can focus on bonding.</p></div>
+          </div>
+          <div class="px-6 pb-5">
+            <div class="rounded-xl p-4 mb-4" style="background:#FBF7F1;"><div class="text-xs font-bold mb-2" style="color:#7A5C50;">Sample Packages:</div><ul class="space-y-1"><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#059669;flex-shrink:0;display:inline-block;"></span>Team Building Packages</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#059669;flex-shrink:0;display:inline-block;"></span>Educational Tours</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#059669;flex-shrink:0;display:inline-block;"></span>Corporate Retreats</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#059669;flex-shrink:0;display:inline-block;"></span>Incentive Travel Programs</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#059669;flex-shrink:0;display:inline-block;"></span>Convention &amp; MICE Services</li></ul></div>
+            <div class="flex items-center justify-between"><div><span class="text-xs" style="color:#7A5C50;">Starting from </span><span class="text-sm font-bold" style="color:#059669;">&#8369;3,200 / pax</span></div><button data-nav="contact" class="px-4 py-2 rounded-xl text-xs font-bold text-white hover:opacity-90 transition-all" style="background:#059669;">Inquire Now</button></div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border overflow-hidden hover:shadow-md transition-all" style="border-color:#E8D8C8;">
+          <div class="px-6 py-5 flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(217,119,6,0.08);"><i data-lucide="map" style="color:#D97706; width:22px; height:22px;"></i></div>
+            <div><div class="text-xs font-bold mb-0.5" style="color:#D97706;">Your Trip, Your Way</div><h3 class="text-lg font-bold mb-1" style="color:#2A1215;">Custom Itineraries</h3><p class="text-xs leading-relaxed" style="color:#7A5C50;">Can’t find a package that fits? Our consultants craft a personalized itinerary just for you.</p></div>
+          </div>
+          <div class="px-6 pb-5">
+            <div class="rounded-xl p-4 mb-4" style="background:#FBF7F1;"><div class="text-xs font-bold mb-2" style="color:#7A5C50;">Sample Packages:</div><ul class="space-y-1"><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#D97706;flex-shrink:0;display:inline-block;"></span>Solo Travel Planning</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#D97706;flex-shrink:0;display:inline-block;"></span>Family Reunion Trips</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#D97706;flex-shrink:0;display:inline-block;"></span>Anniversary Special</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#D97706;flex-shrink:0;display:inline-block;"></span>Religious &amp; Pilgrimage Tours</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#D97706;flex-shrink:0;display:inline-block;"></span>Adventure &amp; Extreme Sports</li></ul></div>
+            <div class="flex items-center justify-between"><div><span class="text-xs" style="color:#7A5C50;">Starting from </span><span class="text-sm font-bold" style="color:#D97706;">Price on request</span></div><button data-nav="contact" class="px-4 py-2 rounded-xl text-xs font-bold text-white hover:opacity-90 transition-all" style="background:#D97706;">Inquire Now</button></div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border overflow-hidden hover:shadow-md transition-all" style="border-color:#E8D8C8;">
+          <div class="px-6 py-5 flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(110,18,22,0.08);"><i data-lucide="shield" style="color:#6E1216; width:22px; height:22px;"></i></div>
+            <div><div class="text-xs font-bold mb-0.5" style="color:#6E1216;">Worry-Free Travel</div><h3 class="text-lg font-bold mb-1" style="color:#2A1215;">Insurance &amp; Visa</h3><p class="text-xs leading-relaxed" style="color:#7A5C50;">Comprehensive travel insurance and visa processing for most countries — stress-free from start to finish.</p></div>
+          </div>
+          <div class="px-6 pb-5">
+            <div class="rounded-xl p-4 mb-4" style="background:#FBF7F1;"><div class="text-xs font-bold mb-2" style="color:#7A5C50;">Sample Packages:</div><ul class="space-y-1"><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#6E1216;flex-shrink:0;display:inline-block;"></span>Comprehensive Travel Insurance</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#6E1216;flex-shrink:0;display:inline-block;"></span>Medical &amp; Emergency Coverage</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#6E1216;flex-shrink:0;display:inline-block;"></span>Visa Application Assistance</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#6E1216;flex-shrink:0;display:inline-block;"></span>Passport Renewal Assistance</li><li class="flex items-center gap-2 text-xs" style="color:#2A1215;"><span style="width:4px;height:4px;border-radius:50%;background:#6E1216;flex-shrink:0;display:inline-block;"></span>Travel Document Consultation</li></ul></div>
+            <div class="flex items-center justify-between"><div><span class="text-xs" style="color:#7A5C50;">Starting from </span><span class="text-sm font-bold" style="color:#6E1216;">&#8369;800 / pax</span></div><button data-nav="contact" class="px-4 py-2 rounded-xl text-xs font-bold text-white hover:opacity-90 transition-all" style="background:#6E1216;">Inquire Now</button></div>
+          </div>
         </div>
 
       </div>
     </section>
 
-    <!-- ── CAREERS ── -->
-    <section id="careers-section">
+    <section style="background:#FBF7F1;">
+      <div class="max-w-3xl mx-auto px-6 py-12 text-center">
+        <h2 class="text-2xl font-bold mb-3" style="color:#2A1215;">Not sure which package to choose?</h2>
+        <p class="text-sm mb-8" style="color:#7A5C50;">Our travel consultants are ready to help you plan the perfect trip.</p>
+        <button data-nav="contact" class="px-8 py-3.5 rounded-xl font-bold text-sm text-white hover:opacity-90 transition-all" style="background:#6E1216; box-shadow:0 6px 20px rgba(110,18,22,0.35);">Talk to a Consultant</button>
+      </div>
+    </section>
+  </div>
 
-      <!-- Careers Hero -->
-      <div class="careers-hero">
+  <!-- CAREERS -->
+  <div id="page-careers" class="flex-1 hidden">
+    <div id="careers-list-view">
+      <div style="background:#FBF7F1; padding:56px 24px; text-align:center; border-top:1px solid #E8D8C8;">
         <div class="max-w-3xl mx-auto">
-          <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold mb-4"
-            style="background: rgba(110,18,22,0.09); color: rgb(110,18,22);">Careers at Corazon</span>
-          <h2 class="text-3xl font-bold mb-3" style="color: rgb(42,18,21);">Grow With Us</h2>
-          <p class="text-sm leading-relaxed mb-8" style="color: rgb(122,92,80); max-width: 420px; margin-left: auto; margin-right: auto;">
-            Join a team passionate about travel, people, and making every journey memorable.
-          </p>
-          <!-- Search -->
-          <div class="flex max-w-xl mx-auto gap-2 bg-white rounded-2xl border p-2 shadow-sm" style="border-color: rgb(232, 216, 200);">
-            <div class="relative flex-1 min-w-[200px]">
-              <i data-lucide="search" style="width: 15px; height: 15px; color: rgb(122, 92, 80);" class="absolute left-3 top-1/2 -translate-y-1/2"></i>
-              <input id="search-input" placeholder="Search positions…"
-                class="w-full pl-9 pr-3 py-2.5 bg-transparent text-sm outline-none"
-                style="color: rgb(42,18,21);">
+          <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold mb-4" style="background:rgba(110,18,22,0.09); color:#6E1216;">Careers at Corazon</span>
+          <h1 class="text-3xl font-bold mb-3" style="color:#2A1215;">Grow With Us</h1>
+          <p class="text-sm leading-relaxed mb-8" style="color:#7A5C50; max-width:420px; margin-left:auto; margin-right:auto;">Join a team passionate about travel, people, and making every journey memorable.</p>
+          <div class="flex max-w-xl mx-auto gap-2 bg-white rounded-2xl border p-2 shadow-sm" style="border-color:#E8D8C8;">
+            <div class="relative flex-1">
+              <i data-lucide="search" style="width:15px; height:15px; color:#7A5C50; position:absolute; left:12px; top:50%; transform:translateY(-50%);"></i>
+              <input id="search-input" placeholder="Search positions…" class="w-full bg-transparent text-sm outline-none" style="padding:10px 12px 10px 36px; color:#2A1215;">
             </div>
-            <button id="search-btn" class="px-6 py-2.5 rounded-xl text-white text-sm font-bold shrink-0 transition-opacity hover:opacity-90"
-              style="background: rgb(110,18,22);">
-              Search
-            </button>
+            <button id="search-btn" class="px-6 py-2.5 rounded-xl text-white text-sm font-bold shrink-0 hover:opacity-90 transition-opacity" style="background:#6E1216;">Search</button>
           </div>
         </div>
       </div>
 
-      <!-- Sticky Filter Bar -->
       <div class="filter-sticky">
         <div class="max-w-6xl mx-auto flex items-center gap-2 flex-wrap" id="filter-container"></div>
       </div>
 
-      <!-- Jobs Grid -->
-      <div style="background: rgb(251, 247, 241);">
+      <div style="background:#FBF7F1;">
         <div class="max-w-6xl mx-auto px-6 py-10">
-          <p class="text-sm mb-6" style="color: rgb(122,92,80);">
-            Showing <strong id="jobs-count" style="color: rgb(110,18,22);">0</strong> open position<span id="jobs-count-plural">s</span>
-          </p>
-
-          <div id="no-jobs" class="text-center py-16 hidden" style="color: #9CA3AF;">No positions match your search.</div>
-
-          <div id="jobs-grid" class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <!-- Job cards generated by JS -->
-          </div>
-
-          <!-- See All Jobs button -->
+          <p class="text-sm mb-6" style="color:#7A5C50;">Showing <strong id="jobs-count" style="color:#6E1216;">0</strong> open position<span id="jobs-count-plural">s</span></p>
+          <div id="no-jobs" class="text-center py-16 hidden" style="color:#9CA3AF;">No positions match your search.</div>
+          <div id="jobs-grid" class="grid grid-cols-1 md:grid-cols-3 gap-5"></div>
           <div id="see-all-container" class="flex justify-center mt-10 hidden">
-            <button id="see-all-btn"
-              class="flex items-center gap-2 px-8 py-3 rounded-xl text-white text-sm font-semibold transition-all hover:opacity-90"
-              style="background: rgb(110, 18, 22); box-shadow: 0 4px 14px rgba(110,18,22,0.25);">
+            <button id="see-all-btn" class="flex items-center gap-2 px-8 py-3 rounded-xl text-white text-sm font-semibold hover:opacity-90 transition-all" style="background:#6E1216; box-shadow:0 4px 14px rgba(110,18,22,0.25);">
               <span id="see-all-text">See All Jobs</span>
-              <i data-lucide="chevron-right" id="see-all-icon" class="w-[16px] h-[16px] transition-transform"></i>
+              <i data-lucide="chevron-right" id="see-all-icon" style="width:16px; height:16px; transition:transform 0.2s;"></i>
             </button>
           </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- Contact CTA -->
-    <section id="contact" class="max-w-6xl mx-auto px-6 py-14">
-      <div class="rounded-3xl p-12 text-center relative overflow-hidden"
-        style="background: linear-gradient(135deg, rgb(110, 18, 22), rgb(90, 13, 16));">
-        <div class="absolute inset-0 opacity-10"
-          style="background-image: radial-gradient(circle, rgb(255, 255, 255) 1px, transparent 1px); background-size: 22px 22px;">
-        </div>
-        <h2 class="text-3xl font-bold text-white mb-3 relative">Ready to Explore the World?</h2>
-        <p class="text-white/60 mb-8 relative">Contact us and let's plan your perfect getaway.</p>
-        <div class="flex items-center justify-center gap-4 relative">
-          <button class="px-8 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-all hover:-translate-y-0.5"
-            style="background: rgb(232, 168, 0); color: rgb(90, 13, 16);">Get in Touch</button>
-          <button class="px-8 py-3 rounded-xl font-bold text-sm text-white border-2 hover:bg-white/10 transition-all hover:-translate-y-0.5"
-            style="border-color: rgba(255, 255, 255, 0.35);">View Packages</button>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- Job Details View (Hidden by default) -->
-  <div id="details-view" class="flex-1 hidden py-10" style="background: #F7F8FA;">
-    <div class="max-w-3xl mx-auto px-6">
-      <button id="back-to-jobs-btn"
-        class="flex items-center gap-2 text-sm font-bold mb-6 hover:gap-3 transition-all"
-        style="color: rgb(110,18,22);">
-        <i data-lucide="arrow-left" class="w-[16px] h-[16px]"></i> Back to Jobs
-      </button>
-      
-      <div class="bg-white rounded-2xl border p-8 shadow-sm" style="border-color: rgb(232,216,200);">
-        <div class="flex items-start justify-between mb-6 gap-4">
-          <div>
-            <span id="detail-type" class="inline-block px-3 py-1 rounded-full text-xs font-bold mb-3"></span>
-            <h1 id="detail-title" class="text-2xl font-bold" style="color: rgb(42,18,21);"></h1>
-            <div class="flex items-center gap-4 mt-2 text-sm" style="color: #6B7280;">
-              <span class="flex items-center gap-1.5"><i data-lucide="building-2" class="w-[14px] h-[14px]"></i><span id="detail-dept"></span></span>
-              <span class="flex items-center gap-1.5"><i data-lucide="clock" class="w-[14px] h-[14px]"></i>Deadline: <span id="detail-posted"></span></span>
+    <div id="careers-detail-view" class="hidden py-10" style="background:#F7F8FA;">
+      <div class="max-w-3xl mx-auto px-6">
+        <button id="back-to-jobs-btn" class="flex items-center gap-2 text-sm font-bold mb-6" style="color:#6E1216;">
+          <i data-lucide="arrow-left" style="width:16px; height:16px;"></i> Back to Jobs
+        </button>
+        <div class="bg-white rounded-2xl border p-8 shadow-sm" style="border-color:#E8D8C8;">
+          <div class="flex items-start justify-between mb-6 gap-4">
+            <div>
+              <span id="detail-type" class="inline-block px-3 py-1 rounded-full text-xs font-bold mb-3"></span>
+              <h1 id="detail-title" class="text-2xl font-bold" style="color:#2A1215;"></h1>
+              <div class="flex items-center gap-4 mt-2 text-sm" style="color:#6B7280;">
+                <span class="flex items-center gap-1.5"><i data-lucide="building-2" style="width:14px; height:14px;"></i><span id="detail-dept"></span></span>
+                <span class="flex items-center gap-1.5"><i data-lucide="clock" style="width:14px; height:14px;"></i>Deadline: <span id="detail-deadline"></span></span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 flex-shrink-0">
+              <button id="detail-bookmark-btn" class="p-2 rounded-xl border transition-colors" style="border-color:#E8D8C8; color:#D1D5DB;"><i data-lucide="bookmark" id="detail-bookmark-icon" style="width:18px; height:18px;"></i></button>
+              <button id="detail-apply-btn" class="px-6 py-3 rounded-xl text-white font-bold text-sm hover:opacity-90 transition-all" style="background:#6E1216; box-shadow:0 4px 14px rgba(110,18,22,0.35);">Apply Now</button>
             </div>
           </div>
-          <div class="flex items-center gap-2 flex-shrink-0">
-            <button id="detail-bookmark-btn" class="p-2 rounded-xl border transition-colors"
-              style="border-color: rgb(232,216,200); color: #D1D5DB;">
-              <i data-lucide="bookmark" id="detail-bookmark-icon" class="w-[18px] h-[18px]"></i>
-            </button>
-            <button id="detail-apply-btn1"
-              class="px-6 py-3 rounded-xl text-white font-bold text-sm transition-all hover:opacity-90"
-              style="background: rgb(110,18,22); box-shadow: 0 4px 14px rgba(110,18,22,0.35);">
-              Apply Now
-            </button>
+          <div class="grid grid-cols-3 gap-4 mb-8 p-4 rounded-xl border" style="background:#F7F8FA; border-color:#E8D8C8;">
+            <div><div class="text-xs mb-0.5" style="color:#9CA3AF;">Application Deadline</div><div id="detail-deadline-box" class="text-sm font-bold" style="color:#2A1215;"></div></div>
+            <div><div class="text-xs mb-0.5" style="color:#9CA3AF;">Number of Slots</div><div id="detail-slots" class="text-sm font-bold" style="color:#2A1215;"></div></div>
+            <div><div class="text-xs mb-0.5" style="color:#9CA3AF;">Department</div><div id="detail-dept-box" class="text-sm font-bold" style="color:#2A1215;"></div></div>
           </div>
-        </div>
-
-        <div class="grid grid-cols-3 gap-4 mb-8 p-4 rounded-xl border" style="background: #F7F8FA; border-color: rgb(232,216,200);">
-          <div>
-            <div class="text-xs mb-0.5" style="color: #9CA3AF;">Application Deadline</div>
-            <div id="detail-deadline" class="text-sm font-bold" style="color: rgb(42,18,21);"></div>
+          <div class="space-y-6">
+            <div><h3 class="text-base font-bold mb-3" style="color:#2A1215;">Job Description</h3><p id="detail-desc" class="text-sm leading-relaxed" style="color:#374151;"></p></div>
+            <div><h3 class="text-base font-bold mb-3" style="color:#2A1215;">Qualifications</h3><p id="detail-qualifications" class="text-sm leading-relaxed" style="color:#374151;"></p></div>
           </div>
-          <div>
-            <div class="text-xs mb-0.5" style="color: #9CA3AF;">Number of Slots</div>
-            <div id="detail-slots" class="text-sm font-bold" style="color: rgb(42,18,21);"></div>
+          <div class="mt-8 pt-6" style="border-top:1px solid #E8D8C8;">
+            <button id="detail-apply-btn2" class="w-full py-3 rounded-xl text-white font-bold text-sm hover:opacity-90 transition-all" style="background:#6E1216;">Apply Now</button>
           </div>
-          <div>
-            <div class="text-xs mb-0.5" style="color: #9CA3AF;">Department</div>
-            <div id="detail-dept-box" class="text-sm font-bold" style="color: rgb(42,18,21);"></div>
-          </div>
-        </div>
-
-        <div class="space-y-6">
-          <div>
-            <h3 class="text-base font-bold mb-3" style="color: rgb(42,18,21);">Job Description</h3>
-            <p id="detail-desc" class="text-sm leading-relaxed" style="color: #374151;"></p>
-          </div>
-          <div>
-            <h3 class="text-base font-bold mb-3" style="color: rgb(42,18,21);">Qualifications</h3>
-            <p id="detail-qualifications" class="text-sm leading-relaxed" style="color: #374151;"></p>
-          </div>
-        </div>
-
-        <div class="mt-8 pt-6 flex gap-3" style="border-top: 1px solid rgb(232,216,200);">
-          <button id="detail-apply-btn2"
-            class="flex-1 py-3 rounded-xl text-white font-bold text-sm hover:opacity-90 transition-all"
-            style="background: rgb(110,18,22);">
-            Apply Now
-          </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer style="background: rgb(61, 10, 12); border-top: 3px solid rgb(200, 137, 10);">
+  <!-- CONTACT -->
+  <div id="page-contact" class="flex-1 hidden">
+    <section style="background:#FBF7F1; padding:56px 24px; text-align:center;">
+      <div class="max-w-2xl mx-auto">
+        <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold mb-4" style="background:rgba(110,18,22,0.09); color:#6E1216;">Get In Touch</span>
+        <h1 class="text-3xl font-bold mb-3" style="color:#2A1215;">We’d Love to Hear From You</h1>
+        <p class="text-sm leading-relaxed" style="color:#7A5C50;">Planning a trip, inquiring about a job, or just want to say hello — our team is ready.</p>
+      </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-6 py-14" style="display:grid; grid-template-columns:2fr 3fr; gap:32px;">
+      <div>
+        <h2 class="text-xl font-bold mb-6" style="color:#2A1215;">Contact Information</h2>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="flex items-start gap-4 p-4 rounded-xl" style="background:#FBF7F1; border:1px solid #E8D8C8;"><div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(110,18,22,0.09);"><i data-lucide="map-pin" style="color:#6E1216; width:18px; height:18px;"></i></div><div><div class="text-xs font-bold mb-0.5" style="color:#7A5C50;">Head Office</div><div class="text-sm font-semibold" style="color:#2A1215;">Unit 5, BGC Corporate Tower, Taguig City, Metro Manila 1634</div></div></div>
+          <div class="flex items-start gap-4 p-4 rounded-xl" style="background:#FBF7F1; border:1px solid #E8D8C8;"><div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(110,18,22,0.09);"><i data-lucide="phone" style="color:#6E1216; width:18px; height:18px;"></i></div><div><div class="text-xs font-bold mb-0.5" style="color:#7A5C50;">Phone</div><div class="text-sm font-semibold" style="color:#2A1215;">+63 2 8888 1234 / +63 917 123 4567</div></div></div>
+          <div class="flex items-start gap-4 p-4 rounded-xl" style="background:#FBF7F1; border:1px solid #E8D8C8;"><div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(110,18,22,0.09);"><i data-lucide="mail" style="color:#6E1216; width:18px; height:18px;"></i></div><div><div class="text-xs font-bold mb-0.5" style="color:#7A5C50;">Email</div><div class="text-sm font-semibold" style="color:#2A1215;">hello@corazontravelandtours.ph</div></div></div>
+          <div class="flex items-start gap-4 p-4 rounded-xl" style="background:#FBF7F1; border:1px solid #E8D8C8;"><div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(110,18,22,0.09);"><i data-lucide="clock" style="color:#6E1216; width:18px; height:18px;"></i></div><div><div class="text-xs font-bold mb-0.5" style="color:#7A5C50;">Office Hours</div><div class="text-sm font-semibold" style="color:#2A1215;">Mon–Fri: 8:00 AM – 6:00 PM<br>Sat: 9:00 AM – 3:00 PM</div></div></div>
+        </div>
+        <div class="mt-6">
+          <div class="text-xs font-bold mb-3" style="color:#7A5C50;">Follow Us</div>
+          <div class="flex gap-2">
+            <button class="w-10 h-10 rounded-xl flex items-center justify-center border hover:bg-red-50 transition-all" style="border-color:#E8D8C8;"><i data-lucide="facebook" style="color:#6E1216; width:16px; height:16px;"></i></button>
+            <button class="w-10 h-10 rounded-xl flex items-center justify-center border hover:bg-red-50 transition-all" style="border-color:#E8D8C8;"><i data-lucide="instagram" style="color:#6E1216; width:16px; height:16px;"></i></button>
+            <button class="w-10 h-10 rounded-xl flex items-center justify-center border hover:bg-red-50 transition-all" style="border-color:#E8D8C8;"><i data-lucide="globe" style="color:#6E1216; width:16px; height:16px;"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border p-8" style="border-color:#E8D8C8;">
+        <h2 class="text-xl font-bold mb-6" style="color:#2A1215;">Send Us a Message</h2>
+        <div id="contact-success" class="hidden flex-col items-center text-center py-10" style="display:none;">
+          <div class="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mb-4"><i data-lucide="check-circle-2" style="width:32px; height:32px; color:#10b981;"></i></div>
+          <h3 class="text-lg font-bold mb-2" style="color:#2A1215;">Message Sent!</h3>
+          <p class="text-sm" style="color:#7A5C50;">We’ll get back to you within 1–2 business days.</p>
+        </div>
+        <form id="contact-form" class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div><label class="block text-xs font-bold mb-1.5" style="color:#2A1215;">Full Name <span style="color:#ef4444;">*</span></label><input type="text" id="cf-name" placeholder="Juan dela Cruz" required class="contact-input"></div>
+            <div><label class="block text-xs font-bold mb-1.5" style="color:#2A1215;">Email <span style="color:#ef4444;">*</span></label><input type="email" id="cf-email" placeholder="juan@email.com" required class="contact-input"></div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div><label class="block text-xs font-bold mb-1.5" style="color:#2A1215;">Phone</label><input type="text" id="cf-phone" placeholder="+63 9XX XXX XXXX" class="contact-input"></div>
+            <div><label class="block text-xs font-bold mb-1.5" style="color:#2A1215;">Subject <span style="color:#ef4444;">*</span></label>
+              <select id="cf-subject" required class="contact-input" style="cursor:pointer;">
+                <option value="">Select a topic</option>
+                <option>Tour Inquiry</option>
+                <option>Custom Package</option>
+                <option>Job Application</option>
+                <option>Travel Insurance</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div><label class="block text-xs font-bold mb-1.5" style="color:#2A1215;">Message <span style="color:#ef4444;">*</span></label><textarea id="cf-message" rows="5" placeholder="Tell us what you need…" required class="contact-input" style="resize:none;"></textarea></div>
+          <button type="submit" class="w-full py-3 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2 hover:opacity-90 transition-all" style="background:#6E1216; box-shadow:0 4px 14px rgba(110,18,22,0.35);">
+            <i data-lucide="send" style="width:15px; height:15px;"></i> Send Message
+          </button>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <footer style="background:#3D0A0C; border-top:3px solid #C8890A;">
     <div class="max-w-6xl mx-auto px-6 py-10 grid grid-cols-4 gap-8">
       <div>
-        <div class="rounded-xl overflow-hidden inline-block mb-4 bg-white p-1.5" style="background: rgb(110, 18, 22);">
-          <img src="assets/corazon_logo.png" alt="Corazon" class="h-9 w-auto object-contain bg-white rounded">
+        <div class="rounded-xl overflow-hidden inline-block mb-4" style="background:#6E1216; padding:5px 10px;">
+          <img src="assets/corazon_logo.png" alt="Corazon" class="h-9 w-auto object-contain">
         </div>
-        <p class="text-xs leading-relaxed" style="color: rgba(255, 245, 233, 0.45);">
-          Making every journey memorable since 2010.
-        </p>
+        <p class="text-xs leading-relaxed" style="color:rgba(255,245,233,0.45);">Making every journey memorable since 2010.</p>
       </div>
-
       <div>
-        <div class="text-xs font-bold mb-3" style="color: rgba(232, 168, 0, 0.6);">Company</div>
+        <div class="text-xs font-bold mb-3" style="color:rgba(232,168,0,0.6);">Company</div>
         <ul class="space-y-1.5">
-          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);" onclick="window.scrollTo(0,0)">Home</button></li>
-          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);" onclick="document.getElementById('about-us').scrollIntoView({behavior: 'smooth'})">About Us</button></li>
-          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);" onclick="document.getElementById('services').scrollIntoView({behavior: 'smooth'})">Services</button></li>
-          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Contact</button></li>
+          <li><button data-nav="home" class="text-xs hover:text-white transition-colors" style="color:rgba(255,245,233,0.45);">Home</button></li>
+          <li><button data-nav="about" class="text-xs hover:text-white transition-colors" style="color:rgba(255,245,233,0.45);">About Us</button></li>
+          <li><button data-nav="services" class="text-xs hover:text-white transition-colors" style="color:rgba(255,245,233,0.45);">Services</button></li>
+          <li><button data-nav="contact" class="text-xs hover:text-white transition-colors" style="color:rgba(255,245,233,0.45);">Contact</button></li>
         </ul>
       </div>
-
       <div>
-        <div class="text-xs font-bold mb-3" style="color: rgba(232, 168, 0, 0.6);">Services</div>
+        <div class="text-xs font-bold mb-3" style="color:rgba(232,168,0,0.6);">Services</div>
         <ul class="space-y-1.5">
-          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">Domestic Tours</button></li>
-          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">International</button></li>
-          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">Honeymoon</button></li>
-          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">Corporate</button></li>
+          <li><button data-nav="services" class="text-xs hover:text-white transition-colors" style="color:rgba(255,245,233,0.45);">Domestic Tours</button></li>
+          <li><button data-nav="services" class="text-xs hover:text-white transition-colors" style="color:rgba(255,245,233,0.45);">International</button></li>
+          <li><button data-nav="services" class="text-xs hover:text-white transition-colors" style="color:rgba(255,245,233,0.45);">Honeymoon</button></li>
+          <li><button data-nav="services" class="text-xs hover:text-white transition-colors" style="color:rgba(255,245,233,0.45);">Corporate</button></li>
         </ul>
       </div>
-
       <div>
-        <div class="text-xs font-bold mb-3" style="color: rgba(232, 168, 0, 0.6);">Careers</div>
+        <div class="text-xs font-bold mb-3" style="color:rgba(232,168,0,0.6);">Careers</div>
         <ul class="space-y-1.5">
-          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);" onclick="document.getElementById('careers-section').scrollIntoView({behavior: 'smooth'})">Open Positions</button></li>
-          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">Internships</button></li>
-          <li><button class="text-xs hover:text-white transition-colors" style="color: rgba(255, 245, 233, 0.45);">Why Join Us</button></li>
+          <li><button data-nav="careers" class="text-xs hover:text-white transition-colors" style="color:rgba(255,245,233,0.45);">Open Positions</button></li>
+          <li><button data-nav="careers" class="text-xs hover:text-white transition-colors" style="color:rgba(255,245,233,0.45);">Internships</button></li>
+          <li><button data-nav="about" class="text-xs hover:text-white transition-colors" style="color:rgba(255,245,233,0.45);">Why Join Us</button></li>
         </ul>
       </div>
     </div>
-    <div class="border-t px-6 py-4 text-center text-xs" style="border-color: rgba(255, 235, 180, 0.08); color: rgba(255, 245, 233, 0.25);">
-      © 2026 Corazon Travel and Tours · Taguig City, Philippines · All rights reserved
+    <div class="border-t px-6 py-4 text-center text-xs" style="border-color:rgba(255,235,180,0.08); color:rgba(255,245,233,0.25);">
+      &copy; 2026 Corazon Travel and Tours &middot; Taguig City, Philippines &middot; All rights reserved
     </div>
   </footer>
 
-  <!-- Application Modal -->
-  <div id="apply-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
-    <div id="apply-modal-content"
-      class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden max-h-[90vh] overflow-y-auto"
-      onclick="event.stopPropagation()">
-      <div class="flex items-center justify-between px-6 py-5 border-b" style="border-color: #E5E7EB;">
-        <div>
-          <h3 class="font-bold" style="color: rgb(42,18,21);">Apply for this Position</h3>
-          <p id="apply-subtitle" class="text-xs mt-0.5" style="color: #6B7280;"></p>
-        </div>
-        <button id="close-apply-btn" class="p-1.5 rounded-lg hover:bg-gray-50" style="color: #9CA3AF;">
-          <i data-lucide="x" class="w-[18px] h-[18px]"></i>
-        </button>
+  <div id="apply-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden" style="background:rgba(0,0,0,0.4); backdrop-filter:blur(4px);">
+    <div id="apply-modal-content" class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden" style="max-height:90vh; overflow-y:auto;">
+      <div class="flex items-center justify-between px-6 py-5 border-b" style="border-color:#E5E7EB;">
+        <div><h3 class="font-bold" style="color:#2A1215;">Apply for this Position</h3><p id="apply-subtitle" class="text-xs mt-0.5" style="color:#6B7280;"></p></div>
+        <button id="close-apply-btn" class="p-1.5 rounded-lg hover:bg-gray-50" style="color:#9CA3AF;"><i data-lucide="x" style="width:18px; height:18px;"></i></button>
       </div>
-
-      <!-- Success Message -->
-      <div id="apply-success" class="flex flex-col items-center text-center px-8 py-12 hidden">
-        <div class="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mb-4">
-          <i data-lucide="check-circle-2" class="w-[32px] h-[32px] text-emerald-500"></i>
-        </div>
-        <h3 class="text-xl font-bold mb-2" style="color: rgb(42,18,21);">Application Submitted!</h3>
-        <p class="text-sm leading-relaxed" style="color: #6B7280;">Your application for <strong id="success-job-title"></strong>
-          has been received. We'll review it and get back to you shortly.</p>
-        <button id="done-apply-btn" class="mt-6 px-6 py-2.5 rounded-xl text-white text-sm font-bold"
-          style="background: rgb(110,18,22);">Done</button>
+      <div id="apply-success" class="hidden flex-col items-center text-center px-8 py-12">
+        <div class="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center mb-4"><i data-lucide="check-circle-2" style="width:32px; height:32px; color:#10b981;"></i></div>
+        <h3 class="text-xl font-bold mb-2" style="color:#2A1215;">Application Submitted!</h3>
+        <p class="text-sm leading-relaxed" style="color:#6B7280;">Your application for <strong id="success-job-title"></strong> has been received. We’ll review it and get back to you shortly.</p>
+        <button id="done-apply-btn" class="mt-6 px-6 py-2.5 rounded-xl text-white text-sm font-bold" style="background:#6E1216;">Done</button>
       </div>
-
-      <!-- Form -->
       <form id="apply-form" class="px-6 py-6 space-y-4">
         <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-bold mb-1.5" style="color: #374151;">First Name <span class="text-red-500">*</span></label>
-            <input type="text" id="app-fname" placeholder="Juan" required
-              class="w-full px-3 py-2.5 rounded-xl border text-sm outline-none"
-              style="background: #F7F8FA; border-color: #E5E7EB; color: rgb(42,18,21);">
-          </div>
-          <div>
-            <label class="block text-xs font-bold mb-1.5" style="color: #374151;">Last Name <span class="text-red-500">*</span></label>
-            <input type="text" id="app-lname" placeholder="Dela Cruz" required
-              class="w-full px-3 py-2.5 rounded-xl border text-sm outline-none"
-              style="background: #F7F8FA; border-color: #E5E7EB; color: rgb(42,18,21);">
-          </div>
+          <div><label class="block text-xs font-bold mb-1.5" style="color:#374151;">First Name <span style="color:#ef4444;">*</span></label><input type="text" id="app-fname" placeholder="Juan" required class="contact-input"></div>
+          <div><label class="block text-xs font-bold mb-1.5" style="color:#374151;">Last Name <span style="color:#ef4444;">*</span></label><input type="text" id="app-lname" placeholder="Dela Cruz" required class="contact-input"></div>
         </div>
+        <div><label class="block text-xs font-bold mb-1.5" style="color:#374151;">Email Address <span style="color:#ef4444;">*</span></label><input type="email" id="app-email" placeholder="juan@email.com" required class="contact-input"></div>
+        <div><label class="block text-xs font-bold mb-1.5" style="color:#374151;">Contact Number</label><input type="text" id="app-phone" placeholder="+63 9XX XXX XXXX" class="contact-input"></div>
         <div>
-          <label class="block text-xs font-bold mb-1.5" style="color: #374151;">Email Address <span class="text-red-500">*</span></label>
-          <input type="email" id="app-email" placeholder="juan@email.com" required
-            class="w-full px-3 py-2.5 rounded-xl border text-sm outline-none"
-            style="background: #F7F8FA; border-color: #E5E7EB; color: rgb(42,18,21);">
-        </div>
-        <div>
-          <label class="block text-xs font-bold mb-1.5" style="color: #374151;">Contact Number</label>
-          <input type="text" id="app-phone" placeholder="+63 9XX XXX XXXX"
-            class="w-full px-3 py-2.5 rounded-xl border text-sm outline-none"
-            style="background: #F7F8FA; border-color: #E5E7EB; color: rgb(42,18,21);">
-        </div>
-        <div>
-          <label class="block text-xs font-bold mb-1.5" style="color: #374151;">Resume (PDF only) <span class="text-red-500">*</span></label>
-          <label class="flex items-center gap-3 px-4 py-3 border-2 border-dashed rounded-xl cursor-pointer transition-colors"
-            style="border-color: #E5E7EB; background: #F7F8FA;">
-            <i data-lucide="upload" class="w-[18px] h-[18px]" style="color: #9CA3AF;"></i>
-            <div>
-              <div id="file-name-display" class="text-sm font-semibold" style="color: #374151;">Click to upload your resume</div>
-              <div class="text-xs" style="color: #9CA3AF;">PDF files only, max 5MB</div>
-            </div>
+          <label class="block text-xs font-bold mb-1.5" style="color:#374151;">Resume (PDF only) <span style="color:#ef4444;">*</span></label>
+          <label class="flex items-center gap-3 px-4 py-3 border-2 border-dashed rounded-xl cursor-pointer transition-colors" style="border-color:#E5E7EB; background:#F7F8FA;">
+            <i data-lucide="upload" style="width:18px; height:18px; color:#9CA3AF;"></i>
+            <div><div id="file-name-display" class="text-sm font-semibold" style="color:#374151;">Click to upload your resume</div><div class="text-xs" style="color:#9CA3AF;">PDF files only, max 5MB</div></div>
             <input type="file" id="app-resume" accept=".pdf" class="hidden">
           </label>
         </div>
-        <div>
-          <label class="block text-xs font-bold mb-1.5" style="color: #374151;">Cover Letter <span class="text-xs font-normal" style="color: #9CA3AF;">(Optional)</span></label>
-          <textarea id="app-cover" rows="4" placeholder="Tell us why you're a great fit for this role…"
-            class="w-full px-3 py-2.5 rounded-xl border text-sm outline-none resize-none"
-            style="background: #F7F8FA; border-color: #E5E7EB; color: rgb(42,18,21);"></textarea>
-        </div>
-        <button type="submit"
-          class="w-full py-3 rounded-xl text-white text-sm font-bold transition-all hover:opacity-90 mt-2"
-          style="background: rgb(110,18,22); box-shadow: 0 4px 14px rgba(110,18,22,0.35);">
-          Submit Application
-        </button>
+        <div><label class="block text-xs font-bold mb-1.5" style="color:#374151;">Cover Letter <span class="font-normal" style="color:#9CA3AF;">(Optional)</span></label><textarea id="app-cover" rows="4" placeholder="Tell us why you’re a great fit for this role…" class="contact-input" style="resize:none;"></textarea></div>
+        <button type="submit" class="w-full py-3 rounded-xl text-white text-sm font-bold hover:opacity-90 transition-all mt-2" style="background:#6E1216; box-shadow:0 4px 14px rgba(110,18,22,0.35);">Submit Application</button>
       </form>
     </div>
   </div>
@@ -541,5 +505,4 @@
   <script src="js/shared.js"></script>
   <script type="module" src="js/jobboard.js"></script>
 </body>
-
 </html>
