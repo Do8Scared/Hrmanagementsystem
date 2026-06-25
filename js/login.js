@@ -168,11 +168,11 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       // Direct routing based on role (mock implementation)
       if (currentRole === 'admin') {
-        window.location.href = 'adminportal/admin-dashboard.html';
+        window.location.href = 'html/adminportal/admin-dashboard.html';
       } else if (currentRole === 'manager') {
-        window.location.href = 'managerportal/manager-dashboard.html';
+        window.location.href = 'html/managerportal/manager-dashboard.html';
       } else {
-        window.location.href = 'employeeportal/employee-dashboard.html';
+        window.location.href = 'html/employeeportal/employee-dashboard.html';
       }
     }, 1200);
   });

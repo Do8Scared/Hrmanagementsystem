@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const isPortal = window.location.pathname.includes('portal');
           
           if (isPortal) {
-            window.location.href = '../index.html';
+            window.location.href = '../../index.html';
           } else {
             window.location.href = 'index.html';
           }
@@ -212,7 +212,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (target.classList.contains('nav-item') || navLabel) {
           const btnText = (navLabel ? navLabel.textContent : text).trim().toLowerCase();
           const pathParts = window.location.pathname.split('/');
-          const currentRole = pathParts[pathParts.length - 2]; // e.g. 'admin', 'manager', 'employee'
+          const currentDir = pathParts[pathParts.length - 2];
+          const currentRole = currentDir ? currentDir.replace('portal', '') : ''; // e.g. 'admin', 'manager', 'employee'
           
           if (!['admin', 'manager', 'employee'].includes(currentRole)) return;
           
