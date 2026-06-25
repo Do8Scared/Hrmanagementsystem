@@ -196,19 +196,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  document.querySelectorAll('.pw-toggle').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const input = e.currentTarget.previousElementSibling;
-      const icon = e.currentTarget.querySelector('i');
-      if (input.type === 'password') {
-        input.type = 'text';
-        icon.setAttribute('data-lucide', 'eye-off');
-      } else {
-        input.type = 'password';
-        icon.setAttribute('data-lucide', 'eye');
-      }
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-    });
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.pw-toggle');
+    if (!btn) return;
+    // Input is the previous sibling of the button inside the flex container
+    const input = btn.previousElementSibling;
+    if (!input || input.tagName !== 'INPUT') return;
+    const iconEl = btn.querySelector('i, svg');
+    if (input.type === 'password') {
+      input.type = 'text';
+      if (iconEl && iconEl.tagName === 'I') iconEl.setAttribute('data-lucide', 'eye-off');
+      else if (iconEl) iconEl.setAttribute('data-lucide', 'eye-off');
+    } else {
+      input.type = 'password';
+      if (iconEl) iconEl.setAttribute('data-lucide', 'eye');
+    }
+    if (typeof lucide !== 'undefined') lucide.createIcons();
   });
 
   renderHeader();
