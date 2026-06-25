@@ -55,13 +55,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       let actionsHtml = `
-        <button class="view-btn px-2.5 py-1 rounded-md text-xs text-accent border border-accent/30 hover:bg-secondary transition-colors" data-id="${r.id}">
+        <button class="view-btn whitespace-nowrap px-2.5 py-1 rounded-md text-xs text-accent border border-accent/30 hover:bg-secondary transition-colors" data-id="${r.id}">
           View Payslip
         </button>
       `;
       if (r.status === 'Pending') {
         actionsHtml += `
-          <button class="process-btn px-2.5 py-1 rounded-md text-xs text-emerald-700 border border-emerald-200 hover:bg-emerald-50 transition-colors" data-id="${r.id}">
+          <button class="process-btn whitespace-nowrap px-2.5 py-1 rounded-md text-xs text-emerald-700 border border-emerald-200 hover:bg-emerald-50 transition-colors" data-id="${r.id}">
             Process
           </button>
         `;
