@@ -21,4 +21,5 @@
   input { font-size: 1rem; font-weight: var(--font-weight-normal); line-height: 1.5; }
 }
 
-@import 'styles.css';
+@import "./styles.css";
+@config "../tailwind.config.js";
