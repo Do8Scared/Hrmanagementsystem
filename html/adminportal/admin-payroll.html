@@ -257,6 +257,19 @@
     <!-- Page Content (Payroll Management) -->
     <main class="flex-1 overflow-y-auto p-6 bg-background relative z-10" id="main-content">
       <div class="space-y-5">
+        
+        <!-- Module tab switcher -->
+        <div class="flex gap-1 bg-white border border-border rounded-xl p-1 w-fit shadow-sm">
+          <a href="admin-attendance.html" class="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all text-muted-foreground hover:text-foreground hover:bg-secondary">
+            <i data-lucide="clock" style="width: 15px; height: 15px;"></i>
+            Timekeeping
+          </a>
+          <a href="admin-payroll.html" class="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all bg-primary text-white shadow-sm">
+            <i data-lucide="dollar-sign" style="width: 15px; height: 15px;"></i>
+            Payroll
+          </a>
+        </div>
+
         <!-- Summary -->
         <div class="grid grid-cols-3 gap-4">
           <div class="bg-card rounded-xl border border-border p-5">
